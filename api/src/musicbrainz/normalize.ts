@@ -1,5 +1,6 @@
-// Normalize song titles to make them easier to compare.
-// For example, the title "what's wrong with me feat. Robert Smith" becomes "whats wrong with me".
+// Normalize artist names and song titles to make them easier to compare.
+// For example, "Bad Omens & Poppy" becomes "bad omens and poppy".
+// As for a song, the title "what's wrong with me feat. Robert Smith" becomes "whats wrong with me".
 
 export function normalize(text: string): string {
     return text
@@ -36,4 +37,18 @@ export function stripTitleNoise(title: string): string {
 
 export function normalizeTitle(title: string): string {
     return normalize(stripTitleNoise(title));
+}
+
+// Split a list of artists into individual names.
+// Ignore "&" or "and" since many names contain them (as in "Earth, Wind & Fire").
+export function splitArtists(artist: string): string[] {
+    return splitArtistsRaw(artist).map(normalize).filter(Boolean); // "Knocked Loose, Poppy" -> ["knocked loose", "poppy"]
+}
+
+// Split artist credits while preserving their original spelling.
+export function splitArtistsRaw(artist: string): string[] {
+    return artist
+        .split(/\s*(?:,|\bfeaturing\b|\bfeat\.?|\bft\.?|\bwith\b)\s*/i) // "Wallows feat. Clairo" -> ["Wallows", "Clairo"]
+        .map((name) => name.trim())
+        .filter(Boolean);
 }
