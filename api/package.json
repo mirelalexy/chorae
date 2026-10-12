@@ -7,7 +7,8 @@
     "dev": "tsx watch --env-file=.env src/server.ts",
     "start": "tsx --env-file=.env src/server.ts",
     "migrate": "tsx --env-file=.env src/db/migrate.ts",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "test": "tsx --test \"src/**/*.test.ts\""
   },
   "dependencies": {
     "express": "^5.3.0",
