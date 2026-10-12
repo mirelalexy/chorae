@@ -9,7 +9,7 @@ export function normalize(text: string): string {
         .toLowerCase()
         .replace(/[\u2018\u2019\u00B4\u0060]/g, "'")    // standardize apostrophes ("rock ’n’ roll" -> "rock 'n' roll")
         .replace(/[\u201C\u201D]/g, '"')                // standardize curly quotation marks
-        .replace(/&/g, " and ")
+        .replace(/[&+]/g, " and ")
         .replace(/[^\p{L}\p{N}']+/gu, " ")              // replace punctuation with spaces ("b.e.d." -> "b e d")
         .replace(/'/g, "")                              // drop apostrophes
         .trim()
