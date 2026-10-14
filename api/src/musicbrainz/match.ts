@@ -12,6 +12,7 @@ export async function matchTrack(request: TrackRequest): Promise<MatchedTrack | 
     const queries = [
         `recording:"${title}" AND artist:"${artist}"`, // This exact phrase.
         `recording:(${title}) AND artist:(${artist})`, // These words, in any order.
+        `recording:"${title}"`,                        // Just by title in rare cases.
     ];
 
     for (const query of queries) {

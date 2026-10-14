@@ -53,7 +53,11 @@ function artistScore(request: TrackRequest, recording: Recording): number {
     const [mainArtist] = splitArtists(request.artist);
 
     // Check both credit names and canonical ones.
-    const names = recording["artist-credit"].flatMap((c) => [normalize(c.name), normalize(c.artist.name)]);
+    const names = recording["artist-credit"]
+        .flatMap((c) => [c.name, c.artist.name, c.artist["sort-name"] ?? ""]) // include sort name for bands like Crosses ("†††")
+        .map(normalize)
+        .filter(Boolean);
+
     if (mainArtist && names.includes(mainArtist)) return 1;
 
     return similarity(wanted, credited);

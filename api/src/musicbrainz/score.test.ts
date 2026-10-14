@@ -121,3 +121,14 @@ test("doesn't treat a longer word as the same title", () => {
 
     assert.equal(best, null);
 });
+
+test("matches an artist by sort name when the official name has symbols", () => {
+    const best = pickBest({ title: "This Is a Trick", artist: "Crosses" }, [
+        {
+        ...recording({ id: "crosses", title: "This Is a Trick" }),
+        "artist-credit": [{ name: "†††", joinphrase: "", artist: { id: "c", name: "†††", "sort-name": "Crosses" } }],
+        },
+    ]);
+    
+    assert.equal(best?.id, "crosses");
+});

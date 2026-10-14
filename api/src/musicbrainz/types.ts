@@ -7,7 +7,8 @@ const artistCredit = z.array(
         joinphrase: z.string().optional(), // two artists or more can be united through something like " & " or " feat. "
         artist: z.object({ 
             id: z.string(), 
-            name: z.string()               // name of the linked artist entity can differ from the credited name
+            name: z.string(),               // name of the linked artist entity can differ from the credited name
+            "sort-name": z.string().optional(),
         }),
     }),
 );
