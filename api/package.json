@@ -13,6 +13,7 @@
     "match:fixtures": "tsx --env-file=.env src/scripts/match-fixtures.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.133.0",
     "express": "^5.3.0",
     "pg": "^8.23.1",
     "zod": "^4.6.6"
