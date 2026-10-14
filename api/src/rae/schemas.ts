@@ -85,3 +85,41 @@ export const draftSchema = z.object({
 });
 
 export type Draft = z.infer<typeof draftSchema>;
+
+// Rules that cannot be checked with Zod.
+export function draftProblems(draft: Draft): string[] {
+    const problems: string[] = [];
+    const all = draft.sides.flatMap((s) => [...s.tracks, ...s.backups]);
+
+    // A song should not appear twice, even if included in backups.
+    const seen = new Set<string>();
+
+    for (const t of all) {
+        const key = `${normalize(t.title)}|${normalize(t.artist)}`;
+
+        if (seen.has(key)) {
+            problems.push(`${t.title} by ${t.artist} appears twice.`);
+        }
+
+        seen.add(key);
+    }
+
+    // Limit how many songs come from an artist, not counting seeds.
+    const tracksPerArtist = new Map<string, number>();
+    const totalTracks = draft.sides.flatMap((s) => s.tracks);
+
+    for (const t of totalTracks) {
+        if (t.is_seed) continue;
+
+        const artistName = normalize(t.artist);
+        tracksPerArtist.set(artistName, (tracksPerArtist.get(artistName) ?? 0) + 1);
+    }
+
+    for (const [artist, count] of tracksPerArtist) {
+        if (count > MAX_TRACKS_PER_ARTIST) {
+            problems.push(`${count} tracks by ${artist}, more than ${MAX_TRACKS_PER_ARTIST}.`);
+        }
+    }
+
+    return problems;
+}
