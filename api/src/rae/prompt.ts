@@ -64,9 +64,11 @@ export function questionsMessage(prompt: string): string {
     </request>
 
     Ask two to four questions before you build it. Ask what would change the mixtape, like who
-    it's for, where it should end, what to avoid, songs they want on it. Skip what they've
-    already told you. Where a few short answers cover it, offer them as suggestions. Where their
-    own words will do, leave suggestions empty.`;
+    it's for, where it should end, what to avoid, songs they want on it. Ask about sound by what
+    it does, not by genre or other artists, unless the person mentioned them first. If they say
+    how they feel now, it's worth asking where the mixtape should start, not only where it ends.
+    Skip what they've already told you. Where a few short answers cover it, offer them as suggestions. 
+    Where their own words will do, leave suggestions empty.`;
 }
 
 export function draftMessage(request: DraftRequest): string {
