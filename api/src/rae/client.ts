@@ -1,7 +1,8 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
 import { config } from "../config";
-import { RAE_SYSTEM } from "./prompt";
+import { draftMessage, questionsMessage, RAE_SYSTEM } from "./prompt";
+import { DraftRequest, draftSchema, questionsSchema } from "./schemas";
 import { z } from "zod";
 
 // Every request to Rae goes through this.
@@ -65,4 +66,12 @@ async function ask<T>(schema: z.ZodType<T>, message: string, options: Options): 
     }
 
     throw new RaeError("Unreachable");
+}
+
+export function askQuestions(prompt: string) {
+    return ask(questionsSchema, questionsMessage(prompt), { effort: "low", maxTokens: 16000 });
+}
+
+export function writeDraft(request: DraftRequest) {
+    return ask(draftSchema, draftMessage(request), { effort: "medium", maxTokens: 64000 });
 }
