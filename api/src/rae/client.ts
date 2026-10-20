@@ -1,5 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
+import { readAnswer } from "./answer";
 import { config } from "../config";
 import { draftMessage, questionsMessage, RAE_SYSTEM } from "./prompt";
 import { DraftRequest, draftSchema, questionsSchema } from "./schemas";
@@ -61,8 +62,11 @@ async function ask<T>(schema: z.ZodType<T>, message: string, options: Options): 
 
         console.info(`${usage.input_tokens} tokens in (${usage.cache_read_input_tokens ?? 0} from cache), ${usage.output_tokens} out`);
 
-        // TODO: Get answer.
-        // ...
+        const answer = readAnswer(response, schema);
+        if (answer.ok) return answer.value;
+        if (!answer.retry || attempt === 2) throw new RaeError(answer.reason);
+
+        console.warn(`${answer.reason} Asking again.`);
     }
 
     throw new RaeError("Unreachable");
