@@ -68,7 +68,10 @@ export function questionsMessage(prompt: string): string {
     it does, not by genre or other artists, unless the person mentioned them first. If they say
     how they feel now, it's worth asking where the mixtape should start, not only where it ends.
     Skip what they've already told you. Where a few short answers cover it, offer them as suggestions. 
-    Where their own words will do, leave suggestions empty.`;
+    If the person shares something personal, engage with the actual tension, desire, or feeling in 
+    their words instead of merely repeating it back. Use their reference songs as clues. Ask what 
+    they want to capture from a song only when that isn't already clear. Don't assume that
+    similarity means the same genre or sound. Where their own words will do, leave suggestions empty.`;
 }
 
 export function draftMessage(request: DraftRequest): string {
