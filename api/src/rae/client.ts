@@ -1,5 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
+import { BetaJSONOutputFormat } from "@anthropic-ai/sdk/resources/beta/messages/messages";
 import { readAnswer } from "./answer";
 import { config } from "../config";
 import { draftMessage, questionsMessage, RAE_SYSTEM } from "./prompt";
@@ -32,7 +33,27 @@ async function ask<T>(schema: z.ZodType<T>, message: string, options: Options): 
     const { parse: _parse, ...format } = betaZodOutputFormat(schema);
 
     for (let attempt = 1; attempt <= 2; attempt++) {
-        const response = await getClient().beta.messages.stream({
+        const response = await send(message, options, format);
+
+        // Find out how many tokens the request used.
+        const { usage } = response;
+
+        console.info(`${usage.input_tokens} tokens in (${usage.cache_read_input_tokens ?? 0} from cache), ${usage.output_tokens} out`);
+
+        const answer = readAnswer(response, schema);
+        if (answer.ok) return answer.value;
+        if (!answer.retry || attempt === 2) throw new RaeError(answer.reason);
+
+        console.warn(`${answer.reason} Asking again.`);
+    }
+
+    throw new RaeError("Unreachable");
+}
+
+// Send one request to the API.
+async function send(message: string, options: Options, format: BetaJSONOutputFormat) {
+    try {
+        return await getClient().beta.messages.stream({
             model: MODEL,
             max_tokens: options.maxTokens,
             system: [
@@ -52,24 +73,19 @@ async function ask<T>(schema: z.ZodType<T>, message: string, options: Options): 
                 effort: options.effort,
                 format,
             },
-            // Retry the request on another model instead of failing.
             betas: ["server-side-fallback-2026-07-01"],
             fallbacks: "default",
         }).finalMessage();
+    } catch (err) {
+        if (err instanceof Anthropic.RateLimitError ||
+            err instanceof Anthropic.InternalServerError ||
+            err instanceof Anthropic.APIConnectionError
+        ) {
+            throw new RaeError(`Couldn't reach Rae: ${err.message}`);
+        }
 
-        // Find out how many tokens the request used.
-        const { usage } = response;
-
-        console.info(`${usage.input_tokens} tokens in (${usage.cache_read_input_tokens ?? 0} from cache), ${usage.output_tokens} out`);
-
-        const answer = readAnswer(response, schema);
-        if (answer.ok) return answer.value;
-        if (!answer.retry || attempt === 2) throw new RaeError(answer.reason);
-
-        console.warn(`${answer.reason} Asking again.`);
+        throw err;
     }
-
-    throw new RaeError("Unreachable");
 }
 
 export function askQuestions(prompt: string) {
