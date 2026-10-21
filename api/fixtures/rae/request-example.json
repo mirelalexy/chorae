@@ -1,0 +1,28 @@
+{
+  "prompt": "I want to feel like I'm walking through the RPD or an abandoned lab. Something that brings me closer to what Leon Kennedy is like in Resident Evil Requiem. Dark, dramatic, but still cool. He's been my favorite character for years.",
+  "answers": [
+    {
+      "question": "Which Leon are we soundtracking here: the tense, careful survivor creeping down a hallway, or the guy who's seen it all and suplexes his way out?",
+      "answer": "Both, shifting as it goes"
+    },
+    {
+      "question": "Should it feel like actual game ambience, mostly instrumental and creeping, or songs with vocals you'd put on while walking around in your own life?",
+      "answer": "Songs with vocals"
+    },
+    {
+      "question": "Where does the walk end? Still deep in the dark, or breaking out into daylight?",
+      "answer": "Surprise me"
+    },
+    {
+      "question": "Anything that would kill the mood, or a track you already know belongs on it?",
+      "answer": "I have a few suggestions listed... I think Impose really matches Leon's story"
+    }
+  ],
+  "minutes": 240,
+  "seeds": [{ "title": "Impose", "artist": "Bad Omens" }, { "title": "Psycho", "artist": "Muse" }, { "title": "I Can Fix You", "artist": "Jutes" },
+            { "title": "mourning", "artist": "Maggie Lindemann" }, { "title": "warning signs (interlude)", "artist": "Ariana Grande" },
+            { "title": "Pistol", "artist": "Cigarettes After Sex" }, { "title": "Static", "artist": "Alexis Munroe" },
+            { "title": "Angel", "artist": "Massive Attack, Horace Andy" }
+           ],
+  "story": true
+}

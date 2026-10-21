@@ -1,0 +1,520 @@
+{
+  "request": {
+    "prompt": "I want to feel like I'm walking through the RPD or an abandoned lab. Something that brings me closer to what Leon Kennedy is like in Resident Evil Requiem. Dark, dramatic, but still cool. He's been my favorite character for years.",
+    "answers": [
+      {
+        "question": "Which Leon are we soundtracking here: the tense, careful survivor creeping down a hallway, or the guy who's seen it all and suplexes his way out?",
+        "answer": "Both, shifting as it goes"
+      },
+      {
+        "question": "Should it feel like actual game ambience, mostly instrumental and creeping, or songs with vocals you'd put on while walking around in your own life?",
+        "answer": "Songs with vocals"
+      },
+      {
+        "question": "Where does the walk end? Still deep in the dark, or breaking out into daylight?",
+        "answer": "Surprise me"
+      },
+      {
+        "question": "Anything that would kill the mood, or a track you already know belongs on it?",
+        "answer": "I have a few suggestions listed... I think Impose really matches Leon's story"
+      }
+    ],
+    "minutes": 240,
+    "seeds": [
+      {
+        "title": "Impose",
+        "artist": "Bad Omens"
+      },
+      {
+        "title": "Psycho",
+        "artist": "Muse"
+      },
+      {
+        "title": "I Can Fix You",
+        "artist": "Jutes"
+      },
+      {
+        "title": "mourning",
+        "artist": "Maggie Lindemann"
+      },
+      {
+        "title": "warning signs (interlude)",
+        "artist": "Ariana Grande"
+      },
+      {
+        "title": "Pistol",
+        "artist": "Cigarettes After Sex"
+      },
+      {
+        "title": "Static",
+        "artist": "Alexis Munroe"
+      },
+      {
+        "title": "Angel",
+        "artist": "Massive Attack, Horace Andy"
+      }
+    ],
+    "story": true
+  },
+  "draft": {
+    "title": "Rookie Night, Twenty Years Later",
+    "intro": "Leon Kennedy has walked into Raccoon City before, as a rookie on his first night. This tape sends him back in, older and harder to scare, and follows him through the wreckage until he finds a way out. Side one is the arrival. Side two is the RPD, the careful-survivor Leon checking every corner. Side three goes down into the lab. Side four is the Leon who has seen it all and starts fighting back with one-liners. Side five is the way out, and I won't tell you yet whether it's dark or light. Your eight picks are threaded through as the spine of the story, and Impose sits at the turning point, because you're right that it fits him.",
+    "sides": [
+      {
+        "title": "Chapter One: The Drive Back In",
+        "mood_line": "Headlights on a dead highway, then the city skyline with no lights on.",
+        "tracks": [
+          {
+            "title": "In the Air Tonight",
+            "artist": "Phil Collins",
+            "note": "We open on the road into town. That drum machine ticks like a car's turn signal, and the vocal stays restrained until the famous drum fill finally breaks in. It's Leon behind the wheel, knowing exactly where this road ends.",
+            "is_seed": false
+          },
+          {
+            "title": "Nightcall",
+            "artist": "Kavinsky",
+            "note": "The synth bass rolls like tires on wet asphalt, and the vocoder voice sounds like a radio picking up something it shouldn't. This is the cool, neon-noir version of dread, which suits a man who arrives looking good no matter what.",
+            "is_seed": false
+          },
+          {
+            "title": "Angel",
+            "artist": "Massive Attack",
+            "note": "Your pick, and it's the moment he steps out of the car. That bassline is the sound of slow footsteps on cracked pavement, and Horace Andy's voice floats above it like it's coming from the ruins. When the guitars tear in near the end, it's the first sign the city is still alive in all the wrong ways.",
+            "is_seed": true
+          },
+          {
+            "title": "People Are Strange",
+            "artist": "The Doors",
+            "note": "Faces come out of the rain, and none of them look right anymore. The carnival-like piano makes the empty streets feel off-kilter rather than simply scary. It's a short, strange walk past things that used to be people.",
+            "is_seed": false
+          },
+          {
+            "title": "Roads",
+            "artist": "Portishead",
+            "note": "Beth Gibbons sings like she's holding her breath. The strings swell slowly under a guitar that barely moves, and the song works like the stretch where Leon stops and remembers what this place was before.",
+            "is_seed": false
+          },
+          {
+            "title": "Pistol",
+            "artist": "Cigarettes After Sex",
+            "note": "Your pick lands right where Leon checks his sidearm in the dark. The guitar is all reverb and slow motion, and the title alone ties the romance and the gunmetal together. It's the coolest kind of quiet before trouble.",
+            "is_seed": true
+          },
+          {
+            "title": "Bang Bang (My Baby Shot Me Down)",
+            "artist": "Nancy Sinatra",
+            "note": "It follows Pistol, so the gun keeps passing hands. That single tremolo guitar sounds like it's echoing off empty storefronts. There's an old ache in it too, like a memory from his rookie night he never quite put down.",
+            "is_seed": false
+          },
+          {
+            "title": "Do I Wanna Know?",
+            "artist": "Arctic Monkeys",
+            "note": "The riff struts like boots crossing a parking lot, slow and deliberate. Leon isn't scared yet, just cautious and annoyed that he's back here. The handclaps feel like distant doors slamming somewhere ahead.",
+            "is_seed": false
+          },
+          {
+            "title": "Black Hole Sun",
+            "artist": "Soundgarden",
+            "note": "The sky over Raccoon goes a sickly color. Chris Cornell's melody bends in ways that feel slightly wrong, like a pleasant afternoon with something underneath it. The heavier choruses give the ruins weight.",
+            "is_seed": false
+          },
+          {
+            "title": "Haunted",
+            "artist": "Poe",
+            "note": "Whispered verses, a chugging beat, and the line about the dead wanting back in. This is the city starting to talk back. It sounds like voices from a dozen radios at once.",
+            "is_seed": false
+          },
+          {
+            "title": "Way Down We Go",
+            "artist": "KALEO",
+            "note": "The stomp-and-clap rhythm is a march toward the building he's been avoiding. JJ Julius Son's voice cracks right at the top, and the title tells you where this chapter is heading.",
+            "is_seed": false
+          },
+          {
+            "title": "Seven Devils",
+            "artist": "Florence + The Machine",
+            "note": "The piano rings out low and ominous as Leon reaches the steps of the old police station. Florence's choir-like build makes the front doors feel like a gate. We go in at the end of this one.",
+            "is_seed": false
+          }
+        ],
+        "backups": [
+          {
+            "title": "Glory Box",
+            "artist": "Portishead",
+            "note": "Same smoky slow-burn as Roads, with a guitar that shivers through the room. Works anywhere in the arrival stretch."
+          },
+          {
+            "title": "Wicked Game",
+            "artist": "Chris Isaak",
+            "note": "Echoing guitar and a sigh of a vocal. It fits the cool, lonely drive-in feel of the opening."
+          }
+        ]
+      },
+      {
+        "title": "Chapter Two: The RPD",
+        "mood_line": "Flashlight beam, creaking floorboards, old memories filed in every drawer.",
+        "tracks": [
+          {
+            "title": "Shadowplay",
+            "artist": "Joy Division",
+            "note": "To the center of the city where all the roads meet. Peter Hook's bass runs ahead like Leon's flashlight beam, and Ian Curtis sounds like he's narrating a building full of ghosts. We're inside now.",
+            "is_seed": false
+          },
+          {
+            "title": "Lullaby",
+            "artist": "The Cure",
+            "note": "The spider-man is having him for dinner tonight. The plucked strings tiptoe, and Robert Smith's whisper is right in your ear. This is the careful survivor Leon, checking every corridor twice.",
+            "is_seed": false
+          },
+          {
+            "title": "mourning",
+            "artist": "Maggie Lindemann",
+            "note": "Your pick for the main hall, where the faded memorials still hang. Her voice sounds worn rather than dramatic, and the song's heaviness feels like grief that turned to steel a long time ago. Leon has buried a lot of people since his first night here.",
+            "is_seed": true
+          },
+          {
+            "title": "Climbing Up the Walls",
+            "artist": "Radiohead",
+            "note": "This is the sound of something moving in the ceiling. Distorted strings scrape underneath Thom Yorke's buried vocal, and it doesn't resolve so much as collapse. It's the closest the tape gets to survival-horror sound design while keeping a singer front and center.",
+            "is_seed": false
+          },
+          {
+            "title": "bury a friend",
+            "artist": "Billie Eilish",
+            "note": "The beat clicks and breathes like a dental drill and a ventilation shaft. Billie sings from the monster's side of the door. It's useful to hear the other side for a minute.",
+            "is_seed": false
+          },
+          {
+            "title": "Static",
+            "artist": "Alexis Munroe",
+            "note": "Your pick plays like an old radio crackling to life in the communications room. Leon tries to raise someone on the line, and what he gets back is noise and maybe a voice. It's the loneliest part of the station.",
+            "is_seed": true
+          },
+          {
+            "title": "Sour Times",
+            "artist": "Portishead",
+            "note": "That surf-noir guitar sample feels like a spy movie running in a dead building. Nobody loves him, and he's fine with that, and it's the most Leon thing about him. It's cool and paranoid at once.",
+            "is_seed": false
+          },
+          {
+            "title": "Heart-Shaped Box",
+            "artist": "Nirvana",
+            "note": "The verse lurches and the chorus erupts like a door bursting open. It's the first real scare in the RPD, the one that makes him draw his weapon. Cobain's yell keeps the scare from feeling polished.",
+            "is_seed": false
+          },
+          {
+            "title": "warning signs (interlude)",
+            "artist": "Ariana Grande",
+            "note": "Your pick is a short pause in the safe room. It's soft and it shouldn't fit, and that's exactly why it works: the quiet moment when Leon admits he should have seen this coming. A breath before the next door.",
+            "is_seed": true
+          },
+          {
+            "title": "Hide and Seek",
+            "artist": "Imogen Heap",
+            "note": "Nothing but her voice stacked through a harmonizer, cold and glassy. It sounds like a building that still remembers people calling out to each other. The station feels completely empty, which is worse.",
+            "is_seed": false
+          },
+          {
+            "title": "Teeth",
+            "artist": "5 Seconds of Summer",
+            "note": "A grinding, clanking groove with a menacing hook. Something is hunting him through the halls, and the song's stomping rhythm moves like pursuit. Leon starts walking faster.",
+            "is_seed": false
+          },
+          {
+            "title": "The Kill (Bury Me)",
+            "artist": "Thirty Seconds to Mars",
+            "note": "What if I wanted to break? The quiet verse explodes into a scream, and it's Leon finding the stairwell down to the basement and knowing he has to take it. It's a big, dramatic exit from the station.",
+            "is_seed": false
+          }
+        ],
+        "backups": [
+          {
+            "title": "Bring Me to Life",
+            "artist": "Evanescence",
+            "note": "Huge, gothic, and dramatic, with a rap-verse turn that feels like a jolt. It fits the scare-and-flee stretch of the RPD."
+          },
+          {
+            "title": "Gods & Monsters",
+            "artist": "Lana Del Rey",
+            "note": "Slow and velvet-dark, for the quieter memory moments inside the station."
+          }
+        ]
+      },
+      {
+        "title": "Chapter Three: Under Umbrella",
+        "mood_line": "Fluorescent lights, broken containment, and a voice on the intercom you shouldn't trust.",
+        "tracks": [
+          {
+            "title": "Change (In the House of Flies)",
+            "artist": "Deftones",
+            "note": "The elevator opens on the lab. Chino Moreno sings about turning into something else, and the guitars hover like a cloud of flies before they hit. It's the anthem of mutation.",
+            "is_seed": false
+          },
+          {
+            "title": "Psycho",
+            "artist": "Muse",
+            "note": "Your pick is the drill sergeant voice of every lab that built monsters on purpose. That chugging riff marches like a squadron of things that used to be soldiers. Leon finally sees who made all this.",
+            "is_seed": true
+          },
+          {
+            "title": "The Perfect Drug",
+            "artist": "Nine Inch Nails",
+            "note": "Jittery breakbeats and a piano that turns mournful at the end. It sounds like a lab's PA system playing a requiem for its own test subjects. It's cold and clinical, then quietly tragic.",
+            "is_seed": false
+          },
+          {
+            "title": "Animal I Have Become",
+            "artist": "Three Days Grace",
+            "note": "The infection theme, done big and loud. It's what the creatures down here would say if they still could. Leon recognizes the mistake that turns people into these things.",
+            "is_seed": false
+          },
+          {
+            "title": "Sonne",
+            "artist": "Rammstein",
+            "note": "The counting-down chant sounds like a lab countdown timer. The heavy riffs feel like containment doors slamming shut in sequence. This is pure Resident Evil, maybe the most on-the-nose pick here, and I stand by it.",
+            "is_seed": false
+          },
+          {
+            "title": "I Can Fix You",
+            "artist": "Jutes",
+            "note": "Your pick lands as the scientist's promise: I can fix you. In a lab like this, that line goes sinister fast. It's a reminder of everyone who thought they could control the virus.",
+            "is_seed": true
+          },
+          {
+            "title": "Freak on a Leash",
+            "artist": "Korn",
+            "note": "The scatted breakdown feels like a creature unravelling mid-experiment. The guitars twang and lurch like metal under strain. It's the monster breaking loose.",
+            "is_seed": false
+          },
+          {
+            "title": "Becoming Insane",
+            "artist": "Infected Mushroom",
+            "note": "Psychedelic trance colliding with rock vocals and a flamenco-ish guitar breakdown. It's the deepest, strangest room in the lab. The pace gets dizzying.",
+            "is_seed": false
+          },
+          {
+            "title": "Firestarter",
+            "artist": "The Prodigy",
+            "note": "Keith Flint's sneer sounds like the facility's self-destruct sequence getting cocky. The breakbeat is jagged and alarm-like. Something here is about to blow.",
+            "is_seed": false
+          },
+          {
+            "title": "Chop Suey!",
+            "artist": "System of a Down",
+            "note": "Frantic, then suddenly operatic. It sounds like the lab's systems failing all at once while someone prays over the wreckage. Leon is out of time to be careful.",
+            "is_seed": false
+          },
+          {
+            "title": "Toxicity",
+            "artist": "System of a Down",
+            "note": "The tumbling drums push the escape route. A song called Toxicity in a bioweapon lab barely needs a note. It's the sprint down the burning corridor.",
+            "is_seed": false
+          },
+          {
+            "title": "Like a Villain",
+            "artist": "Bad Omens",
+            "note": "Slower and heavier, a dark synth pulse under a vocal that sounds almost seductive. Someone in this lab thinks they're the hero of their own story. Leon is about to correct them.",
+            "is_seed": false
+          }
+        ],
+        "backups": [
+          {
+            "title": "Head Like a Hole",
+            "artist": "Nine Inch Nails",
+            "note": "Bow down before the one you serve. Industrial anger aimed straight at a corporation, which fits the lab chapter perfectly."
+          },
+          {
+            "title": "Du Hast",
+            "artist": "Rammstein",
+            "note": "Machine-precise riffs and a commanding chant, good for any of the heavier lab slots."
+          }
+        ]
+      },
+      {
+        "title": "Chapter Four: Where's Everyone Going? Bingo?",
+        "mood_line": "The guy who's seen it all, out of patience and into roundhouse kicks.",
+        "tracks": [
+          {
+            "title": "Cochise",
+            "artist": "Audioslave",
+            "note": "That opening guitar sounds like a helicopter coming in, and then the riff just drops. This is the Leon who stopped hiding and started walking straight at the problem. The swagger is real now.",
+            "is_seed": false
+          },
+          {
+            "title": "Paint It Black",
+            "artist": "The Rolling Stones",
+            "note": "The sitar riff turns the fight into a ritual. Leon has painted enough doors black to know the routine. It's moody and cool, and it moves fast.",
+            "is_seed": false
+          },
+          {
+            "title": "The Pretender",
+            "artist": "Foo Fighters",
+            "note": "What if I say I'm not like the others? It starts quiet and turns into pure momentum, which is a good description of Leon's career. Nobody gets to pretend around him anymore.",
+            "is_seed": false
+          },
+          {
+            "title": "Bodies",
+            "artist": "Drowning Pool",
+            "note": "Let the bodies hit the floor, which is an accurate summary of the suplex era. It's loud and a bit silly, and that's the point. Leon would make a one-liner about it.",
+            "is_seed": false
+          },
+          {
+            "title": "Sabotage",
+            "artist": "Beastie Boys",
+            "note": "Scratchy, cop-show bass and a vocal that barely holds on. It's the chase scene through the ruins. Fun, frantic, and a reminder that Leon was a cop first.",
+            "is_seed": false
+          },
+          {
+            "title": "Uprising",
+            "artist": "Muse",
+            "note": "That stomping glam beat feels like a counteroffensive. They will not control us, a line Umbrella should have heard a long time ago. Leon starts dismantling the operation.",
+            "is_seed": false
+          },
+          {
+            "title": "Smooth Criminal",
+            "artist": "Michael Jackson",
+            "note": "Clean, sharp, and stylish under pressure. The bassline sprints, and the gasps and yelps play like dodges and parries. It's Leon at his coolest.",
+            "is_seed": false
+          },
+          {
+            "title": "Breathe",
+            "artist": "The Prodigy",
+            "note": "Distorted guitar loops and a taunting vocal that dares you to come closer. This is the standoff before the big fight. The beat lands like a heavy door kicked open.",
+            "is_seed": false
+          },
+          {
+            "title": "Duality",
+            "artist": "Slipknot",
+            "note": "Push my fingers into my eyes. It's the most violent moment in the tape, but the chorus is huge and melodic. Leon is two people now: the rookie and the veteran, and both are fighting.",
+            "is_seed": false
+          },
+          {
+            "title": "Faint",
+            "artist": "Linkin Park",
+            "note": "A strings stab and a sprinting drum beat, with Chester's scream right where you need it. I won't be ignored. It's the last big push before the boss.",
+            "is_seed": false
+          },
+          {
+            "title": "Knights of Cydonia",
+            "artist": "Muse",
+            "note": "It sounds like a spaghetti western galloping into a laser fight. The horseback rhythm makes the final charge feel heroic without losing the edge. Leon rides in.",
+            "is_seed": false
+          },
+          {
+            "title": "Impose",
+            "artist": "Bad Omens",
+            "note": "Your pick, placed at the turning point, because you said it matches his story and I agree. It's the moment the fight is won but the weight of it lands, where Leon realizes that whatever he does, this place will always impose itself on him. Everything after this is the way out.",
+            "is_seed": true
+          }
+        ],
+        "backups": [
+          {
+            "title": "Bleed It Out",
+            "artist": "Linkin Park",
+            "note": "Fast, chant-heavy, and swaggering. Fits the mid-fight stretch."
+          },
+          {
+            "title": "Psychosocial",
+            "artist": "Slipknot",
+            "note": "Massive riffs and a melodic chorus, good for the boss-fight slots."
+          },
+          {
+            "title": "Kickstart My Heart",
+            "artist": "Mötley Crüe",
+            "note": "Pure adrenaline. If one of the high-energy tracks goes missing, this fills it."
+          }
+        ]
+      },
+      {
+        "title": "Chapter Five: First Light Over Raccoon",
+        "mood_line": "Bloodied, walking out, and the sky is finally changing color.",
+        "tracks": [
+          {
+            "title": "THE DEATH OF PEACE OF MIND",
+            "artist": "Bad Omens",
+            "note": "After Impose, we hold the mood a little longer. It's dark and sleek, the walk out of the lab with the adrenaline wearing off. Leon is alive, but there's no peace yet.",
+            "is_seed": false
+          },
+          {
+            "title": "Teardrop",
+            "artist": "Massive Attack",
+            "note": "Angel opened the walk in, so Massive Attack takes the walk out. That harpsichord loop and heartbeat kick sound like breathing slowing down. It's the first gentle thing in hours.",
+            "is_seed": false
+          },
+          {
+            "title": "Where Is My Mind?",
+            "artist": "Pixies",
+            "note": "The guitar wobbles like a body coming down from a fight. The ooh backing vocals sound like the ghosts of the city saying goodbye. Leon walks past the ruins, a little dazed.",
+            "is_seed": false
+          },
+          {
+            "title": "Running Up That Hill (A Deal with God)",
+            "artist": "Kate Bush",
+            "note": "The drum machine thumps steady while the synths climb. It's the stretch where Leon climbs out of the basement and toward the surface. There's a deal he'd make if he could undo some of this.",
+            "is_seed": false
+          },
+          {
+            "title": "Exit Music (For a Film)",
+            "artist": "Radiohead",
+            "note": "Wake from your sleep. It starts with just acoustic guitar and swells into a thick, distorted finale. This is Leon walking past the RPD one last time, and it's okay to feel it.",
+            "is_seed": false
+          },
+          {
+            "title": "Black",
+            "artist": "Pearl Jam",
+            "note": "A slow, open-hearted song about something that never comes back. Leon carries a lot of names with him. Eddie Vedder's voice cracks near the end, and that's the memorial.",
+            "is_seed": false
+          },
+          {
+            "title": "Hurt",
+            "artist": "Johnny Cash",
+            "note": "The weight of decades in one voice. Cash sounds older than the song, which suits a Leon who's been fighting this same fight since he was a rookie. The piano feels like footsteps that won't stop.",
+            "is_seed": false
+          },
+          {
+            "title": "Daylight",
+            "artist": "David Kushner",
+            "note": "Here's the turn. The darkness is still in his voice, but daylight is in the title. Leon reaches the city limits as the sky lightens.",
+            "is_seed": false
+          },
+          {
+            "title": "Everlong",
+            "artist": "Foo Fighters",
+            "note": "The driving guitar finally sounds like moving forward instead of running away. It's tender and fast at the same time. Leon gets back in the car.",
+            "is_seed": false
+          },
+          {
+            "title": "Shake It Out",
+            "artist": "Florence + The Machine",
+            "note": "Florence led him into the station with Seven Devils, so she gets to lead him out. It's hard to dance with a devil on your back. The organ swells like the sun breaking through ash.",
+            "is_seed": false
+          },
+          {
+            "title": "Everybody Wants to Rule the World",
+            "artist": "Tears for Fears",
+            "note": "A wry nod on the drive home. Every corporation wants control, and Leon has watched them all fall. It's easy-going and a little sarcastic, which suits him.",
+            "is_seed": false
+          },
+          {
+            "title": "Heroes",
+            "artist": "David Bowie",
+            "note": "The surprise you asked for: it ends in daylight, but not in triumph. Bowie's voice strains as the song builds, and the line about being heroes just for one day feels exactly right for Leon. He'll go back in someday, but today, the sun is up.",
+            "is_seed": false
+          }
+        ],
+        "backups": [
+          {
+            "title": "The Night We Met",
+            "artist": "Lord Huron",
+            "note": "A quieter, haunted ballad for the reflective stretch of the walk out."
+          },
+          {
+            "title": "Breathe Me",
+            "artist": "Sia",
+            "note": "A fragile piano song that fits the comedown, right before the light starts to change."
+          }
+        ]
+      }
+    ]
+  }
+}
