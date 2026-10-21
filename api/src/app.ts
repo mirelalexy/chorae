@@ -1,12 +1,14 @@
 import express, { type ErrorRequestHandler } from "express";
 import { health } from "./routes/health";
 import { search } from "./routes/search";
+import { rae } from "./routes/rae";
 
 export const app = express();
 
 app.use(express.json());
 app.use("/health", health);
 app.use("/search", search);
+app.use("/rae", rae);
 
 const onError: ErrorRequestHandler = (err, _req, res, _next) => {
     console.error(err);
