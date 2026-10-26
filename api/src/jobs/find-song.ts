@@ -25,7 +25,7 @@ export async function findSong(song: Song): Promise<MatchedTrack | null> {
 
     const result = await pool.query<CachedRow>(
         `SELECT l.recording_mbid,
-                l.recording_mbid IS NULL AND l.looked_up_at < now() - make_interval(days >= $1) AS stale,
+                l.recording_mbid IS NULL AND l.looked_up_at < now() - make_interval(days => $1) AS stale,
                 t.title, t.artist, t.length_ms, t.isrc, t.release_mbid
          FROM track_lookups l
          LEFT JOIN tracks t ON t.mbid = l.recording_mbid
