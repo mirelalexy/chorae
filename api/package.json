@@ -12,7 +12,8 @@
     "match": "tsx --env-file=.env src/scripts/match.ts",
     "match:fixtures": "tsx --env-file=.env src/scripts/match-fixtures.ts",
     "rae:questions": "tsx --env-file=.env src/scripts/rae-questions.ts",
-    "rae:draft": "tsx --env-file=.env src/scripts/rae-draft.ts"
+    "rae:draft": "tsx --env-file=.env src/scripts/rae-draft.ts",
+    "dev-user": "tsx --env-file=.env src/scripts/dev-user.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.133.0",
