@@ -1,0 +1,27 @@
+{
+  "prompt": "hey rae, i'm currently obsessed with Good Coffee, Great Coffee, the game, and want to listen to music while playing and pretending i'm really running my own cafe. can you build me a mixtape that would play in a real cafe? something warm, cozy, and inviting, with music that could be playing quietly in the background while people chat, drink coffee, and spend a slow afternoon there.",
+  "answers": [
+    {
+      "question": "What kind of cafe are you running in your head? The music changes a lot depending on the room.",
+      "answer": "Busy little neighborhood place"
+    },
+    {
+      "question": "Vocals or no vocals? Lyrics can pull your attention away from the latte art.",
+      "answer": "Songs with vocals"
+    },
+    {
+      "question": "Should the afternoon drift somewhere, or hold one steady vibe the whole time?",
+      "answer": "Morning bustle to slow dusk"
+    },
+    {
+      "question": "Anything that would ruin the cafe for you? A sound, a song you're sick of, or something too 'coffee shop playlist' generic?",
+      "answer": "steer away from overplayed songs, like stop the wedding by ashe or patient zero by taylor swift..."
+    }
+  ],
+  "minutes": 180,
+  "seeds": [{ "title": "Sugar Talking", "artist": "Sabrina Carpenter" }, { "title": "COME DOWN", "artist": "The Kid Laroi" }, { "title": "warm", "artist": "Ariana Grande" },
+            { "title": "Fall", "artist": "The Vamps" }, { "title": "Boys Are Fun", "artist": "Niall Horan" },
+            { "title": "This Must Be My Dream", "artist": "The 1975" }, { "title": "Nothing Compares To You", "artist": "Daniel Seavey" }
+           ],
+  "story": false
+}
