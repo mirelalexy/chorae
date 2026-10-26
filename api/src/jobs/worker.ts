@@ -104,7 +104,19 @@ export async function runNextJob(): Promise<boolean> {
     return true;
 }
 
+// If a server restarts, jobs that were running will never finish.
+async function failInterruptedJobs() {
+    const { rowCount } = await pool.query(
+        `UPDATE generation_jobs
+         SET status = 'failed', error = 'Interrupted. Try again.', updated_at = now()
+         WHERE status IN ('drafting', 'matching', 'saving')`,
+    );
+
+    if (rowCount) console.warn(`Marked ${rowCount} interrupted job(s) as failed.`);
+}
+
 export async function startWorker() {
+    await failInterruptedJobs();
     console.log("Worker started.");
 
     while (true) {
