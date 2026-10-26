@@ -104,19 +104,28 @@ export async function runNextJob(): Promise<boolean> {
     return true;
 }
 
-// If a server restarts, jobs that were running will never finish.
-async function failInterruptedJobs() {
-    const { rowCount } = await pool.query(
+// If a server restarts, jobs that were running will never finish on their own.
+// A job that already has its draft is simply queued again, so it costs nothing to carry on.
+// One that does not is marked as failed, so a new Rae call is due.
+async function recoverInterruptedJobs() {
+    const resumed = await pool.query(
+        `UPDATE generation_jobs
+         SET status = 'queued', updated_at = now()
+         WHERE status IN ('drafting', 'matching', 'saving') AND draft IS NOT NULL`
+    );
+
+    const failed = await pool.query(
         `UPDATE generation_jobs
          SET status = 'failed', error = 'Interrupted. Try again.', updated_at = now()
          WHERE status IN ('drafting', 'matching', 'saving')`,
     );
 
-    if (rowCount) console.warn(`Marked ${rowCount} interrupted job(s) as failed.`);
+    if (resumed.rowCount) console.warn(`Queued ${resumed.rowCount} interrupted job(s) again.`);
+    if (failed.rowCount) console.warn(`Marked ${failed.rowCount} interrupted job(s) as failed.`);
 }
 
 export async function startWorker() {
-    await failInterruptedJobs();
+    await recoverInterruptedJobs();
     console.log("Worker started.");
 
     while (true) {

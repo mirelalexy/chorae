@@ -63,6 +63,42 @@ jobs.get("/:id", async (req, res) => {
     });
 });
 
+// POST /jobs/:id/retry -> 202, the job is queued again
+jobs.post("/:id/retry", async (req, res) => {
+    const params = idParam.safeParse(req.params);
+    if (!params.success) {
+        res.status(404).json({ error: "No such job." });
+        return;
+    }
+
+    const result = await pool.query<{ status: string }>(
+        `SELECT status
+         FROM generation_jobs
+         WHERE id = $1 AND user_id = $2`,
+         [params.data.id, res.locals.userId]
+    );
+
+    const job = result.rows[0];
+    if (!job) {
+        res.status(404).json({ error: "No such job." });
+        return;
+    }
+
+    if (job.status !== "failed") {
+        res.status(409).json({ error: "Only a failed job can be tried again." });
+        return;
+    }
+
+    await pool.query(
+        `UPDATE generation_jobs
+         SET status = 'queued', error = NULL, tracks_matched = 0, updated_at = now()
+         WHERE id = $1`,
+         [params.data.id]
+    );
+
+    res.status(202).json({ jobId: params.data.id });
+});
+
 // GET /mixtapes/:id -> the finished mixtape
 mixtapes.get("/:id", async (req, res) => {
     const params = idParam.safeParse(req.params);
