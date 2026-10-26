@@ -8,7 +8,7 @@ const USER_AGENT = `Chorae/0.1.0 ( ${config.MUSICBRAINZ_CONTACT} )`;
 const MIN_GAP_MS = 1100;
 
 // Assure waiting and trying again after 503 response.
-const MAX_ATTEMPTS = 3;
+const MAX_ATTEMPTS = 5;
 
 // Create error type to separate MusicBrainz errors from server errors.
 export class MusicBrainzError extends Error {};
@@ -60,7 +60,7 @@ export async function mbGet(path: string, params: Record<string, string>): Promi
 
         // After sending too many requests, back off a little longer each time.
         if (res.status === 503 && attempt < MAX_ATTEMPTS) {
-            await sleep(attempt * 2000);
+            await sleep(2000 * 2 ** (attempt - 1));
             continue;
         }
 
