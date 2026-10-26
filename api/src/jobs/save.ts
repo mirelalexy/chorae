@@ -1,7 +1,7 @@
 import { randomBytes } from "node:crypto";
 import { pool } from "../db/pool";
-import { Draft, DraftRequest } from "../rae/schemas"
-import { Assembled } from "./assemble";
+import { type Draft, type DraftRequest } from "../rae/schemas"
+import { type Assembled } from "./assemble";
 
 // Writes a finished mixtape to the db.
 export type SaveInput = {
