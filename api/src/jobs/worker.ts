@@ -85,7 +85,7 @@ async function runJob(job: Job) {
 function messageFor(err: unknown): string {
     if (err instanceof JobError) return err.message;
     if (err instanceof RaeError) return "Rae couldn't finish this one. Try again later.";
-    if (err instanceof MusicBrainzError) return "Couldn't reach MusicBrainz. Try again later.";
+    if (err instanceof MusicBrainzError) return "MusicBrainz is busy right now. Try again in a few minutes.";
     return "Something went wrong on our side.";
 }
 
