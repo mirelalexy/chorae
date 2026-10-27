@@ -1,0 +1,440 @@
+{
+    "id": "ce0ae3b5-334e-49af-897d-b66811c0bb82",
+    "title": "Open Till Dusk",
+    "shareSlug": "h0BFk5hIOgY_",
+    "version": 1,
+    "intro": "Your cafe, your playlist. I built this for a busy little neighborhood spot: bright and chatty when the doors open, groovier through the lunch rush, softer once the regulars settle in, and hushed by the time you're stacking chairs. Everything has vocals, all seven of your picks are in, and I kept away from the songs every coffee shop already has on loop. If any of it sounds too much like the generic cafe playlist, tell me and I'll swap it.",
+    "isStory": false,
+    "missingSeeds": [],
+    "sides": [
+        {
+            "title": "Side A: Doors Open, Milk Steaming",
+            "moodLine": "Bright, chatty, bell-over-the-door energy for the morning rush.",
+            "tracks": [
+                {
+                    "mbid": "42c29f0c-0a2d-46bb-8db7-32c01b8dbc81",
+                    "title": "Don't Lose Sight",
+                    "artist": "Lawrence",
+                    "lengthMs": 208000,
+                    "coverUrl": "https://coverartarchive.org/release-group/0438237f-6849-47d5-8ba5-749f5118b06b/front-250",
+                    "note": "Horns, handclaps and a piano that bounces like someone already on their second espresso. A friendly first song for the doors opening.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "54175c12-5fac-4c2a-8852-da4ae9b10713",
+                    "title": "This Must Be My Dream",
+                    "artist": "The 1975",
+                    "lengthMs": 252000,
+                    "coverUrl": "https://coverartarchive.org/release-group/c1125856-5eaa-4e76-9f63-2fd1f72281a6/front-250",
+                    "note": "The glossy synths and big 80s sax keep the brightness going without getting pushy. It's a good song for the first rush of orders.",
+                    "isSeed": true
+                },
+                {
+                    "mbid": "e94e4013-4236-4106-be51-1f37437936b6",
+                    "title": "Be Sweet",
+                    "artist": "Japanese Breakfast",
+                    "lengthMs": 195000,
+                    "coverUrl": "https://coverartarchive.org/release-group/f4e55ff9-2fe6-417c-a631-f4cf528edc61/front-250",
+                    "note": "A springy bassline and a hook made for humming under your breath. It keeps the counter moving.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "c0854721-70ab-45f8-baa2-5d7de0edb490",
+                    "title": "Boys Are Fun",
+                    "artist": "Niall Horan",
+                    "lengthMs": 213000,
+                    "coverUrl": "https://coverartarchive.org/release-group/3a11deea-98b9-48a2-b844-2c859e5904ba/front-250",
+                    "note": "Your pick sits well here, among the easy, sunny songs in the middle of the morning. Niall's voice has that relaxed warmth that works behind people chatting.",
+                    "isSeed": true
+                },
+                {
+                    "mbid": "9191a1dd-f378-4018-af77-109b50d3259f",
+                    "title": "Good Kisser",
+                    "artist": "Lake Street Dive",
+                    "lengthMs": 218493,
+                    "coverUrl": "https://coverartarchive.org/release-group/53bb5d6d-dcd9-473c-a6f1-898d1fce08df/front-250",
+                    "note": "Rachael Price's voice and that strutting groove sound like the regular who greets everyone on the way in.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "0bb07f2f-fa18-404b-9242-8d06a1f958a0",
+                    "title": "The Steps",
+                    "artist": "HAIM",
+                    "lengthMs": 247600,
+                    "coverUrl": "https://coverartarchive.org/release-group/73b8f504-93e5-483d-918d-1006ca3a315c/front-250",
+                    "note": "Chunky guitars and a stomping beat bring a little grit to the morning without going full rock.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "452b0a9b-844d-49de-b5f9-61e9899771ef",
+                    "title": "Fall",
+                    "artist": "The Vamps",
+                    "lengthMs": 183299,
+                    "coverUrl": "https://coverartarchive.org/release-group/0dd03f4b-cf28-468e-95f6-aa18b09c43c4/front-250",
+                    "note": "Your pick, placed while the room is still lively. It's polished guitar-pop that keeps the energy up as orders pile up.",
+                    "isSeed": true
+                },
+                {
+                    "mbid": "026d4c36-3633-4859-b0c3-83114a7a2354",
+                    "title": "Calling After Me",
+                    "artist": "Wallows",
+                    "lengthMs": 187692,
+                    "coverUrl": "https://coverartarchive.org/release-group/41297f7a-8a55-42d4-a5e2-f1d6ff857bbd/front-250",
+                    "note": "Jangly guitars and a chorus you can catch from across the room. It's upbeat without trying too hard.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "27b59733-d871-4c82-bceb-36622089d247",
+                    "title": "Daydreaming",
+                    "artist": "Harry Styles",
+                    "lengthMs": 187342,
+                    "coverUrl": "https://coverartarchive.org/release-group/d712ba0e-25fa-4c03-aecd-ec0c100deba5/front-250",
+                    "note": "The funky bass and brassy hits fit right into the hum of a busy room. It's one of the less overplayed tracks from Harry's House.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "ba930f88-6c26-4ca1-9c94-c466feb80798",
+                    "title": "Harmony Hall",
+                    "artist": "Vampire Weekend",
+                    "lengthMs": 308000,
+                    "coverUrl": "https://coverartarchive.org/release-group/1e083685-2e58-40eb-81ef-4163c26e01d6/front-250",
+                    "note": "That rolling piano line feels like the morning crowd finally finding its rhythm.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "34ced5fc-7773-40f2-9469-cba70bb2915c",
+                    "title": "Love You for a Long Time",
+                    "artist": "Maggie Rogers",
+                    "lengthMs": 223120,
+                    "coverUrl": "https://coverartarchive.org/release-group/9bd91b05-104c-4897-99e4-9e796a613754/front-250",
+                    "note": "Warm and wide open. It eases the rush into late morning without slowing things down too much.",
+                    "isSeed": false
+                }
+            ]
+        },
+        {
+            "title": "Side B: Regulars at the Counter",
+            "moodLine": "The lunch crowd, the usual orders, a little groove behind the grinder.",
+            "tracks": [
+                {
+                    "mbid": "e560ba5e-e4fb-46e3-80f2-f73bae5f7474",
+                    "title": "Sugar Talking",
+                    "artist": "Sabrina Carpenter",
+                    "lengthMs": 183770,
+                    "coverUrl": "https://coverartarchive.org/release-group/192a95dc-d993-4768-9f77-4496b6460400/front-250",
+                    "note": "Your pick opens the side as the room shifts from rush to rhythm. Its soft-rock sweetness suits the regulars-know-your-name stretch of the day.",
+                    "isSeed": true
+                },
+                {
+                    "mbid": "b31eb229-bf49-46f2-8a37-c444ad701c1c",
+                    "title": "Dive",
+                    "artist": "Olivia Dean",
+                    "lengthMs": 200759,
+                    "coverUrl": "https://coverartarchive.org/release-group/3653ac94-589e-414c-82f4-c363b0559d29/front-250",
+                    "note": "Olivia Dean's voice is warm and unhurried over a light soul shuffle. It works well behind conversation.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "2a52d56b-1cbd-430c-862b-e4e65e4b5110",
+                    "title": "Bad Bad News",
+                    "artist": "Leon Bridges",
+                    "lengthMs": 207306,
+                    "coverUrl": "https://coverartarchive.org/release-group/6ee2c096-526b-4c39-a939-8a38dea54d58/front-250",
+                    "note": "A walking bassline and loose jazzy drums give the lunch crowd something to nod along to.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "33671fe1-2f9a-4c6e-a232-d5a470ce369b",
+                    "title": "Disco Yes",
+                    "artist": "Tom Misch feat. Poppy Ajudha",
+                    "lengthMs": 281000,
+                    "coverUrl": "https://coverartarchive.org/release-group/5accd1c8-cd9e-42a3-8243-dbc0ef196679/front-250",
+                    "note": "Clean funk guitar and a gentle four-on-the-floor beat. It's groovy without demanding attention.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "22409345-075c-4c32-9add-bd5d5b1fda86",
+                    "title": "Worth It.",
+                    "artist": "RAYE",
+                    "lengthMs": 246946,
+                    "coverUrl": "https://coverartarchive.org/release-group/c9018967-1382-47e4-87ac-486a824cd81d/front-250",
+                    "note": "A slinky, disco-tinged strut. Brings some confidence to the middle of the side.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "016d187f-0e11-4171-82e9-15f04fafa097",
+                    "title": "Juna",
+                    "artist": "Clairo",
+                    "lengthMs": 195000,
+                    "coverUrl": "https://coverartarchive.org/release-group/6fb46378-9cb7-4693-b76d-a62f2cc09214/front-250",
+                    "note": "Soft 70s keys and a lazy groove. It starts pulling the energy down a notch.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "6f374be9-8c32-4f59-8c93-43ae1569a72a",
+                    "title": "Pancakes for Dinner",
+                    "artist": "Lizzy McAlpine",
+                    "lengthMs": 235000,
+                    "coverUrl": "https://coverartarchive.org/release-group/6ad05556-254b-43d7-84c8-63f2629b30f8/front-250",
+                    "note": "Light and a little jazzy, about craving breakfast food at the wrong hour. It fits a cafe almost too well.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "cade90e2-988d-4ec2-a1c0-0fef40833a80",
+                    "title": "Feet Don’t Fail Me Now",
+                    "artist": "Joy Crookes",
+                    "lengthMs": 198800,
+                    "coverUrl": "https://coverartarchive.org/release-group/185279be-34f3-41b1-97b8-4ddbe98ee2f0/front-250",
+                    "note": "The horns and swagger give the side a lift right in the middle of the lunch rush.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "91f18264-1963-4d30-8989-d26992c64b43",
+                    "title": "AMAZING",
+                    "artist": "Rex Orange County",
+                    "lengthMs": 209000,
+                    "coverUrl": "https://coverartarchive.org/release-group/0e8df54c-3557-4f49-9a17-fef997d1f36b/front-250",
+                    "note": "Simple, sweet and short. It feels like a quick thank-you across the counter.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "5aa39820-ed25-45fa-b37f-de2bd65680c9",
+                    "title": "Caroline",
+                    "artist": "Arlo Parks",
+                    "lengthMs": 216933,
+                    "coverUrl": "https://coverartarchive.org/release-group/9700de59-1397-4375-ba4b-058e094e5f7a/front-250",
+                    "note": "Arlo Parks sings it almost like she's telling you a story she overheard. That suits a room full of eavesdroppable tables.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "50c387b4-7ac9-410f-a222-d955fbd16b89",
+                    "title": "Little Things",
+                    "artist": "Jorja Smith",
+                    "lengthMs": 204600,
+                    "coverUrl": "https://coverartarchive.org/release-group/f3ac5382-c33c-437b-b7d7-16edf77836e7/front-250",
+                    "note": "A lightly bouncing beat under Jorja's smooth vocal keeps the groove going while the room thins out.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "35f185c6-da19-49dc-ba7e-f3a745426b32",
+                    "title": "Way It Goes",
+                    "artist": "Hippo Campus",
+                    "lengthMs": 245456,
+                    "coverUrl": "https://coverartarchive.org/release-group/c4f39ae2-e699-4cc1-8515-b2d0055949ed/front-250",
+                    "note": "Twitchy guitars and an easy chorus close out lunch on a friendly note.",
+                    "isSeed": false
+                }
+            ]
+        },
+        {
+            "title": "Side C: Slow Afternoon, Second Cup",
+            "moodLine": "Half-empty tables, someone reading by the window, nobody in a hurry.",
+            "tracks": [
+                {
+                    "mbid": "8679a444-2860-4dc7-9867-0cd1e23039f2",
+                    "title": "warm",
+                    "artist": "Ariana Grande",
+                    "lengthMs": 201905,
+                    "coverUrl": "https://coverartarchive.org/release-group/fb992c06-9807-4ffd-90d8-115db5d513f6/front-250",
+                    "note": "Your pick, and the name says it all. It opens the slow stretch of the afternoon softly.",
+                    "isSeed": true
+                },
+                {
+                    "mbid": "bd803440-116b-4afd-8382-87b37ce5b8ee",
+                    "title": "Can I Call You Rose?",
+                    "artist": "Thee Sacred Souls",
+                    "lengthMs": 190000,
+                    "coverUrl": "https://coverartarchive.org/release-group/8620c885-2c8e-42b1-a622-f332b3acfd60/front-250",
+                    "note": "Sweet 60s-style soul with a falsetto that floats. It keeps things soft without making the room sleepy.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "36361af9-2979-4c32-812d-5fa7785becab",
+                    "title": "Rocky Trail",
+                    "artist": "Kings of Convenience",
+                    "lengthMs": 210377,
+                    "coverUrl": "https://coverartarchive.org/release-group/b32de1ff-92d1-4f86-a41e-8d3ebd40405e/front-250",
+                    "note": "Two hushed voices and finger-picked guitar. It's a perfect background for low conversation.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "26d943a0-8b7d-40b8-b3bf-e1681f09efc8",
+                    "title": "Boyhood",
+                    "artist": "The Japanese House",
+                    "lengthMs": 189625,
+                    "coverUrl": "https://coverartarchive.org/release-group/f795f30b-8054-4c1e-af64-dc468e3fd2dc/front-250",
+                    "note": "Hazy guitars and a gentle, steady pulse, like afternoon light coming through the window.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "479bf808-034a-47ce-9173-6acccbecdeb5",
+                    "title": "Wild Blue",
+                    "artist": "John Mayer",
+                    "lengthMs": 252413,
+                    "coverUrl": "https://coverartarchive.org/release-group/2c6b7481-1c2c-4526-ad6a-3f465a1863ff/front-250",
+                    "note": "A loose, Dire Straits-ish guitar groove that never rushes. Ideal while someone takes their time over a refill.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "f2158a03-c24c-4d30-bf5c-6ecc97a743fa",
+                    "title": "Why Don't You",
+                    "artist": "Cleo Sol",
+                    "lengthMs": 232000,
+                    "coverUrl": "https://coverartarchive.org/release-group/5e5a001f-7bc8-4edb-928c-cb6129a89bc8/front-250",
+                    "note": "Silky, understated soul. It sits low in the room and lets conversations take the lead.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "4dfca251-8d87-44c5-b4f1-2902f1a3654b",
+                    "title": "But Not Kiss",
+                    "artist": "Faye Webster",
+                    "lengthMs": 222556,
+                    "coverUrl": "https://coverartarchive.org/release-group/1322ff7f-b274-465e-bdca-0860f086c558/front-250",
+                    "note": "A drowsy piano and Faye Webster's half-whispered delivery. It slows the afternoon right down.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "b43d2dd5-e4ed-444c-a86d-aa767f45dced",
+                    "title": "COME DOWN",
+                    "artist": "The Kid LAROI",
+                    "lengthMs": 143360,
+                    "coverUrl": "https://coverartarchive.org/release-group/f26e6b3c-9992-4045-bf82-ff6da4ede211/front-250",
+                    "note": "Your pick, placed where the afternoon starts winding down. It acts as a bridge toward the softer last stretch.",
+                    "isSeed": true
+                },
+                {
+                    "mbid": "4b4e3304-8655-4e2e-a91c-192a0f486134",
+                    "title": "Sexy to Someone",
+                    "artist": "Clairo",
+                    "lengthMs": 208000,
+                    "coverUrl": "https://coverartarchive.org/release-group/6fb46378-9cb7-4693-b76d-a62f2cc09214/front-250",
+                    "note": "A warm, shuffling 70s groove brings a little movement back before things go golden.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "b393a388-e03d-4918-b798-8c1aba00431f",
+                    "title": "Floating Parade",
+                    "artist": "Michael Kiwanuka",
+                    "lengthMs": 229619,
+                    "coverUrl": "https://coverartarchive.org/release-group/7940007c-780d-40aa-8eb8-c3d81768c6c0/front-250",
+                    "note": "Lush strings and a slow, swaying rhythm. The light starts turning orange here.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "09e9820d-46e3-41e0-b743-bf3a809e0681",
+                    "title": "Work",
+                    "artist": "Charlotte Day Wilson",
+                    "lengthMs": 224000,
+                    "coverUrl": "https://coverartarchive.org/release-group/04dc6d97-e7bb-4c21-b72a-140f48a8c407/front-250",
+                    "note": "Charlotte Day Wilson's deep, smoky voice over a slow-burn arrangement leads you toward closing time.",
+                    "isSeed": false
+                }
+            ]
+        },
+        {
+            "title": "Side D: Chairs Up, Lights Low",
+            "moodLine": "Last orders, wiping down the counter, dusk outside the window.",
+            "tracks": [
+                {
+                    "mbid": "7eadb9fe-015d-4c7e-962b-42175995c994",
+                    "title": "Running",
+                    "artist": "Norah Jones",
+                    "lengthMs": 208518,
+                    "coverUrl": "https://coverartarchive.org/release-group/329cb3f2-b650-4b38-bcd9-2fb2c6f3b8b9/front-250",
+                    "note": "A gentle groove from Norah Jones that still has a bit of motion for the last customers.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "80d5226f-e965-4a93-83f3-c43e933d1798",
+                    "title": "Open",
+                    "artist": "Rhye",
+                    "lengthMs": 217053,
+                    "coverUrl": "https://coverartarchive.org/release-group/192ce1c3-c790-4019-a1f9-4006d296ea53/front-250",
+                    "note": "Breathy vocals and soft strings. The room goes noticeably quieter here.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "262d98dc-2f19-4db4-b6b5-16d7454e5abe",
+                    "title": "Bittersweet",
+                    "artist": "Lianne La Havas",
+                    "lengthMs": 236640,
+                    "coverUrl": "https://coverartarchive.org/release-group/e58e9147-0d9b-4dab-95f2-ae134542ea26/front-250",
+                    "note": "Lianne La Havas builds slowly from a hush. It's a soulful stretch as the sun drops.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "0f102813-a5e0-420e-913e-dfd47c8fa37f",
+                    "title": "Nothing",
+                    "artist": "Bruno Major",
+                    "lengthMs": 162797,
+                    "coverUrl": "https://coverartarchive.org/release-group/e9a5598b-e8ce-46a9-9dc6-463a37bbb2fb/front-250",
+                    "note": "Just guitar, a soft voice, and a list of small, cozy nothings. It suits a nearly empty cafe.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "bea77863-7445-4e40-aa69-5aa76c129afd",
+                    "title": "Naked as We Came",
+                    "artist": "Iron & Wine",
+                    "lengthMs": 153186,
+                    "coverUrl": "https://coverartarchive.org/release-group/86852635-0225-32f2-92f4-8635ba8b3aaf/front-250",
+                    "note": "Whispered and finger-picked, almost like a lullaby for the espresso machine cooling down.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "0135ff44-a6a5-49de-a187-63d24d649fe2",
+                    "title": "Spirit 2.0",
+                    "artist": "Sampha",
+                    "lengthMs": 289962,
+                    "coverUrl": "https://coverartarchive.org/release-group/b745c43d-3abf-48a3-8caf-81c25d40d100/front-250",
+                    "note": "Fluttering drums under a calm vocal. It keeps a quiet pulse going so the dusk doesn't stall.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "c55131fe-0135-4f83-b517-94cd7e91140d",
+                    "title": "Pluto Projector",
+                    "artist": "Rex Orange County",
+                    "lengthMs": 267518,
+                    "coverUrl": "https://coverartarchive.org/release-group/daa5d250-f26f-414a-a0b6-0dd02c630549/front-250",
+                    "note": "A tender, slow build with strings. It's the hour when the closing sign flips.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "ae3f6267-1434-4e83-86ad-4b88dceb4c28",
+                    "title": "Garden Song",
+                    "artist": "Phoebe Bridgers",
+                    "lengthMs": 219813,
+                    "coverUrl": "https://coverartarchive.org/release-group/cf75fd5a-ca84-4371-94d7-27410360f06b/front-250",
+                    "note": "Soft and murmured over a quietly ticking beat. Good company while counting the till.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "72636ac0-ab78-4d6c-9146-687f3cc78236",
+                    "title": "Older",
+                    "artist": "Lizzy McAlpine",
+                    "lengthMs": 201000,
+                    "coverUrl": "https://coverartarchive.org/release-group/37834eee-0e8e-4eac-b719-dd42aec3e4ee/front-250",
+                    "note": "A spare piano ballad. It's one of the stillest moments on the tape.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "fc6426e5-9d37-4226-bb67-bd66261ed5e6",
+                    "title": "River",
+                    "artist": "Leon Bridges",
+                    "lengthMs": 238560,
+                    "coverUrl": "https://coverartarchive.org/release-group/3ca2053b-ab96-4092-9505-57098577561c/front-250",
+                    "note": "Mostly one voice and one guitar, close and calm. It's the last light through the window.",
+                    "isSeed": false
+                },
+                {
+                    "mbid": "f55381da-eb65-48b0-9920-7bd94b74c325",
+                    "title": "Nothing Compares to You",
+                    "artist": "Daniel Seavey",
+                    "lengthMs": 146551,
+                    "coverUrl": "https://coverartarchive.org/release-group/66154a0b-44e9-4b3b-af55-73aa557c0658/front-250",
+                    "note": "Your pick closes the tape. It leaves the night on a tender note as you lock up.",
+                    "isSeed": true
+                }
+            ]
+        }
+    ]
+}
