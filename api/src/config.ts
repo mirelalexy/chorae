@@ -5,8 +5,7 @@ const schema = z.object({
     PORT: z.coerce.number().default(3000),
     DATABASE_URL: z.string().min(1),
     MUSICBRAINZ_CONTACT: z.string().min(1),
-    ANTHROPIC_API_KEY: z.string().optional(),
-    DEV_USER_ID: z.uuid().optional()
+    ANTHROPIC_API_KEY: z.string().optional()
 });
 
 const parsed = schema.safeParse(process.env);
