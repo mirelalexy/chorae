@@ -1,7 +1,7 @@
 import { pool } from "../db/pool";
 import { MusicBrainzError } from "../musicbrainz/client";
 import { RaeError, writeDraft } from "../rae/client";
-import { draftRequestSchema } from "../rae/schemas";
+import { draftRequestSchema, draftSchema } from "../rae/schemas";
 import { assemble } from "./assemble";
 import { findSong } from "./find-song";
 import { matchDraft } from "./match-draft";
@@ -13,7 +13,8 @@ const IDLE_WAIT_MS = 2000;
 type Job = { 
     id: string;
     user_id: string;
-    input: unknown 
+    input: unknown;
+    draft: unknown
 };
 
 class JobError extends Error {}
@@ -31,7 +32,7 @@ async function claimNextJob(): Promise<Job | null> {
             FOR UPDATE SKIP LOCKED
             LIMIT 1
          )
-         RETURNING id, user_id, input`,
+         RETURNING id, user_id, input, draft`,
     );
 
     return result.rows[0] ?? null;
@@ -41,6 +42,7 @@ type JobFields = Partial<{
     status: "matching" | "saving" | "done" | "failed";
     tracks_total: number;
     tracks_matched: number;
+    draft: string;
     result_version_id: string;
     error: string;
 }>;
@@ -57,7 +59,17 @@ async function update(jobId: string, fields: JobFields) {
 
 async function runJob(job: Job) {
     const request = draftRequestSchema.parse(job.input);
-    const draft = await writeDraft(request);
+
+    // A job that failed or was interrupted after drafting already has a draft to work with.
+    let draft;
+    if (job.draft) {
+        console.log(`Job ${job.id}: using the saved draft.`);
+        draft = draftSchema.parse(job.draft);
+    } else {
+        console.log(`Job ${job.id}: asking Rae for a draft.`);
+        draft = await writeDraft(request);
+        await update(job.id, { draft: JSON.stringify(draft) });
+    }
 
     const total = draft.sides.reduce((sum, s) => sum + s.tracks.length, 0);
     await update(job.id, {
