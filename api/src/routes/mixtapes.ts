@@ -3,6 +3,7 @@ import { z } from "zod";
 import { pool } from "../db/pool";
 import { requireUser } from "./user";
 import { draftRequestSchema } from "../rae/schemas";
+import { config } from "../config";
 
 export const mixtapes = Router();
 export const jobs = Router();
@@ -18,6 +19,25 @@ mixtapes.post("/", async(req, res) => {
     const parsed = draftRequestSchema.safeParse(req.body);
     if (!parsed.success) {
         res.status(400).json({ error: "That request isn't quite right.", issues: parsed.error.issues });
+        return;
+    }
+
+    // Ensure the daily limit for creating mixtapes. 
+    // A job that failed before Rae wrote anything costs nothing, so it doesn't count.
+    const today = await pool.query<{ count: number; resets_at: Date | null}>(
+        `SELECT 
+            count(*)::int AS count, 
+            min(created_at) + interval '24 hours' AS resets_at
+         FROM generation_jobs
+         WHERE user_id = $1 
+               AND created_at > now() - interval '24 hours'
+               AND (status <> 'failed' OR draft IS NOT NULL)`,
+         [res.locals.userId]
+    );
+    const { count, resets_at } = today.rows[0]!;
+
+    if (count >= config.DAILY_MIXTAPE_LIMIT) {
+        res.status(429).json({ error: `That's ${count} mixtapes today. Come back tomorrow.`, resetsAt: resets_at });
         return;
     }
 
