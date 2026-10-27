@@ -1,13 +1,20 @@
 import { RequestHandler } from "express";
-import { config } from "../config";
+import { findSessionUser } from "../auth/sessions";
 
-// Work out who is making the request and put their ID in.
-// Using dev user until accounts exist.
-export const requireUser: RequestHandler = (_req, res, next) => {
-    if (!config.DEV_USER_ID) {
-        res.status(500).json({ error: "DEV_USER_ID isn't set. Run npm run dev-user." });
+// Work out who is making the request (from the login token in the Authorization header)
+// and put their ID in res.locals.userId. This is so routes that use it never need to 
+// know how logging in works.
+export const requireUser: RequestHandler = async (req, res, next) => {
+    const header = req.get("authorization") ?? "";
+    const token = header.startsWith("Bearer ") ? header.slice("Bearer ".length).trim() : "";
+
+    const userId = token ? await findSessionUser(token) : null;
+    if (!userId) {
+        res.status(401).json({ error: "Log in to continue." });
         return;
     }
-    res.locals.userId = config.DEV_USER_ID;
+
+    res.locals.userId = userId;
+    res.locals.token = token;   // for logging out
     next();
 };
