@@ -25,3 +25,10 @@ export const radius = {
     card: 18,
     pill: 999,
 } as const;
+
+export const fonts = {
+    regular: "BricolageGrotesque_400Regular",
+    medium: "BricolageGrotesque_500Medium",
+    semibold: "BricolageGrotesque_600SemiBold",
+    extrabold: "BricolageGrotesque_800ExtraBold",
+} as const;

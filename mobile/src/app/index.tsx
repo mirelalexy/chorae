@@ -2,6 +2,7 @@ import { colors, space } from "@/theme";
 import { api } from "../api/client";
 import { useEffect, useState } from "react";
 import { Text, View, StyleSheet } from "react-native";
+import { Wordmark } from "@/components/Wordmark";
 
 export default function Index() {
 	const [status, setStatus] = useState("Checking the API...");
@@ -14,6 +15,7 @@ export default function Index() {
 
   	return (
     	<View style={styles.container}>
+			<Wordmark size={48} />
 			<Text style={styles.heading}>Tell Rae a moment.</Text>
 			<Text style={styles.muted}>Get back a mixtape.</Text>
 			<Text style={styles.muted}>Current status: {status}</Text>
