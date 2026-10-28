@@ -1,5 +1,5 @@
-import { colors, space } from "@/theme";
-import { api } from "../api/client";
+import { colors, space, type } from "@/theme";
+import { api } from "@/api/client";
 import { useEffect, useState } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { Wordmark } from "@/components/Wordmark";
@@ -32,10 +32,12 @@ const styles = StyleSheet.create({
   	},
 
 	heading: {
+		...type.heading,
 		color: colors.text,
 	},
 
 	muted: {
+		...type.body,
 		color: colors.textMuted,
 	},
 });

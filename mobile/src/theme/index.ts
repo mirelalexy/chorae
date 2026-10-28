@@ -32,3 +32,49 @@ export const fonts = {
     semibold: "BricolageGrotesque_600SemiBold",
     extrabold: "BricolageGrotesque_800ExtraBold",
 } as const;
+
+export const type = {
+    title: {
+        fontFamily: fonts.semibold,
+        fontSize: 28,
+        lineHeight: 32,
+        letterSpacing: -0.5,
+    },
+
+    heading: {
+        fontFamily: fonts.semibold,
+        fontSize: 24,
+        lineHeight: 28,
+        letterSpacing: -0.4,
+    },
+
+    body: {
+        fontFamily: fonts.regular,
+        fontSize: 16,
+        lineHeight: 22,
+    },
+
+    bodyMedium: {
+        fontFamily: fonts.medium,
+        fontSize: 16,
+        lineHeight: 22,
+    },
+
+    label: {
+        fontFamily: fonts.medium,
+        fontSize: 14,
+        lineHeight: 18,
+    },
+
+    small: {
+        fontFamily: fonts.regular,
+        fontSize: 13,
+        lineHeight: 18,
+    },
+
+    button: {
+        fontFamily: fonts.semibold,
+        fontSize: 17,
+        lineHeight: 22,
+    },
+} as const;
