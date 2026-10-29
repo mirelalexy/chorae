@@ -16,6 +16,7 @@ export function TextField({ label, error, onFocus, onBlur, style, ...inputProps 
 	return (
 		<View style={styles.field}>
 			<Text style={styles.label}>{label}</Text>
+
 			<TextInput
 				{...inputProps}
 				accessibilityLabel={label}
@@ -30,8 +31,9 @@ export function TextField({ label, error, onFocus, onBlur, style, ...inputProps 
 					setFocused(false);
 					onBlur?.(e);
 				}}
-				style={[styles.input, { borderColor }, style]}
+				style={[styles.input, style, { borderColor }]}
 			/>
+			
 			{error ? <Text style={styles.error}>{error}</Text> : null}
 		</View>
 	);
