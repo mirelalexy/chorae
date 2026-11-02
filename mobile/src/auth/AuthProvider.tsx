@@ -20,7 +20,7 @@ type Auth = {
 
 type Props = {
     children: ReactNode;
-}
+};
 
 const AuthContext = createContext<Auth | null>(null);
 
