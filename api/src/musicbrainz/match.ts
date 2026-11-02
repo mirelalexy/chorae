@@ -2,6 +2,7 @@ import { escapeQuery, mbGet } from "./client";
 import { splitArtistsRaw, stripTitleNoise } from "./normalize";
 import { creditText, pickBest, type TrackRequest } from "./score";
 import { recordingSearchSchema, type MatchedTrack, type Recording } from "./types";
+import { selectRelease } from "./release";
 
 // Find the MusicBrainz recording for a title and artist, or return null.
 export async function matchTrack(request: TrackRequest): Promise<MatchedTrack | null> {
@@ -40,24 +41,4 @@ function toMatchedTrack(recording: Recording): MatchedTrack {
         releaseMbid: release?.id ?? null,
         releaseGroupMbid: release?.["release-group"]?.id ?? null,
     };
-}
-
-// Select release to take cover from: first check official album,
-// then any official release, then whatever comes next.
-function selectRelease(recording: Recording) {
-    const rank = (r: Recording["releases"][number]) => {
-        const group = r["release-group"];
-        const official = !r.status || r.status === "Official";
-        const plain = (group?.["secondary-types"] ?? []).length === 0;
-
-        if (official && plain && group?.["primary-type"] === "Album") return 0;
-        if (official && plain) return 1;
-        if (official) return 2;
-        return 3;
-    };
-
-    // Earliest date wins ties.
-    return [...recording.releases].sort(
-        (a, b) => rank(a) - rank(b) || (a.date || "9999").localeCompare(b.date || "9999"),
-    )[0];
 }
