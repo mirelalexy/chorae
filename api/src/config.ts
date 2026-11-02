@@ -7,7 +7,6 @@ const schema = z.object({
     MUSICBRAINZ_CONTACT: z.string().min(1),
     ANTHROPIC_API_KEY: z.string().optional(),
     DAILY_MIXTAPE_LIMIT: z.coerce.number().int().min(1).default(5),
-    FANART_API_KEY: z.string().optional(),
 });
 
 const parsed = schema.safeParse(process.env);
