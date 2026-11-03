@@ -1,5 +1,6 @@
 import { escapeQuery, mbGet } from "./client";
-import { artistSearchSchema } from "./types";
+import { AlbumResult, newestAlbumsFirst, toAlbumResults } from "./results";
+import { artistSearchSchema, releaseGroupListSchema } from "./types";
 
 export type ArtistResult = {
     mbid: string;
@@ -23,4 +24,30 @@ export async function searchArtists(query: string, limit = 10): Promise<ArtistRe
         disambiguation: a.disambiguation || null,
         country: a.country ?? null,
     }));
+}
+
+// Search albums and EPs by title.
+export async function searchAlbums(query: string, limit = 15): Promise<AlbumResult[]> {
+    const data = releaseGroupListSchema.parse(
+        await mbGet("release-group", {
+            query: `${escapeQuery(query)} AND (primarytype:album OR primarytype:ep)`,
+            limit: String(Math.min(Math.max(limit, 1), 100)),
+        }),
+    );
+
+    return toAlbumResults(data["release-groups"]);
+}
+
+// An artist's albums and EPs, newest first: suggestions after picking artists.
+export async function albumsByArtist(artistMbid: string): Promise<AlbumResult[]> {
+    const data = releaseGroupListSchema.parse(
+        await mbGet("release-group", {
+            artist: artistMbid,
+            type: "album|ep",
+            inc: "artist-credits",
+            limit: "100",
+        }),
+    );
+    
+    return newestAlbumsFirst(toAlbumResults(data["release-groups"]));
 }

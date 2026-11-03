@@ -61,7 +61,23 @@ export const artistSearchSchema = z.object({
         .default([]),
 });
 
+// A release group: an album, EP or single as a whole, across all its editions.
+const releaseGroupSchema = z.object({
+    id: z.string(),
+    title: z.string(),
+    "primary-type": z.string().nullish(),
+    "secondary-types": z.array(z.string()).optional(),
+    "first-release-date": z.string().optional(),
+    "artist-credit": artistCredit.default([]),
+});
+
+// The same shape comes back from searching and from listing an artist's albums.
+export const releaseGroupListSchema = z.object({
+    "release-groups": z.array(releaseGroupSchema).default([]),
+});
+
 export type Recording = z.infer<typeof recordingSchema>;
+export type ReleaseGroup = z.infer<typeof releaseGroupSchema>;
 
 // What a successful match gives back to Chorae.
 export type MatchedTrack = {
