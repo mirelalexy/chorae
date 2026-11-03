@@ -2,6 +2,7 @@ import { type ArtistResult, searchArtists } from "@/api/taste";
 import { useAuth } from "@/auth/AuthProvider";
 import { Button } from "@/components/Button";
 import { Screen } from "@/components/Screen";
+import { StepHeader } from "@/components/StepHeader";
 import { TextField } from "@/components/TextField";
 import { useDebounced } from "@/hooks/useDebounced";
 import { useTaste } from "@/hooks/useTaste";
@@ -46,7 +47,7 @@ export default function Artists() {
 
     return (
         <Screen>
-            {/* TO-DO: The step header. */}
+            <StepHeader step={1} steps={2} onSkip={finishOnboarding} />
 
             <View style={styles.intro}>
                 <Text style={[type.title, { color: colors.text }]}>
