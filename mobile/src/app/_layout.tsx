@@ -32,7 +32,7 @@ export default function RootLayout() {
 }
 
 function RootNavigator() {
-	const { status } = useAuth();
+	const { status, onboarding } = useAuth();
 
 	useEffect(() => {
 		if (status !== "loading") SplashScreen.hideAsync();
@@ -41,18 +41,28 @@ function RootNavigator() {
 	if (status === "loading") return null;
 	const signedIn = status === "signedIn";
 
+	const home = !signedIn ? "/log-in" : onboarding ? "/onboarding/artists" : "/";
+
 	return (
 		<Stack screenOptions={{
 			headerShown: false,
 			contentStyle: { backgroundColor: colors.background },
 		}}>
-			<Stack.Protected guard={signedIn} redirectTo="/sign-up">
-				<Stack.Screen name="index" />
-			</Stack.Protected>
-
-			<Stack.Protected guard={!signedIn}>
+			{/* Logged out: sign up/log in. */}
+			<Stack.Protected guard={!signedIn} redirectTo={home}>
 				<Stack.Screen name="sign-up" />
 				<Stack.Screen name="log-in" />
+			</Stack.Protected>
+
+			{/* Just signed up: onboarding until finished or skipped. */}
+			<Stack.Protected guard={signedIn && onboarding} redirectTo={home}>
+				<Stack.Screen name="onboarding/artists" />
+				<Stack.Screen name="onboarding/albums" />
+			</Stack.Protected>
+
+			{/* Logged in: home. */}
+			<Stack.Protected guard={signedIn && !onboarding} redirectTo={home}>
+				<Stack.Screen name="index" />
 			</Stack.Protected>
 		</Stack>
 	);
