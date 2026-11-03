@@ -2,8 +2,10 @@ import { Router } from "express";
 import { z } from "zod";
 import { askQuestions, RaeError } from "../rae/client";
 import { draftRequestSchema } from "../rae/schemas";
+import { requireUser } from "./user";
 
 export const rae = Router();
+rae.use(requireUser);
 
 const questionsBody = z.object({ prompt: draftRequestSchema.shape.prompt });
 
