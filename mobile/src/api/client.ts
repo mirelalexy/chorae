@@ -13,7 +13,7 @@ export class ApiError extends Error {
 }
 
 type Options = {
-    method?: "GET" | "POST";
+    method?: "GET" | "POST" | "DELETE";
     body?: unknown;
 }
 
@@ -32,6 +32,10 @@ export async function api<T>(path: string, { method = "GET", body }: Options = {
     // Every request carries the login token.
     const token = await getToken();
 
+    // Give up after ten seconds.
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 10000);
+
     let res: Response;
     try {
         res = await fetch(`${API_URL}${path}`, {
@@ -40,10 +44,13 @@ export async function api<T>(path: string, { method = "GET", body }: Options = {
                 "Content-Type": "application/json",
                 ...(token ? { Authorization: `Bearer ${token}`} : {}),
             },
-            body: body === undefined ? undefined : JSON.stringify(body)
+            body: body === undefined ? undefined : JSON.stringify(body),
+            signal: controller.signal,
         });
     } catch {
         throw new ApiError(0, "Couldn't reach Chorae. Check your connection.");
+    } finally {
+        clearTimeout(timer);
     }
 
     // 204 (success, but no content, like when logging out) has no body to read.
