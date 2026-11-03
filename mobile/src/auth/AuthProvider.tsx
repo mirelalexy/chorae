@@ -6,6 +6,7 @@ export type User = {
     id: string;
     email: string;
     displayName: string;
+    onboarded: boolean;
 };
 
 type Status = "loading" | "signedOut" | "signedIn" | "offline";
@@ -15,7 +16,7 @@ type Auth = {
     user: User | null;
     // True right after signing up, until onboarding is finished or skipped.
     onboarding: boolean;
-    finishOnboarding: () => void;
+    finishOnboarding: () => Promise<void>;
     signUp: (input: { email: string; password: string; displayName: string; ageConfirmed: boolean }) => Promise<void>;
     logIn: (input: { email: string, password: string }) => Promise<void>;
     logOut: () => Promise<void>;
@@ -32,7 +33,6 @@ const AuthContext = createContext<Auth | null>(null);
 export function AuthProvider({ children }: Props) {
     const [status, setStatus] = useState<Status>("loading");
     const [user, setUser] = useState<User | null>(null);
-    const [onboarding, setOnboarding] = useState(false);
 
     async function forget() {
         await clearToken();
@@ -70,12 +70,13 @@ export function AuthProvider({ children }: Props) {
     const auth: Auth = {
         status,
         user,
-        onboarding,
-        finishOnboarding: () => setOnboarding(false),
+        onboarding: user !== null && !user.onboarded,
+        finishOnboarding: async () => {
+            const res = await api<{ user: User }>("/auth/onboarded", { method: "POST" });
+            setUser(res.user);
+        },
         signUp: async (input) => {
-            const res = await api<{ token: string; user: User }>("/auth/signup", { method: "POST", body: input });
-            setOnboarding(true);
-            await start(res);
+            await start(await api<{ token: string; user: User }>("/auth/signup", { method: "POST", body: input }));
         },
         logIn: async (input) => {
             await start(await api("/auth/login", { method: "POST", body: input }));
