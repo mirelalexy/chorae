@@ -2,6 +2,7 @@ import { type ArtistResult, searchArtists } from "@/api/taste";
 import { useAuth } from "@/auth/AuthProvider";
 import { Avatar } from "@/components/Avatar";
 import { Button } from "@/components/Button";
+import { PickRow } from "@/components/PickRow";
 import { Screen } from "@/components/Screen";
 import { StepHeader } from "@/components/StepHeader";
 import { TextField } from "@/components/TextField";
@@ -108,7 +109,23 @@ export default function Artists() {
             {searching ? <ActivityIndicator color={colors.textMuted} /> : null}
 
             <View>
-                {/* TO-DO: The artist rows. */}
+                {results.map((artist) => (
+                    <PickRow 
+                        key={artist.mbid}
+                        image={<Avatar name={artist.name} />}
+                        title={artist.name}
+                        detail={[artist.disambiguation, artist.country].filter(Boolean).join(", ")}
+                        picked={taste.isPicked("artist", artist.mbid)}
+                        busy={taste.isBusy("artist", artist.mbid)}
+                        onPress={() => taste.toggle({ 
+                            kind: "artist", 
+                            mbid: artist.mbid,
+                            name: artist.name,
+                            artist: null,
+                            coverUrl: null
+                        })}
+                    />
+                ))}
 
                 {search.length >= 2 && 
                 !searching && 
