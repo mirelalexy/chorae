@@ -13,6 +13,65 @@ jobs.use(requireUser);
 
 const idParam = z.object({ id: z.uuid() });
 
+// The daily limit: mixtapes started in the last 24 hours. A job that failed before
+// Rae wrote anything costs nothing, so it doesn't count. Retries reuse their jobs.
+async function mixtapesToday(userId: string) {
+    const result = await pool.query<{ used: number; resets_at: Date | null }>(
+        `SELECT count(*)::int AS used, min(created_at) + interval '24 hours' AS resets_at
+         FROM generation_jobs
+         WHERE user_id = $1
+            AND created_at > now() - interval '24 hours'
+            AND (status <> 'failed' OR draft IS NOT NULL)`,
+         [userId],
+    );
+    const { used, resets_at } = result.rows[0]!;
+
+    return {
+        used, 
+        limit: config.DAILY_MIXTAPE_LIMIT, 
+        resetsAt: resets_at,
+    };
+}
+
+// GET /mixtapes/today -> { used, limit, resetsAt }, for "2 of 5 left today"
+mixtapes.get("/today", async (_req, res) => {
+    res.json(await mixtapesToday(res.locals.userId));
+});
+
+// GET /mixtapes -> { mixtapes: [...] }, newest first, with what a list needs:
+// the track count, the total length, and up to four covers for the artwork.
+mixtapes.get("/", async (_req, res) => {
+    const { rows } = await pool.query(
+        `SELECT m.id, m.title, m.created_at, v.is_story,
+                stats.track_count, stats.total_ms, stats.covers
+         FROM mixtapes m
+         JOIN mixtape_versions v ON v.id = m.current_version_id
+         CROSS JOIN LATERAL (
+             SELECT count(*)::int AS track_count,
+                    coalesce(sum(t.length_ms), 0) AS total_ms,
+                    (array_remove(array_agg(t.cover_url ORDER BY vt.position), NULL)) AS covers
+             FROM version_tracks vt
+             JOIN tracks t ON t.mbid = vt.recording_mbid
+             WHERE vt.version_id = v.id
+         ) stats
+         WHERE m.user_id = $1
+         ORDER BY m.created_at DESC`,
+        [res.locals.userId],
+    );
+
+    res.json({
+        mixtapes: rows.map((m) => ({
+            id: m.id,
+            title: m.title,
+            createdAt: m.created_at,
+            isStory: m.is_story,
+            trackCount: m.track_count,
+            totalMs: Number(m.total_ms), // bigint comes back from pg as a string
+            covers: [...new Set<string>(m.covers ?? [])].slice(0, 4),
+        })),
+    });
+});
+
 // POST /mixtapes { prompt, answers, minutes, seeds, story } -> 202 {jobId}
 // Does not wait for the mixtape: it queues a job and answers right away.
 mixtapes.post("/", async(req, res) => {
@@ -22,23 +81,12 @@ mixtapes.post("/", async(req, res) => {
         return;
     }
 
-    // Ensure the daily limit for creating mixtapes. 
-    // A job that failed before Rae wrote anything costs nothing, so it doesn't count.
-    const today = await pool.query<{ count: number; resets_at: Date | null}>(
-        `SELECT 
-            count(*)::int AS count, 
-            min(created_at) + interval '24 hours' AS resets_at
-         FROM generation_jobs
-         WHERE user_id = $1 
-               AND created_at > now() - interval '24 hours'
-               AND (status <> 'failed' OR draft IS NOT NULL)`,
-         [res.locals.userId]
-    );
-    const { count, resets_at } = today.rows[0]!;
-
-    if (count >= config.DAILY_MIXTAPE_LIMIT) {
-        res.status(429).json({ error: `That's ${count} mixtapes today. Come back tomorrow.`, resetsAt: resets_at });
-        return;
+    const today = await mixtapesToday(res.locals.userId);
+    if (today.used >= today.limit) {
+        res.status(429).json({
+            error: `That's ${today.used} mixtapes today. Come back tomorrow.`,
+            resetsAt: today.resetsAt,
+        })
     }
 
     const result = await pool.query<{ id: string }>(
@@ -49,6 +97,23 @@ mixtapes.post("/", async(req, res) => {
     );
 
     res.status(202).json({ jobId: result.rows[0]!.id });
+});
+
+// GET /jobs/active -> { job: { id, status, prompt } | null }, the newest mixtape
+// still being made, so Home can show it if the person left the working screen.
+jobs.get("/active", async (_req, res) => {
+    const result = await pool.query<{ id: string; status: string; prompt: string }>(
+        `SELECT id, status, input->>'prompt' AS prompt
+         FROM generation_jobs
+         WHERE user_id = $1
+           AND mixtape_id IS NULL
+           AND status IN ('queued', 'drafting', 'matching', 'saving')
+         ORDER BY created_at DESC
+         LIMIT 1`,
+         [res.locals.userId],
+    );
+    
+    res.json({ job: result.rows[0] ?? null });
 });
 
 // GET /jobs/:id -> { status, tracksTotal, tracksMatched, error, mixtapeId }
