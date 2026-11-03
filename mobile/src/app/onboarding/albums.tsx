@@ -73,8 +73,10 @@ export default function Albums() {
         }, [search]);
     
         const searchingNow = search.length >= 2;
-        const list = searchingNow ? results : suggestions;
         const picked = taste.items.filter((item) => item.kind === "album");
+        // Suggestions user has not picked. Unpicking an album puts it back here.
+        const unpicked = suggestions.filter((album) => !taste.isPicked("album", album.mbid));
+        const list = searchingNow ? results : unpicked;
 
     return (
         <Screen>
@@ -111,8 +113,28 @@ export default function Albums() {
                 </Text>
             ) : null}
 
+            {!searchingNow && picked.length > 0 ? (
+                <View>
+                    <Text style={[type.label, styles.suggestionLabel]}>
+                        What you picked so far
+                    </Text>
+
+                    {picked.map((album) => (
+                        <PickRow
+                            key={album.mbid}
+                            image={<AlbumCover url={album.coverUrl} title={album.name} />}
+                            title={album.name}
+                            detail={[album.artist, album.year].filter(Boolean).join(", ")}
+                            picked={taste.isPicked("album", album.mbid)}
+                            busy={taste.isBusy("album", album.mbid)}
+                            onPress={() => taste.toggle(album)}
+                        />
+                    ))}
+                </View>
+            ) : null}
+
             <View>
-                {!searchingNow && suggestions.length > 0 ? (
+                {!searchingNow && unpicked.length > 0 ? (
                     <Text style={[type.label, styles.suggestionLabel]}>
                         From artists you picked
                     </Text>
@@ -135,6 +157,7 @@ export default function Albums() {
                                 name: album.title,
                                 artist: album.artist,
                                 coverUrl: album.coverUrl,
+                                year: album.year,
                             })
                         }
                     />

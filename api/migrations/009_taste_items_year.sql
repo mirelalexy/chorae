@@ -1,0 +1,1 @@
+ALTER TABLE taste_items ADD COLUMN year text;

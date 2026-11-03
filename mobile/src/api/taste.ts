@@ -8,6 +8,7 @@ export type TasteItem = {
     name: string;
     artist: string | null;
     coverUrl: string | null;
+    year: string | null;
 };
 
 export type ArtistResult = {

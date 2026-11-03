@@ -14,6 +14,7 @@ type TasteRow = {
     name: string;
     artist: string | null;
     cover_url: string | null;
+    year: string | null;
 }
 
 function toItem(row: TasteRow) {
@@ -23,7 +24,8 @@ function toItem(row: TasteRow) {
         mbid: row.mbid,
         name: row.name,
         artist: row.artist,
-        coverUrl: row.cover_url
+        coverUrl: row.cover_url,
+        year: row.year,
     };
 }
 
@@ -32,13 +34,14 @@ const newItem = z.object({
     mbid: z.guid(),
     name: z.string().trim().min(1).max(300),
     artist: z.string().trim().max(300).nullish(),
-    coverUrl: z.string().startsWith("https://coverartarchive.org/").max(300).nullish()
+    coverUrl: z.string().startsWith("https://coverartarchive.org/").max(300).nullish(),
+    year: z.string().regex(/^\d{4}$/).nullish(),
 });
 
 // GET /taste  ->  { items: [...] }, oldest first, the order they were picked in
 taste.get("/", async (_req, res) => {
     const result = await pool.query<TasteRow>(
-        `SELECT id, kind, mbid, name, artist, cover_url 
+        `SELECT id, kind, mbid, name, artist, cover_url, year
          FROM taste_items 
          WHERE user_id = $1 
          ORDER BY created_at`,
@@ -58,14 +61,14 @@ taste.post("/", async (req, res) => {
         return;
     }
 
-    const { kind, mbid, name, artist, coverUrl } = parsed.data;
+    const { kind, mbid, name, artist, coverUrl, year } = parsed.data;
 
     const result = await pool.query<TasteRow>(
-        `INSERT INTO taste_items (user_id, kind, mbid, name, artist, cover_url)
-         VALUES ($1, $2, $3, $4, $5, $6)
+        `INSERT INTO taste_items (user_id, kind, mbid, name, artist, cover_url, year)
+         VALUES ($1, $2, $3, $4, $5, $6, $7)
          ON CONFLICT (user_id, kind, mbid) DO UPDATE SET name = EXCLUDED.name
-         RETURNING id, kind, mbid, name, artist, cover_url`,
-         [res.locals.userId, kind, mbid, name, artist ?? null, coverUrl ?? null],
+         RETURNING id, kind, mbid, name, artist, cover_url, year`,
+         [res.locals.userId, kind, mbid, name, artist ?? null, coverUrl ?? null, year ?? null],
     );
 
     res.status(201).json({ item: toItem(result.rows[0]!) });
