@@ -1,5 +1,6 @@
 import { type ArtistResult, searchArtists } from "@/api/taste";
 import { useAuth } from "@/auth/AuthProvider";
+import { Avatar } from "@/components/Avatar";
 import { Button } from "@/components/Button";
 import { Screen } from "@/components/Screen";
 import { StepHeader } from "@/components/StepHeader";
@@ -79,7 +80,7 @@ export default function Artists() {
                             accessibilityLabel={`Remove ${artist.name}`}
                             style={styles.pickedChip}
                         >
-                            {/* TO-DO: The artist avatar. */}
+                            <Avatar name={artist.name} size={30} />
 
                             <Text style={[type.label, { color: colors.text }]}>
                                 {artist.name}
