@@ -9,7 +9,6 @@ import { TextField } from "@/components/TextField";
 import { useDebounced } from "@/hooks/useDebounced";
 import { useTaste } from "@/hooks/useTaste";
 import { colors, space, type } from "@/theme";
-import { router } from "expo-router";
 import { useEffect, useState } from "react";
 import { Text, View, StyleSheet, ActivityIndicator } from "react-native";
 
