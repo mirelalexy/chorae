@@ -17,25 +17,27 @@ const signupBody = z.object({
     password: z.string().min(10).max(200),
     displayName: z.string().trim().min(1).max(50),
     ageConfirmed: z.literal(true)                   // checkbox must be ticked
-})
+});
 
 // Create rules for login.
 const loginBody = z.object({
     email: z.string().trim().min(1).max(254),
     password: z.string().min(1).max(200)
-})
+});
 
 type UserRow = {
     id: string;
     email: string;
-    display_name: string
-}
+    display_name: string;
+    onboarded_at: Date | null;
+};
 
 function publicUser(row: UserRow) {
     return {
         id: row.id,
         email: row.email,
-        displayName: row.display_name
+        displayName: row.display_name,
+        onboarded: row.onboarded_at !== null,
     }
 }
 
@@ -54,7 +56,7 @@ auth.post("/signup", async (req, res) => {
         const result = await pool.query<UserRow>(
             `INSERT INTO users (email, password_hash, display_name, age_confirmed_at)
              VALUES ($1, $2, $3, now())
-             RETURNING id, email, display_name`,
+             RETURNING id, email, display_name, onboarded_at`,
              [email, await hashPassword(password), displayName]
         );
         user = result.rows[0]!;
@@ -82,7 +84,7 @@ auth.post("/login", async (req, res) => {
     const { email, password } = parsed.data;
 
     const result = await pool.query<UserRow & { password_hash: string }>(
-        `SELECT id, email, display_name, password_hash
+        `SELECT id, email, display_name, password_hash, onboarded_at
          FROM users
          WHERE lower(email) = lower($1)`,
          [email]
@@ -109,9 +111,20 @@ auth.post("/logout", requireUser, async (_req, res) => {
 // GET/auth/me -> { user } based on token
 auth.get("/me", requireUser, async (_req, res) => {
     const result = await pool.query<UserRow>(
-        `SELECT id, email, display_name
+        `SELECT id, email, display_name, onboarded_at
          FROM users
          WHERE id = $1`,
+         [res.locals.userId]
+    );
+    res.json({ user: publicUser(result.rows[0]!) });
+});
+
+// GET/auth/onboarded -> { user }, onboarding is finished or skipped
+auth.get("/onboarded", requireUser, async (_req, res) => {
+    const result = await pool.query<UserRow>(
+        `UPDATE users SET onboarded_at = coalesce(onboarded_at, now())
+         WHERE id = $1
+         RETURNING id, email, display_name, onboarded_at`,
          [res.locals.userId]
     );
     res.json({ user: publicUser(result.rows[0]!) });
