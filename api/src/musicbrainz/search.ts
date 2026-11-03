@@ -26,11 +26,15 @@ export async function searchArtists(query: string, limit = 10): Promise<ArtistRe
     }));
 }
 
+// Anyone can add releases to MusicBrainz, including bootlegs (fan-made albums of leaked
+// songs, with homemade covers). Chorae only shows music that was officially released.
+const OFFICIAL = "status:official";
+
 // Search albums and EPs by title.
 export async function searchAlbums(query: string, limit = 15): Promise<AlbumResult[]> {
     const data = releaseGroupListSchema.parse(
         await mbGet("release-group", {
-            query: `${escapeQuery(query)} AND (primarytype:album OR primarytype:ep)`,
+            query: `${escapeQuery(query)} AND (primarytype:album OR primarytype:ep) AND ${OFFICIAL}`,
             limit: String(Math.min(Math.max(limit, 1), 100)),
         }),
     );
@@ -44,6 +48,8 @@ export async function albumsByArtist(artistMbid: string): Promise<AlbumResult[]>
         await mbGet("release-group", {
             artist: artistMbid,
             type: "album|ep",
+            // Only release groups with an official release, as the MusicBrainz website shows by default.
+            "release-group-status": "website-default",
             inc: "artist-credits",
             limit: "100",
         }),
