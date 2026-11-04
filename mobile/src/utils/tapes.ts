@@ -8,7 +8,6 @@ export const SORTS = [
 ] as const;
 
 export const KINDS = [
-    { key: "all", label: "All" },
     { key: "generated", label: "Rae generated" },
     { key: "curated", label: "Rae curated" },
 ] as const;
