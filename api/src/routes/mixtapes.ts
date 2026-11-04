@@ -38,11 +38,25 @@ mixtapes.get("/today", async (_req, res) => {
     res.json(await mixtapesToday(res.locals.userId));
 });
 
-// GET /mixtapes -> { mixtapes: [...] }, newest first, with what a list needs:
-// the track count, the total length, and up to four covers for the artwork.
-mixtapes.get("/", async (_req, res) => {
+// List the user's mixtapes, newest first, with the details needed for the library.
+// Optionally search by mixtape title, song title, or artist.
+const listQuery = z.object({ q: z.string().trim().max(100).optional() });
+
+// GET /mixtapes -> { mixtapes: [...] }
+mixtapes.get("/", async (req, res) => {
+    const parsed = listQuery.safeParse(req.query);
+    if (!parsed.success) {
+        res.status(400).json({ error: "That search is too long." });
+        return;
+    }
+
+    // Escape SQL wildcards so % and _ are treated as normal search characters.
+    const q = parsed.data.q
+        ? `%${parsed.data.q.replace(/[\\%_]/g, (c) => `\\${c}`)}%`
+        : null;
+
     const { rows } = await pool.query(
-        `SELECT m.id, m.title, m.created_at, v.is_story,
+        `SELECT m.id, m.title, m.origin, m.created_at, m.updated_at, v.is_story,
                 stats.track_count, stats.total_ms, stats.covers
          FROM mixtapes m
          JOIN mixtape_versions v ON v.id = m.current_version_id
@@ -55,15 +69,26 @@ mixtapes.get("/", async (_req, res) => {
              WHERE vt.version_id = v.id
          ) stats
          WHERE m.user_id = $1
+            AND ($2::text IS NULL
+                    OR m.title ILIKE $2
+                    OR EXISTS (
+                        SELECT 1
+                        FROM version_tracks vt
+                        JOIN tracks t ON t.mbid = vt.recording_mbid
+                        WHERE vt.version_id = v.id
+                        AND (t.title ILIKE $2 OR t.artist ILIKE $2)
+                    ))
          ORDER BY m.created_at DESC`,
-        [res.locals.userId],
+        [res.locals.userId, q],
     );
 
     res.json({
         mixtapes: rows.map((m) => ({
             id: m.id,
             title: m.title,
+            origin: m.origin === "rae_curated" ? "curated" : "generated",
             createdAt: m.created_at,
+            updatedAt: m.updated_at,
             isStory: m.is_story,
             trackCount: m.track_count,
             totalMs: Number(m.total_ms), // bigint comes back from pg as a string
