@@ -6,3 +6,6 @@ export { UserIcon } from "phosphor-react-native/src/icons/User";
 export { PlusIcon } from "phosphor-react-native/src/icons/Plus";
 export { ListBulletsIcon } from "phosphor-react-native/src/icons/ListBullets";
 export { SquaresFourIcon } from "phosphor-react-native/src/icons/SquaresFour";
+export { EyeIcon } from "phosphor-react-native/src/icons/Eye";
+export { EyeSlashIcon } from "phosphor-react-native/src/icons/EyeSlash";
+export { XIcon } from "phosphor-react-native/src/icons/X";
