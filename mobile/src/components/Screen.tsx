@@ -5,14 +5,21 @@ import { space } from "@/theme";
 
 type Props = {
     children: ReactNode;
+    bottomSpace?: number;
 };
 
 // The frame every form screen sits in.
-export function Screen({ children }: Props) {
+export function Screen({ children, bottomSpace = 0 }: Props) {
     return (
         <SafeAreaView style={styles.container} edges={["top", "bottom"]}>
             <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : undefined}>
-                <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+                <ScrollView 
+                    contentContainerStyle={[
+                        styles.content,
+                        { paddingBottom: space.xl + bottomSpace }
+                    ]} 
+                    keyboardShouldPersistTaps="handled"
+                >
                     {children}
                 </ScrollView>
             </KeyboardAvoidingView>

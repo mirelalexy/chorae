@@ -8,6 +8,7 @@ export const colors = {
     accent: "#c49bff",          // main buttons, focus, progress
     textOnAccent: "#1b1a1e",
     error: "#ff9d9d",
+    glow: "rgba(196, 155, 255, 0.22)", // glow for the tab bar
 } as const;
 
 export const space = {

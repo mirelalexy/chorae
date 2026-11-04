@@ -62,7 +62,7 @@ function RootNavigator() {
 
 			{/* Logged in: home. */}
 			<Stack.Protected guard={signedIn && !onboarding} redirectTo={home}>
-				<Stack.Screen name="index" />
+				<Stack.Screen name="(tabs)" />
 			</Stack.Protected>
 		</Stack>
 	);
