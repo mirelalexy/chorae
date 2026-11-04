@@ -4,13 +4,7 @@ import { Wordmark } from "@/components/Wordmark";
 import { Button } from "@/components/Button";
 import { useAuth } from "@/auth/AuthProvider";
 import { Screen } from "@/components/Screen";
-
-function greeting() {
-	const hour = new Date().getHours();
-	if (hour < 12) return "Morning";
-	if (hour < 18) return "Afternoon";
-	return "Evening";
-}
+import { greeting } from "@/utils/format";
 
 export default function Home() {
 	const { user, logOut } = useAuth(); 
