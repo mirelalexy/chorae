@@ -10,3 +10,5 @@ export { EyeIcon } from "phosphor-react-native/src/icons/Eye";
 export { EyeSlashIcon } from "phosphor-react-native/src/icons/EyeSlash";
 export { XIcon } from "phosphor-react-native/src/icons/X";
 export { MagnifyingGlassIcon } from "phosphor-react-native/src/icons/MagnifyingGlass";
+export { ArrowsDownUpIcon } from "phosphor-react-native/src/icons/ArrowsDownUp";
+export { CheckIcon } from "phosphor-react-native/src/icons/Check";

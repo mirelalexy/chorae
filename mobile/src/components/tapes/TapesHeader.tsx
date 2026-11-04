@@ -5,14 +5,18 @@ import { Avatar } from "@/components/Avatar";
 import { colors, space, type } from "@/theme";
 import { Layout } from "./TapeItem";
 import { ListBulletsIcon, SquaresFourIcon } from "../icons";
+import { Sort } from "@/utils/tapes";
+import { SortMenu } from "./SortMenu";
 
 type Props = {
     name: string;
     layout: Layout;
     onToggleLayout: () => void;
+    sort: Sort;
+    onSortChange: (sort: Sort) => void;
 };
 
-export function TapesHeader({ name, layout, onToggleLayout }: Props) {
+export function TapesHeader({ name, layout, onToggleLayout, sort, onSortChange }: Props) {
     const grid = layout === "grid";
 
     return (
@@ -27,6 +31,8 @@ export function TapesHeader({ name, layout, onToggleLayout }: Props) {
             </Pressable>
 
             <Text style={styles.title}>Your tapes</Text>
+
+            <SortMenu sort={sort} onSortChange={onSortChange} />
 
             <Pressable
                 onPress={onToggleLayout}
