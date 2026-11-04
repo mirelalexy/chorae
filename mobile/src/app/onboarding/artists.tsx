@@ -2,6 +2,7 @@ import { searchArtists } from "@/api/taste";
 import { useAuth } from "@/auth/AuthProvider";
 import { Avatar } from "@/components/Avatar";
 import { Button } from "@/components/Button";
+import { Chip } from "@/components/Chip";
 import { MagnifyingGlassIcon } from "@/components/icons";
 import { PickRow } from "@/components/PickRow";
 import { Screen } from "@/components/Screen";
@@ -50,22 +51,14 @@ export default function Artists() {
             {picked.length > 0 ? (
                 <View style={styles.pickedList}>
                     {picked.map((artist) => (
-                        <Pressable
+                        <Chip
                             key={artist.id}
-                            onPress={() => taste.toggle(artist)}
-                            accessibilityRole="button"
+                            label={artist.name}
+                            icon={<Avatar name={artist.name} size={30} />}
+                            removable
                             accessibilityLabel={`Remove ${artist.name}`}
-                            style={styles.pickedChip}
-                        >
-                            <Avatar name={artist.name} size={30} />
-
-                            <Text style={[type.label, { color: colors.text }]}>
-                                {artist.name}
-                            </Text>
-                            <Text style={[type.label, { color: colors.textMuted }]}>
-                                x
-                            </Text>
-                        </Pressable>
+                            onPress={() => taste.toggle(artist)}
+                        />
                     ))}
                 </View>
             ) : null}
