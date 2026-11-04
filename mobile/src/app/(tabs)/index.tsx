@@ -17,10 +17,6 @@ export default function Home() {
                     {greeting()}, {user?.displayName ?? "there"}.
                 </Text>
             </View>
-
-            <View style={styles.footer}>
-                <Button title="Log out" onPress={logOut} />
-            </View>
         </Screen>
   	);
 }
@@ -30,11 +26,9 @@ const styles = StyleSheet.create({
         gap: space.md,
         marginTop: space.xxl,
     },
+    
     title: {
         ...type.title,
         color: colors.text,
-    },
-    footer: {
-        marginTop: "auto",
     },
 });
