@@ -31,8 +31,8 @@ export async function getActiveJob(): Promise<ActiveJob | null> {
     return res.job;
 }
 
-export async function listMixtapes(): Promise<MixtapeSummary[]> {
-    const res = await api<{ mixtapes: MixtapeSummary[] }>("/mixtapes");
+export async function listMixtapes(q?: string): Promise<MixtapeSummary[]> {
+    const res = await api<{ mixtapes: MixtapeSummary[] }>(q ? `/mixtapes?q=${encodeURIComponent(q)}` : "/mixtapes");
     return res.mixtapes;
 }
 
