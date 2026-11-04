@@ -3,3 +3,6 @@ export { ArrowRightIcon } from "phosphor-react-native/src/icons/ArrowRight";
 export { CassetteTapeIcon } from "phosphor-react-native/src/icons/CassetteTape";
 export { HouseIcon } from "phosphor-react-native/src/icons/House";
 export { UserIcon } from "phosphor-react-native/src/icons/User";
+export { PlusIcon } from "phosphor-react-native/src/icons/Plus";
+export { ListBulletsIcon } from "phosphor-react-native/src/icons/ListBullets";
+export { SquaresFourIcon } from "phosphor-react-native/src/icons/SquaresFour";

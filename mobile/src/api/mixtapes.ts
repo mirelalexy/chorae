@@ -11,7 +11,9 @@ export type ActiveJob = {
 export type MixtapeSummary = {
     id: string;
     title: string;
+    origin: "generated" | "curated";
     createdAt: string;
+    updatedAt: string;
     isStory: boolean;
     trackCount: number;
     totalMs: number;

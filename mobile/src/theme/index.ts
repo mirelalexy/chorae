@@ -37,7 +37,7 @@ export const fonts = {
 export const type = {
     title: {
         fontFamily: fonts.semibold,
-        fontSize: 28,
+        fontSize: 25,
         lineHeight: 32,
         letterSpacing: -0.5,
     },
