@@ -119,8 +119,8 @@ auth.get("/me", requireUser, async (_req, res) => {
     res.json({ user: publicUser(result.rows[0]!) });
 });
 
-// GET/auth/onboarded -> { user }, onboarding is finished or skipped
-auth.get("/onboarded", requireUser, async (_req, res) => {
+// POST/auth/onboarded -> { user }, mark onboarding as finished or skipped
+auth.post("/onboarded", requireUser, async (_req, res) => {
     const result = await pool.query<UserRow>(
         `UPDATE users SET onboarded_at = coalesce(onboarded_at, now())
          WHERE id = $1
