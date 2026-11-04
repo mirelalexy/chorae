@@ -9,3 +9,4 @@ export { SquaresFourIcon } from "phosphor-react-native/src/icons/SquaresFour";
 export { EyeIcon } from "phosphor-react-native/src/icons/Eye";
 export { EyeSlashIcon } from "phosphor-react-native/src/icons/EyeSlash";
 export { XIcon } from "phosphor-react-native/src/icons/X";
+export { MagnifyingGlassIcon } from "phosphor-react-native/src/icons/MagnifyingGlass";

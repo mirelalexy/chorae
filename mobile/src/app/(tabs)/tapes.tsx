@@ -1,6 +1,4 @@
-import { Text } from "react-native";
 import { Screen } from "@/components/Screen";
-import { colors, type } from "@/theme";
 import { useAuth } from "@/auth/AuthProvider";
 import { TapesHeader } from "@/components/tapes/TapesHeader";
 import { Layout } from "@/components/tapes/TapeItem";

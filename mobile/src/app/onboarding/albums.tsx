@@ -2,11 +2,12 @@ import { AlbumResult, albumsByArtist, searchAlbums } from "@/api/taste";
 import { useAuth } from "@/auth/AuthProvider";
 import { AlbumCover } from "@/components/AlbumCover";
 import { Button } from "@/components/Button";
+import { MagnifyingGlassIcon } from "@/components/icons";
 import { PickRow } from "@/components/PickRow";
 import { Screen } from "@/components/Screen";
 import { StepHeader } from "@/components/StepHeader";
 import { TextField } from "@/components/TextField";
-import { useDebounced } from "@/hooks/useDebounced";
+import { useSearch } from "@/hooks/useSearch";
 import { useTaste } from "@/hooks/useTaste";
 import { colors, space, type } from "@/theme";
 import { useEffect, useState } from "react";
@@ -16,16 +17,13 @@ import { Text, View, StyleSheet, ActivityIndicator } from "react-native";
 const SUGGEST_FROM_ARTISTS = 3;
 const ALBUMS_PER_ARTIST = 2;
 
+// Onboarding, step two: albums.
 export default function Albums() {
     const { finishOnboarding } = useAuth();
     const taste = useTaste();
+    const albums = useSearch(searchAlbums);
 
-    const [query, setQuery] = useState("");
-    const search = useDebounced(query.trim());
-    const [results, setResults] = useState<AlbumResult[]>([]);
     const [suggestions, setSuggestions] = useState<AlbumResult[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
 
     // Add suggestions: albums by the artists picked in the first onboarding step.
     useEffect(() => {
@@ -51,32 +49,10 @@ export default function Albums() {
         };
     }, [taste.loaded]);
 
-    // Search albums when the query changes.
-        useEffect(() => {
-            if (search.length < 2) {
-                setResults([]);
-                setError(null);
-                return;
-            }
-    
-            // Ignore the response if the search changes before it arrives.
-            let current = true;
-            setLoading(true);
-            searchAlbums(search)
-                .then((found) => current && (setResults(found), setError(null)))
-                .catch((err) => current && setError(err.message))
-                .finally(() => current && setLoading(false));
-    
-            return () => {
-                current = false;
-            }
-        }, [search]);
-    
-        const searchingNow = search.length >= 2;
-        const picked = taste.items.filter((item) => item.kind === "album");
-        // Suggestions user has not picked. Unpicking an album puts it back here.
-        const unpicked = suggestions.filter((album) => !taste.isPicked("album", album.mbid));
-        const list = searchingNow ? results : unpicked;
+    const picked = taste.items.filter((item) => item.kind === "album");
+    // Suggestions user has not picked. Unpicking an album puts it back here.
+    const unpicked = suggestions.filter((album) => !taste.isPicked("album", album.mbid));
+    const list = albums.active ? albums.results : unpicked;
 
     return (
         <Screen>
@@ -93,9 +69,11 @@ export default function Albums() {
 
             <TextField 
                 label="Search albums"
-                placeholder="Positions, GUTS..."
-                value={query}
-                onChangeText={setQuery}
+                icon={MagnifyingGlassIcon}
+                clearable
+                placeholder="Positions, Fancy That..."
+                value={albums.query}
+                onChangeText={albums.setQuery}
                 autoCapitalize="none"
                 autoCorrect={false}
                 returnKeyType="search"
@@ -107,13 +85,13 @@ export default function Albums() {
                 </Text>
             ) : null}
 
-            {error ? (
+            {albums.error ? (
                 <Text style={[type.small, styles.errorText]}>
-                    {error}
+                    {albums.error}
                 </Text>
             ) : null}
 
-            {!searchingNow && picked.length > 0 ? (
+            {!albums.active && picked.length > 0 ? (
                 <View>
                     <Text style={[type.label, styles.suggestionLabel]}>
                         What you picked so far
@@ -134,13 +112,13 @@ export default function Albums() {
             ) : null}
 
             <View>
-                {!searchingNow && unpicked.length > 0 ? (
+                {!albums.active && unpicked.length > 0 ? (
                     <Text style={[type.label, styles.suggestionLabel]}>
                         From artists you picked
                     </Text>
                 ) : null}
 
-                {loading ? <ActivityIndicator color={colors.textMuted} /> : null}
+                {albums.loading ? <ActivityIndicator color={colors.textMuted} /> : null}
 
                 {list.map((album) => (
                     <PickRow
@@ -163,11 +141,11 @@ export default function Albums() {
                     />
                 ))}
 
-                {searchingNow && !loading && !error && results.length === 0 ? (
+                {albums.empty && (
                     <Text style={[type.body, styles.emptyText]}>
-                        No albums found for "{search}".
+                        No albums found for "{albums.search}".
                     </Text>
-                ) : null}
+                )}
             </View>
 
             <View style={styles.footer}>

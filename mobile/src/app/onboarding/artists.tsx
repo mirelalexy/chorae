@@ -1,49 +1,23 @@
-import { type ArtistResult, searchArtists } from "@/api/taste";
+import { searchArtists } from "@/api/taste";
 import { useAuth } from "@/auth/AuthProvider";
 import { Avatar } from "@/components/Avatar";
 import { Button } from "@/components/Button";
+import { MagnifyingGlassIcon } from "@/components/icons";
 import { PickRow } from "@/components/PickRow";
 import { Screen } from "@/components/Screen";
 import { StepHeader } from "@/components/StepHeader";
 import { TextField } from "@/components/TextField";
-import { useDebounced } from "@/hooks/useDebounced";
+import { useSearch } from "@/hooks/useSearch";
 import { useTaste } from "@/hooks/useTaste";
 import { colors, radius, space, type } from "@/theme";
 import { router } from "expo-router";
-import { useEffect, useState } from "react";
 import { Text, View, StyleSheet, Pressable, ActivityIndicator } from "react-native";
 
 // Onboarding, step one: artists.
 export default function Artists() {
     const { finishOnboarding } = useAuth();
     const taste = useTaste();
-    
-    const [query, setQuery] = useState("");
-    const search = useDebounced(query.trim());
-    const [results, setResults] = useState<ArtistResult[]>([]);
-    const [searching, setSearching] = useState(false);
-    const [searchError, setSearchError] = useState<string | null>(null);
-
-    // Search artists when the query changes.
-    useEffect(() => {
-        if (search.length < 2) {
-            setResults([]);
-            setSearchError(null);
-            return;
-        }
-
-        // Ignore the response if the search changes before it arrives.
-        let current = true;
-        setSearching(true);
-        searchArtists(search)
-            .then((found) => current && (setResults(found), setSearchError(null)))
-            .catch((err) => current && setSearchError(err.message))
-            .finally(() => current && setSearching(false));
-
-        return () => {
-            current = false;
-        }
-    }, [search])
+    const artists = useSearch(searchArtists);
 
     const picked = taste.items.filter((item) => item.kind === "artist");
 
@@ -62,9 +36,11 @@ export default function Artists() {
 
             <TextField 
                 label="Search artists"
+                icon={MagnifyingGlassIcon}
+                clearable
                 placeholder="Bad Omens, Ariana Grande..."
-                value={query}
-                onChangeText={setQuery}
+                value={artists.query}
+                onChangeText={artists.setQuery}
                 autoCapitalize="none"
                 autoCorrect={false}
                 returnKeyType="search"
@@ -100,16 +76,16 @@ export default function Artists() {
                 </Text>
             ) : null}
 
-            {searchError ? (
+            {artists.error ? (
                 <Text style={[type.small, { color: colors.error }]}>
-                    {searchError}
+                    {artists.error}
                 </Text>
             ) : null}
 
-            {searching ? <ActivityIndicator color={colors.textMuted} /> : null}
+            {artists.loading ? <ActivityIndicator color={colors.textMuted} /> : null}
 
             <View>
-                {results.map((artist) => (
+                {artists.results.map((artist) => (
                     <PickRow 
                         key={artist.mbid}
                         image={<Avatar name={artist.name} />}
@@ -122,20 +98,17 @@ export default function Artists() {
                             mbid: artist.mbid,
                             name: artist.name,
                             artist: null,
-                            coverUrl: null
+                            coverUrl: null,
+                            year: null,
                         })}
                     />
                 ))}
 
-                {search.length >= 2 && 
-                !searching && 
-                !searchError &&
-                results.length === 0 ? (
+                {artists.empty && (
                     <Text style={[type.body, { color: colors.textMuted }]}>
-                        No artists found for "{search}".
+                        No artists found for "{artists.search}".
                     </Text>
-                ) : null
-                }
+                )}
             </View>
 
             <View style={styles.footer}>
