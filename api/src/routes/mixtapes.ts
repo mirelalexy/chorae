@@ -222,7 +222,7 @@ mixtapes.get("/:id", async (req, res) => {
     }
 
     const header = await pool.query(
-        `SELECT m.id, m.title, m.share_slug, v.id AS version_id, v.version_number, v.intro, v.is_story, v.missing_seeds
+        `SELECT m.id, m.title, m.origin, m.share_slug, v.id AS version_id, v.version_number, v.intro, v.is_story, v.missing_seeds
          FROM mixtapes m
          JOIN mixtape_versions v ON v.id = m.current_version_id
          WHERE m.id = $1 AND m.user_id = $2`,
@@ -255,6 +255,7 @@ mixtapes.get("/:id", async (req, res) => {
     res.json({
         id: mixtape.id,
         title: mixtape.title,
+        origin: mixtape.origin === "rae_curated" ? "curated" : "generated",
         shareSlug: mixtape.share_slug,
         version: mixtape.version_number,
         intro: mixtape.intro,
