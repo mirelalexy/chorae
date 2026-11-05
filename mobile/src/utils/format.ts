@@ -37,3 +37,11 @@ export function leftToday({
 
     return `Next one at ${time}`;
 }
+
+export function trackLength(ms: number | null): string {
+    if (ms === null) return "";
+    const seconds = Math.round(ms / 1000);
+    const minutes = Math.round(seconds / 60);
+    const rest = seconds % 60;
+    return `${minutes}:${rest}`;
+}
