@@ -4,6 +4,7 @@ import { pool } from "../db/pool";
 import { requireUser } from "./user";
 import { draftRequestSchema } from "../rae/schemas";
 import { config } from "../config";
+import { finalTitle } from "../rae/title";
 
 export const mixtapes = Router();
 export const jobs = Router();
@@ -42,7 +43,7 @@ mixtapes.get("/today", async (_req, res) => {
 // Optionally search by mixtape title, song title, or artist.
 const listQuery = z.object({ q: z.string().trim().max(100).optional() });
 
-// GET /mixtapes -> { mixtapes: [...] }
+// GET /mixtapes?q=bad omens -> { mixtapes: [...] }
 mixtapes.get("/", async (req, res) => {
     const parsed = listQuery.safeParse(req.query);
     if (!parsed.success) {
@@ -151,7 +152,8 @@ jobs.get("/:id", async (req, res) => {
     }
 
     const result = await pool.query(
-        `SELECT j.status, j.tracks_total, j.tracks_matched, j.error, v.mixtape_id
+        `SELECT j.status, j.tracks_total, j.tracks_matched, j.error, v.mixtape_id,
+                j.input, j.draft->>'title' AS draft_title
          FROM generation_jobs j
          LEFT JOIN mixtape_versions v ON v.id = j.result_version_id
          WHERE j.id = $1 AND j.user_id = $2`,
@@ -169,7 +171,9 @@ jobs.get("/:id", async (req, res) => {
         tracksTotal: job.tracks_total,
         tracksMatched: job.tracks_matched,
         error: job.error,
-        mixtapeId: job.mixtape_id
+        mixtapeId: job.mixtape_id,
+        // Show the tape's name while mixing.
+        title: job.draft_title ? finalTitle(job.draft_title, job.input) : null,
     });
 });
 
