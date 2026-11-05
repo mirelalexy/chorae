@@ -4,8 +4,9 @@ import { Pressable, StyleSheet, useWindowDimensions, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { TapeArt } from "../tapes/TapeArt";
 import { CaretLeftIcon } from "../icons";
+import Svg, { Defs, LinearGradient, Rect, Stop } from "react-native-svg";
 
-export const COVER_HEIGHT = 360;
+export const FADE_HEIGHT = 250;
 
 export function TapeCover({ covers }: { covers: string[] }) {
     const { width } = useWindowDimensions();
@@ -17,8 +18,24 @@ export function TapeCover({ covers }: { covers: string[] }) {
     }
 
     return (
-        <View style={styles.cover}>
+        <View style={[styles.cover, { height: width }]}>
             <TapeArt covers={covers} size={width} />
+
+            <Svg
+                width={width}
+                height={FADE_HEIGHT}
+                style={styles.fade}
+                pointerEvents="none"
+            >
+                <Defs>
+                    <LinearGradient id="fade" x1="0" y1="0" x2="0" y2="1">
+                        <Stop offset="0" stopColor={colors.background} stopOpacity={0} />
+                        <Stop offset="1" stopColor={colors.background} stopOpacity={1} />
+                    </LinearGradient>
+                </Defs>
+
+                <Rect width={width} height={FADE_HEIGHT} fill="url(#fade)" />
+            </Svg>
 
             <Pressable
                 onPress={goBack}
@@ -38,8 +55,13 @@ export function TapeCover({ covers }: { covers: string[] }) {
 
 const styles = StyleSheet.create({
     cover: {
-        height: COVER_HEIGHT,
         overflow: "hidden",
+    },
+
+    fade: {
+        position: "absolute",
+        bottom: 0,
+        left: 0,
     },
 
     back: {
