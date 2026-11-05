@@ -15,3 +15,13 @@ export function finalTitle(raeTitle: string, request: TitleInput): string {
 
     return writesInLowercase(request) ? raeTitle.toLowerCase() : raeTitle;
 }
+
+// Remove redundant side labels from Rae's titles in case she handles them wrong.
+export function cleanSideTitle(title: string): string {
+    const cleaned = title.replace(
+        /^\s*side\s+[a-z0-9]{1,2}\s*[:.\-\u2013\u2014]\s*/i,
+        "",
+    ).trim();
+
+    return cleaned || title.trim();
+}

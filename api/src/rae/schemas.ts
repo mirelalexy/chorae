@@ -57,7 +57,7 @@ export type DraftRequest = z.infer<typeof draftRequestSchema>;
 const track = z.object({
     title: z.string().min(1).max(200).describe("The song title, as released."),
     artist: z.string().min(1).max(200).describe("The main artist, as credited."),
-    note: z.string().min(1).max(500).describe("Rae's note on this track: a sentence or two."),
+    note: z.string().min(1).max(500).describe("Why this song belongs at this point of the tape: what it does to the moment. Not about the artist or the singer."),
     is_seed: z.boolean().describe("True if the person asked for this song."),
 });
 
@@ -68,7 +68,7 @@ const backup = track.omit({ is_seed: true });
 
 // A side is a section of a mixtape.
 const side = z.object({
-    title: z.string().min(1).max(60),
+    title: z.string().min(1).max(60).describe("The side's own name, like 'The save room'. Never starts with 'Side A' or a number."),
     mood_line: z.string().min(1).max(120).describe("One line under the side title."),
     tracks: z.array(track).min(1),
     backups:
@@ -81,7 +81,7 @@ const side = z.object({
 // The mixtape. For longer mixtapes, 6 sides should be enough, while for smaller ones 2-4.
 export const draftSchema = z.object({
     title: z.string().min(1).max(80),
-    intro: z.string().min(1).max(800).describe("Rae's opening note for how the whole mixtape feels and the scenario, if in story mode. Do not do a side-by-side tour."),
+    intro: z.string().min(1).max(800).describe("Rae's opening note for how the whole mixtape feels and the scenario, if in story mode. Do not do a side-by-side tour. Describe the story."),
     sides: z.array(side).min(1).max(6),
 });
 
