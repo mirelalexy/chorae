@@ -60,6 +60,8 @@ export default function MixtapePage() {
                     {tracks.length} {tracks.length === 1 ? "song" : "songs"} · {duration(totalMs)} · {tape.sides.length} {tape.sides.length > 1 ? "sides" : "side"}
                 </Text>
 
+                <Text style={styles.summary}>{tape.summary}</Text>
+
                 {seeds.length > 0 && (
                     <Section
                         title="Your inspiration"
@@ -174,5 +176,11 @@ const styles = StyleSheet.create({
         ...type.label,
         color: colors.accent,
         marginBottom: space.xs + 2,
+    },
+
+    summary: {
+        ...type.body,
+        color: colors.textMuted,
+        marginTop: space.md,
     },
 });

@@ -89,6 +89,7 @@ export type Mixtape = {
     shareSlug: string;
     version: number;
     intro: string;
+    summary: string;
     isStory: boolean;
     missingSeeds: Seed[];
     sides: Side[];
