@@ -82,9 +82,9 @@ export function DetailsStep({
                 </>
             ) : (
                 <View style={styles.intro}>
-                    <Text style={styles.title}>A few things before I start.</Text>
+                    <Text style={styles.title}>I have a few questions.</Text>
                     <Text style={styles.subtitle}>
-                        Answer what you like. Whatever you skip, I'll decide.
+                        Answer what you want. I'll take care of the rest.
                     </Text>
                 </View>
             )}
@@ -146,20 +146,20 @@ export function DetailsStep({
                     <View style={styles.divider} />
 
                     <View style={styles.block}>
-                        <Text style={styles.question}>Got a name in mind?</Text>
+                        <Text style={styles.question}>Already have a name in mind?</Text>
                         <TextField
-                            label="Got a name in mind?"
+                            label="Already have a name in mind?"
                             hideLabel
                             clearable
                             maxLength={80}
-                            placeholder="Leave it empty and I'll name it"
+                            placeholder="No? I'll come up with something."
                             value={title}
                             onChangeText={onTitleChange}
                         />
                     </View>
 
                     <View style={styles.block}>
-                        <Text style={styles.question}>How long should it be?</Text>
+                        <Text style={styles.question}>How much music are we talking?</Text>
 
                         <View style={styles.chips}>
                             {LENGTHS.map(({ label, minutes: length }) => (
@@ -177,9 +177,9 @@ export function DetailsStep({
 
                     <View style={styles.switchRow}>
                         <View style={styles.switchText}>
-                            <Text style={styles.question}>Tell it as a story</Text>
+                            <Text style={styles.question}>Make it a story</Text>
                             <Text style={styles.hint}>
-                                Each side becomes a chapter, and my notes carry it from song to song.
+                                I'll give each side its own chapter, with a little story behind every song.
                             </Text>
                         </View>
 
@@ -301,6 +301,7 @@ const styles = StyleSheet.create({
 
     block: {
         gap: space.sm + 2,
+        marginBottom: 10,
     },
 
     question: {
