@@ -41,7 +41,8 @@ export function leftToday({
 export function trackLength(ms: number | null): string {
     if (ms === null) return "";
     const seconds = Math.round(ms / 1000);
-    const minutes = Math.round(seconds / 60);
+    const minutes = Math.floor(seconds / 60);
     const rest = seconds % 60;
-    return `${minutes}:${rest <= 10 ? ("0" + rest) : rest}`;
+
+    return `${minutes}:${String(rest).padStart(2, "0")}`;
 }
