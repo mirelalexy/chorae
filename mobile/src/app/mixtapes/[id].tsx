@@ -10,10 +10,10 @@ import { KIND } from "@/components/tapes/TapeItem";
 import { duration } from "@/utils/format";
 import { Section } from "@/components/Section";
 import { MixBar } from "@/components/tape/MixBar";
-import { SideTracks } from "@/components/tape/SideTracks";
 import { COVER_ROW_ITEM_SIZE, CoverRow } from "@/components/CoverRow";
 import { AlbumCover } from "@/components/AlbumCover";
 import { RaeNote } from "@/components/tape/RaeNote";
+import { SideChapter } from "@/components/tape/SideChapter";
 
 export default function MixtapePage() {
     const { id } = useLocalSearchParams<{ id: string }>();
@@ -101,17 +101,18 @@ export default function MixtapePage() {
                     <MixBar yours={mix.yours} rae={mix.rae} />
                 </Section>
 
-                <Section title="Tracks" subtitle="Tap a song to read why it's here.">
+                <Section title="Tracks" subtitle="Open a side, then tap a song to read why it's here.">
                     {tape.sides.map((side, index) => {
                         const start = nextTrack;
                         nextTrack += side.tracks.length;
 
                         return (
-                            <SideTracks
+                            <SideChapter
                                 key={index}
                                 side={side}
                                 index={index}
                                 start={start}
+                                startOpen={index === 0}
                             />
                         );
                     })}

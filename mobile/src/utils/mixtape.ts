@@ -1,4 +1,5 @@
 import type { Mixtape, Track } from "@/api/mixtapes";
+import { duration } from "./format";
 
 export const sideLetter = (index: number) => String.fromCharCode(65 + index);
 
@@ -38,4 +39,15 @@ export function coversOf(tape: Mixtape): string[] {
         .filter((url) => url !== null);
 
     return [...new Set(urls)].slice(0, 4);
+}
+
+// Format a side's track count and duration.
+export function sideStats(side: Mixtape["sides"][number]): string {
+    const count = side.tracks.length;
+    const totalMs = side.tracks.reduce(
+        (sum, track) => sum + (track.lengthMs ?? 0),
+        0,
+    );
+
+    return `${count} ${count === 1 ? "song" : "songs"} · ${duration(totalMs)}`;
 }

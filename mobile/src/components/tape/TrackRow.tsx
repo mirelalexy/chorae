@@ -8,18 +8,19 @@ import { AlbumCover } from "../AlbumCover";
 type Props = {
     track: Track;
     number: number;
+    isLast?: boolean;
 };
 
 const COVER_SIZE = 44;
 
 // A track that expands to reveal Rae's note.
-export function TrackRow({ track, number }: Props) {
+export function TrackRow({ track, number, isLast = false }: Props) {
     const [expanded, setExpanded] = useState(false);
     const pickedBy = track.isSeed ? "You" : "Rae";
     const length = trackLength(track.lengthMs);
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, isLast && styles.last]}>
             <Pressable
                 onPress={() => setExpanded((prev) => !prev)}
                 accessibilityRole="button"
@@ -144,5 +145,9 @@ const styles = StyleSheet.create({
         fontSize: 15,
         lineHeight: 23,
         color: colors.text,
+    },
+
+    last: {
+        borderBottomWidth: 0,
     },
 });
