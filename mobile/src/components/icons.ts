@@ -15,3 +15,4 @@ export { CheckIcon } from "phosphor-react-native/src/icons/Check";
 export { VinylRecordIcon } from "phosphor-react-native/src/icons/VinylRecord";
 export { ArrowsClockwiseIcon } from "phosphor-react-native/src/icons/ArrowsClockwise";
 export { CaretRightIcon } from "phosphor-react-native/src/icons/CaretRight";
+export { CaretLeftIcon } from "phosphor-react-native/src/icons/CaretLeft";
