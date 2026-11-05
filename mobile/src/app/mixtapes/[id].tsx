@@ -1,135 +1,167 @@
 
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { getMixtape, type Mixtape } from "@/api/mixtapes";
 import { AlbumCover } from "@/components/AlbumCover";
 import { Screen } from "@/components/Screen";
 import { colors, space, type } from "@/theme";
+import { useMixtape } from "@/hooks/useMixtape";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { coversOf, mixOf, seedsOf } from "@/utils/mixtape";
+import { TapeCover } from "@/components/tape/TapeCover";
+import { KIND } from "@/components/tapes/TapeItem";
+import { duration } from "@/utils/format";
+import { Section } from "@/components/Section";
+import { InspoCard } from "@/components/tape/InspoCard";
+import { MixBar } from "@/components/tape/MixBar";
+import { SideTracks } from "@/components/tape/SideTracks";
 
 export default function MixtapePage() {
     const { id } = useLocalSearchParams<{ id: string }>();
-    const [tape, setTape] = useState<Mixtape | null>(null);
-    const [error, setError] = useState<string | null>(null);
+    const insets = useSafeAreaInsets();
+    const { tape, error, loading } = useMixtape(id);
 
-    useEffect(() => {
-        let current = true;
+    if (!tape) {
+        return (
+            <View style={[
+                styles.center, 
+                { paddingTop: insets.top }
+                ]}
+            >
+                {loading ? (
+                    <ActivityIndicator color={colors.textMuted} />
+                ) : (
+                    <Text style={styles.error}>{error ?? "Couldn't load this tape."}</Text>
+                )}
+            </View>
+        );
+    }
 
-        setTape(null);
-        setError(null);
+    const tracks = tape.sides.flatMap((side) => side.tracks);
+    const totalMs = tracks.reduce((sum, track) => sum + (track.lengthMs ?? 0), 0);
+    const seeds = seedsOf(tape);
+    const mix = mixOf(tape);
 
-        getMixtape(id)
-            .then((found) => {
-                if (current) setTape(found);
-            })
-            .catch((err) => {
-                if (current) setError(err instanceof Error ? err.message : "Couldn't load this tape.");
-            });
-
-        return () => {
-            current = false;
-        };
-    }, [id]);
+    // Keep track numbers continuous across sides.
+    let nextTrack = 1;
 
     return (
-        <Screen>
-            <View style={styles.top}>
-                <Pressable
-                    onPress={() => router.canGoBack() ? router.back() : router.navigate("/tapes")}
-                    accessibilityRole="button"
-                    hitSlop={12}
-                >
-                    <Text style={styles.back}>Back</Text>
-                </Pressable>
-            </View>
+        <ScrollView
+            style={styles.page}
+            contentContainerStyle={{ paddingBottom: insets.bottom + space.xxl }}
+        >
+            <TapeCover covers={coversOf(tape)} />
 
-            {error ? (
-                <Text style={styles.error}>{error}</Text>
-            ) : !tape ? (
-                <ActivityIndicator color={colors.textMuted} />
-            ) : (
-                <>
-                    <Text style={styles.title}>{tape.title}</Text>
+            <View style={styles.body}>
+                <Text style={styles.title} accessibilityRole="header">
+                    {tape.title}
+                </Text>
+
+                <Text style={styles.meta}>
+                    {KIND[tape.origin]} · {tracks.length} {tracks.length === 1 ? "song" : "songs"} · {duration(totalMs)}
+                </Text>
+
+                {seeds.length > 0 && (
+                    <Section
+                        title="Inspo"
+                        subtitle={
+                            seeds.length === 1
+                                ? "You named this song as the blueprint for this mixtape."
+                                : "You named these songs as the blueprint for this mixtape."
+                        }
+                    >
+                        {seeds.map((seed, index) => (
+                            <InspoCard key={`${seed.track.mbid}`} seed={seed} />
+                        ))}
+                    </Section>
+                )}
+
+                {tape.missingSeeds.length > 0 && (
+                    <Text style={styles.missing}>
+                        Rae couldn't find
+                        {tape.missingSeeds.map((seed) => `${seed.title} by ${seed.artist}`).join(", ")},
+                        so the tape was made without {tape.missingSeeds.length === 1 ? "it" : "them"}.
+                    </Text>
+                )}
+
+                <Section title="Rae's notes">
                     <Text style={styles.intro}>{tape.intro}</Text>
+                </Section>
 
-                    {tape.sides.map((side, index) => (
-                        <View key={index} style={styles.side}>
-                            <Text style={styles.sideTitle}>{side.title}</Text>
+                <Section title="The mix">
+                    <MixBar yours={mix.yours} rae={mix.rae} />
+                </Section>
 
-                            {side.tracks.map((track, index) => (
-                                <View key={`${track.mbid}-${index}`} style={styles.track}>
-                                    <AlbumCover url={track.coverUrl} title={track.title} size={48} />
+                <Section title="Tracks" subtitle="Tap a song to read why it's here.">
+                    {tape.sides.map((side, index) => {
+                        const start = nextTrack;
+                        nextTrack += side.tracks.length;
 
-                                    <View style={styles.trackText}>
-                                        <Text style={styles.trackTitle}>{track.title}</Text>
-                                        <Text style={styles.trackArtist}>{track.artist}</Text>
-                                    </View>
-                                </View>
-                            ))}
-                        </View>
-                    ))}
-                </>
-            )}
-        </Screen>
+                        return (
+                            <SideTracks
+                                key={index}
+                                side={side}
+                                index={index}
+                                start={start}
+                            />
+                        );
+                    })}
+                </Section>
+            </View>
+        </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
-    top: {
-        minHeight: 44,
-        justifyContent: "center",
-        alignItems: "flex-start",
+    page: {
+        flex: 1,
+        backgroundColor: colors.background,
     },
 
-    back: {
-        ...type.bodyMedium,
+    center: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        padding: space.xl,
+        backgroundColor: colors.background,
+    },
+
+    // Overlap the artwork where fading/gradient will be introduced.
+    body: {
+        paddingHorizontal: space.xl,
+        marginTop: -64,
+    },
+
+    title: {
+        ...type.title,
+        fontSize: 36,
+        lineHeight: 40,
+        letterSpacing: -0.9,
+        color: colors.text,
+    },
+
+    meta: {
+        ...type.body,
+        fontSize: 15,
         color: colors.textMuted,
+    },
+
+    missing: {
+        ...type.small,
+        marginTop: space.md,
+        color: colors.textMuted,
+    },
+
+    intro: {
+        ...type.body,
+        fontSize: 17,
+        lineHeight: 26,
+        color: colors.text,
     },
 
     error: {
         ...type.body,
         color: colors.error,
-    },
-
-    title: {
-        ...type.title,
-        color: colors.text,
-    },
-
-    intro: {
-        ...type.body,
-        color: colors.textMuted,
-    },
-
-    side: {
-        gap: space.sm,
-        marginTop: space.md,
-    },
-
-    sideTitle: {
-        ...type.heading,
-        fontSize: 20,
-        color: colors.text,
-    },
-
-    track: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: space.md,
-    },
-
-    trackText: {
-        flex: 1,
-        gap: 2,
-    },
-
-    trackTitle: {
-        ...type.bodyMedium,
-        color: colors.text,
-    },
-
-    trackArtist: {
-        ...type.small,
-        color: colors.textMuted,
     },
 });

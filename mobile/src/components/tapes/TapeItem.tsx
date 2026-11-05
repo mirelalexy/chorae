@@ -9,7 +9,7 @@ import { duration } from "@/utils/format";
 
 export type Layout = "list" | "grid";
 
-const KIND = {
+export const KIND = {
     generated: "Rae generated",
     curated: "Rae curated",
 } as const;

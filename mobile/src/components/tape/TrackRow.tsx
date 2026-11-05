@@ -53,6 +53,8 @@ export function TrackRow({ track, number }: Props) {
                         {track.artist}
                     </Text>
                 </View>
+
+                <Text style={styles.length}>{length}</Text>
             </Pressable>
 
             {expanded && (
