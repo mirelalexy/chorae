@@ -148,7 +148,10 @@ export function draftMessage(request: DraftRequest): string {
 
     ${titleLine(request)}
 
-    Give the mixtape a title, an intro, and a title and one-line mood for each side.
+    Give the mixtape a title, a summary, an intro, and a title and one-line mood for
+    each side.
+    - The summary is one or two short sentences that sum the tape up, shown under its 
+    title.
     - The intro describes how the whole tape feels. If story mode is on, explain the
     scenario, or at least the beginning, since the story progresses through the tape.
     Don't walk through it side by side: each side already has its own title and mood

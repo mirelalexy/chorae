@@ -5,6 +5,7 @@ import { draftProblems, draftSchema, questionsSchema, type Draft } from "./schem
 function validDraft(): Draft {
     return {
         title: "lights out in the east wing",
+        summary: "A blackout, and what it does to a quiet house.",
         intro: "Start quiet. It gets louder once the power goes.",
         sides: [
             {

@@ -81,6 +81,7 @@ const side = z.object({
 // The mixtape. For longer mixtapes, 6 sides should be enough, while for smaller ones 2-4.
 export const draftSchema = z.object({
     title: z.string().min(1).max(80),
+    summary: z.string().min(1).max(160).describe("One or two short sentences that sum the tape up, shown under its title."),
     intro: z.string().min(1).max(800).describe("Rae's opening note for how the whole mixtape feels and the scenario, if in story mode. Do not do a side-by-side tour. Describe the story."),
     sides: z.array(side).min(1).max(6),
 });
