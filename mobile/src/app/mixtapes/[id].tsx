@@ -1,10 +1,6 @@
 
-import { router, useLocalSearchParams } from "expo-router";
-import { useEffect, useState } from "react";
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
-import { getMixtape, type Mixtape } from "@/api/mixtapes";
-import { AlbumCover } from "@/components/AlbumCover";
-import { Screen } from "@/components/Screen";
+import { useLocalSearchParams } from "expo-router";
+import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from "react-native";
 import { colors, space, type } from "@/theme";
 import { useMixtape } from "@/hooks/useMixtape";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
