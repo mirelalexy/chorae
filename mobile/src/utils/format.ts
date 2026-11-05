@@ -43,5 +43,5 @@ export function trackLength(ms: number | null): string {
     const seconds = Math.round(ms / 1000);
     const minutes = Math.round(seconds / 60);
     const rest = seconds % 60;
-    return `${minutes}:${rest}`;
+    return `${minutes}:${rest <= 10 ? ("0" + rest) : rest}`;
 }
