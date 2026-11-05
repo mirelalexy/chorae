@@ -4,7 +4,7 @@ import { pool } from "../db/pool";
 import { requireUser } from "./user";
 import { draftRequestSchema } from "../rae/schemas";
 import { config } from "../config";
-import { finalTitle } from "../rae/title";
+import { cleanSideTitle, finalTitle } from "../rae/title";
 
 export const mixtapes = Router();
 export const jobs = Router();
@@ -222,7 +222,7 @@ mixtapes.get("/:id", async (req, res) => {
     }
 
     const header = await pool.query(
-        `SELECT m.id, m.title, m.origin, m.share_slug, v.id AS version_id, v.version_number, v.intro, v.is_story, v.missing_seeds
+        `SELECT m.id, m.title, m.origin, m.share_slug, v.id AS version_id, v.version_number, v.intro, v.is_story, v.missing_seeds, v.summary
          FROM mixtapes m
          JOIN mixtape_versions v ON v.id = m.current_version_id
          WHERE m.id = $1 AND m.user_id = $2`,
@@ -259,10 +259,11 @@ mixtapes.get("/:id", async (req, res) => {
         shareSlug: mixtape.share_slug,
         version: mixtape.version_number,
         intro: mixtape.intro,
+        summary: mixtape.summary,
         isStory: mixtape.is_story,
         missingSeeds: mixtape.missing_seeds,
         sides: sides.rows.map((side) => ({
-            title: side.title,
+            title: cleanSideTitle(side.title),
             moodLine: side.mood_line,
             tracks: tracks.rows
                 .filter((t) => t.side_position === side.position)

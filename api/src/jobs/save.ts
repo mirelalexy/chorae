@@ -2,12 +2,13 @@ import { randomBytes } from "node:crypto";
 import { pool } from "../db/pool";
 import { type Draft, type DraftRequest } from "../rae/schemas"
 import { type Assembled } from "./assemble";
+import { cleanSideTitle } from "../rae/title";
 
 // Writes a finished mixtape to the db.
 export type SaveInput = {
     userId: string;
     request: DraftRequest;
-    draft: Pick<Draft, "title" | "intro">;
+    draft: Pick<Draft, "title" | "intro" | "summary">;
     assembled: Assembled;
 }
 
@@ -28,10 +29,10 @@ export async function saveMixtape({ userId, request, draft, assembled }: SaveInp
         const mixtapeId = mixtape.rows[0]!.id;
 
         const version = await client.query<{ id: string }>(
-            `INSERT INTO mixtape_versions (mixtape_id, version_number, source, prompt, answers, intro, is_story, missing_seeds)
-             VALUES ($1, 1, 'rae', $2, $3, $4, $5, $6)
+            `INSERT INTO mixtape_versions (mixtape_id, version_number, source, prompt, answers, intro, is_story, missing_seeds, summary)
+             VALUES ($1, 1, 'rae', $2, $3, $4, $5, $6, $7)
              RETURNING id`,
-             [mixtapeId, request.prompt, JSON.stringify(request.answers), draft.intro, request.story, JSON.stringify(assembled.missingSeeds)]
+             [mixtapeId, request.prompt, JSON.stringify(request.answers), draft.intro, request.story, JSON.stringify(assembled.missingSeeds), draft.summary]
         );
         const versionId = version.rows[0]!.id;
 
@@ -40,7 +41,7 @@ export async function saveMixtape({ userId, request, draft, assembled }: SaveInp
             await client.query(
                 `INSERT INTO version_sides (version_id, position, title, mood_line)
                  VALUES ($1, $2, $3, $4)`,
-                 [versionId, sidePosition, side.title, side.moodLine]
+                 [versionId, sidePosition, cleanSideTitle(side.title), side.moodLine]
             );
 
             for (const t of side.tracks) {
