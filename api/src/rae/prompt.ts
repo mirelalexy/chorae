@@ -148,5 +148,7 @@ export function draftMessage(request: DraftRequest): string {
 
     ${titleLine(request)}
 
-    Give the mixtape a title, an intro, and a title and one-line mood for each side.`;
+    Give the mixtape a title, an intro, and a title and one-line mood for each side.
+    The intro describes how the whole tape feels, in two or three sentences. Don't walk
+    through it side by side: each side already has its own title and mood line.`;
 }
