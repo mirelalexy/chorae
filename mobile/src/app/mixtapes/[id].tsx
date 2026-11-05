@@ -50,12 +50,13 @@ export default function MixtapePage() {
             <TapeCover covers={coversOf(tape)} />
 
             <View style={styles.body}>
+                <Text style={styles.kind}>{KIND[tape.origin]}</Text>
                 <Text style={styles.title} accessibilityRole="header">
                     {tape.title}
                 </Text>
 
                 <Text style={styles.meta}>
-                    {KIND[tape.origin]} · {tracks.length} {tracks.length === 1 ? "song" : "songs"} · {duration(totalMs)}
+                    {tracks.length} {tracks.length === 1 ? "song" : "songs"} · {duration(totalMs)} · {tape.sides.length} {tape.sides.length > 1 ? "sides" : "side"}
                 </Text>
 
                 {seeds.length > 0 && (
@@ -67,7 +68,7 @@ export default function MixtapePage() {
                                 : "You named these songs as the blueprint for this mixtape."
                         }
                     >
-                        {seeds.map((seed, index) => (
+                        {seeds.map((seed) => (
                             <InspoCard key={`${seed.track.mbid}`} seed={seed} />
                         ))}
                     </Section>
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.background,
     },
 
-    // Overlap the artwork where fading/gradient will be introduced.
+    // Overlap the artwork (gradient).
     body: {
         paddingHorizontal: space.xl,
         marginTop: -64,
@@ -159,5 +160,11 @@ const styles = StyleSheet.create({
     error: {
         ...type.body,
         color: colors.error,
+    },
+    
+    kind: {
+        ...type.label,
+        color: colors.accent,
+        marginBottom: space.xs + 2,
     },
 });
