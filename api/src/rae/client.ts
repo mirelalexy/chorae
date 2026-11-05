@@ -88,8 +88,8 @@ async function send(message: string, options: Options, format: BetaJSONOutputFor
     }
 }
 
-export function askQuestions(prompt: string) {
-    return ask(questionsSchema, questionsMessage(prompt), { effort: "low", maxTokens: 16000 });
+export function askQuestions(prompt: string, seeds: { title: string; artist: string }[] = []) {
+    return ask(questionsSchema, questionsMessage(prompt, seeds), { effort: "low", maxTokens: 16000 });
 }
 
 export function writeDraft(request: DraftRequest) {

@@ -7,9 +7,12 @@ import { requireUser } from "./user";
 export const rae = Router();
 rae.use(requireUser);
 
-const questionsBody = z.object({ prompt: draftRequestSchema.shape.prompt });
+const questionsBody = z.object({ 
+    prompt: draftRequestSchema.shape.prompt,
+    seeds: draftRequestSchema.shape.seeds.optional(),
+});
 
-// POST /rae/questions { "prompt": "..." } -> { "questions": [...] }
+// POST /rae/questions { prompt, seeds? } -> { "questions": [...] }
 rae.post("/questions", async (req, res) => {
     const parsed = questionsBody.safeParse(req.body);
 
@@ -19,7 +22,7 @@ rae.post("/questions", async (req, res) => {
     }
 
     try {
-        res.json(await askQuestions(parsed.data.prompt));
+        res.json(await askQuestions(parsed.data.prompt, parsed.data.seeds));
     } catch (err) {
         if (err instanceof RaeError) {
             console.error(err);

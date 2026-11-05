@@ -56,22 +56,33 @@ export function mixtapeShape(minutes: number): { tracks: number; sides: number }
     return { tracks, sides };
 }
 
-export function questionsMessage(prompt: string): string {
+export function questionsMessage(prompt: string, seeds: { title: string; artist: string }[] = []): string {
+    const songs = seeds.length
+        ? seeds.map((s) => `- ${s.title} by ${s.artist}`).join("\n")
+        : "(none}";
+    
     return `Someone wants a mixtape. Here is what they wrote:
     
     <request>
     ${prompt}
     </request>
 
+    Songs they want on it:
+    <request>
+    ${songs}
+    </request>
+
     Ask two to four questions before you build it. Ask what would change the mixtape, like who
-    it's for, where it should end, what to avoid, songs they want on it. Ask about sound by what
-    it does, not by genre or other artists, unless the person mentioned them first. If they say
-    how they feel now, it's worth asking where the mixtape should start, not only where it ends.
-    Skip what they've already told you. Where a few short answers cover it, offer them as suggestions. 
-    If the person shares something personal, engage with the actual tension, desire, or feeling in 
-    their words instead of merely repeating it back. Use their reference songs as clues. Ask what 
-    they want to capture from a song only when that isn't already clear. Don't assume that
-    similarity means the same genre or sound. Where their own words will do, leave suggestions empty.`;
+    it's for, where it should end, what to avoid. They've already chosen their songs, and
+    the app asks separately for the length, story mode, and a name, so don't ask about those.
+    Ask about sound by what it does, not by genre or other artists, unless the person mentioned 
+    them first. If they say they feel now, it's worth asking where the mixtape should start, not 
+    only where it ends. Skip what they've already told you. Where a few short answers cover it, 
+    offer them as suggestions. If the person shares something personal, engage with the actual 
+    tension, desire, or feeling in their words instead of merely repeating it back. Use their 
+    reference songs as clues. Ask what they want to capture from a song only when that isn't 
+    already clear. Don't assume that similarity means the same genre or sound. Where their 
+    own words will do, leave suggestions empty.`;
 }
 
 export function draftMessage(request: DraftRequest): string {
