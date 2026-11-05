@@ -54,7 +54,17 @@ export async function api<T>(path: string, { method = "GET", body }: Options = {
     }
 
     // 204 (success, but no content, like when logging out) has no body to read.
-    const data = res.status === 204 ? null : await res.json().catch(() => null);
+    const raw = res.status === 204 ? "" : await res.text();
+
+    console.log("[API]", method, path, res.status, raw);
+
+    let data: any = null;
+
+    try {
+        data = raw ? JSON.parse(raw) : null;
+    } catch {
+        console.warn("[API] Response wasn't valid JSON");
+    }
 
     if (!res.ok) {
         // A token sent was refused: that means it expired or someone logged out everywhere.

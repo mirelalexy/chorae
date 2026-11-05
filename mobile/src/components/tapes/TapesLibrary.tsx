@@ -1,5 +1,3 @@
-
-import { router } from "expo-router";
 import { StyleSheet, useWindowDimensions, View } from "react-native";
 import type { MixtapeSummary, Today } from "@/api/mixtapes";
 import { NewTapeItem, TapeItem, type Layout } from "@/components/tapes/TapeItem";
@@ -13,9 +11,11 @@ type Props = {
     today: Today | null;
     layout: Layout;
     searching: boolean;
+    onNewTape: () => void;
+    onOpenTape: (tape: MixtapeSummary) => void;
 };
 
-export function TapesLibrary({ tapes, today, layout, searching }: Props) {
+export function TapesLibrary({ tapes, today, layout, searching, onNewTape, onOpenTape }: Props) {
     const { width } = useWindowDimensions();
 
     const grid = layout === "grid";
@@ -33,7 +33,7 @@ export function TapesLibrary({ tapes, today, layout, searching }: Props) {
                     size={size}
                     detail={today ? leftToday(today) : "Tell Rae a moment"}
                     disabled={noneLeft}
-                    onPress={() => router.push("/")} // TO DO: /create route here
+                    onPress={onNewTape}
                 />
             )}
 
@@ -43,7 +43,7 @@ export function TapesLibrary({ tapes, today, layout, searching }: Props) {
                     tape={tape}
                     layout={layout}
                     size={size}
-                    onPress={() => router.push("/")} // TO DO: /mixtapes/${tape.id} route here
+                    onPress={() => onOpenTape(tape)}
                 />
             ))}
         </View>

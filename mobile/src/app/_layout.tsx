@@ -63,6 +63,21 @@ function RootNavigator() {
 			{/* Logged in: home. */}
 			<Stack.Protected guard={signedIn && !onboarding} redirectTo={home}>
 				<Stack.Screen name="(tabs)" />
+				{/* Create new tape sheet. */}
+				<Stack.Screen 
+					name="new-tape"
+					options={{
+						presentation: "formSheet",
+						sheetAllowedDetents: "fitToContents",
+						sheetGrabberVisible: false,
+						sheetCornerRadius: 28,
+						contentStyle: { backgroundColor: "#222025" },
+					}}
+				/>
+				<Stack.Screen name="create" />
+				<Stack.Screen name="remake" />
+				<Stack.Screen name="jobs/[id]" />
+				<Stack.Screen name="mixtapes/[id]" />
 			</Stack.Protected>
 		</Stack>
 	);

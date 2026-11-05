@@ -5,7 +5,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 type Props = {
     step: number;
     steps: number;
-    onSkip: () => void;
+    onSkip?: () => void;
     back?: boolean;
     onBack?: () => void;
     backLabel?: string;

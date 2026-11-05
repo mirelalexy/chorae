@@ -12,3 +12,6 @@ export { XIcon } from "phosphor-react-native/src/icons/X";
 export { MagnifyingGlassIcon } from "phosphor-react-native/src/icons/MagnifyingGlass";
 export { ArrowsDownUpIcon } from "phosphor-react-native/src/icons/ArrowsDownUp";
 export { CheckIcon } from "phosphor-react-native/src/icons/Check";
+export { VinylRecordIcon } from "phosphor-react-native/src/icons/VinylRecord";
+export { ArrowsClockwiseIcon } from "phosphor-react-native/src/icons/ArrowsClockwise";
+export { CaretRightIcon } from "phosphor-react-native/src/icons/CaretRight";

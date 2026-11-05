@@ -13,6 +13,7 @@ import { TapesFilters } from "@/components/tapes/TapesFilters";
 import { ActivityIndicator, Text, StyleSheet } from "react-native";
 import { colors, type } from "@/theme";
 import { TapesLibrary } from "@/components/tapes/TapesLibrary";
+import { router } from "expo-router";
 
 export default function Tapes() {
     const { user } = useAuth();
@@ -91,6 +92,13 @@ export default function Tapes() {
                     today={library.today}
                     layout={layout}
                     searching={search.active}
+                    onNewTape={() => router.push("/new-tape")}
+                    onOpenTape={(tape) => 
+                        router.push({
+                            pathname: "/mixtapes/[id]",
+                            params: { id: tape.id },
+                        })
+                    }
                 />
             )}
 

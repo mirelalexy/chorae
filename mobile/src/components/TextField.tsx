@@ -148,10 +148,9 @@ const styles = StyleSheet.create({
 
     // Longer writing: the box grows with the text.
     multilineContainer: {
-        height: undefined,
-        minHeight: 152,
+        height: 150,
         alignItems: "flex-start",
-        paddingVertical: space.md + 2,
+        paddingVertical: space.md,
     },
 
     withIcon: {
@@ -174,8 +173,8 @@ const styles = StyleSheet.create({
 
     multilineInput: {
         height: undefined,
-        minHeight: 124,
-        fontSize: 17,
+        minHeight: 120,
+        fontSize: 16,
         lineHeight: 25,
         textAlignVertical: "top", // Android starts multiline text in the middle otherwise
     },

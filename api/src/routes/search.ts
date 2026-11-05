@@ -1,7 +1,7 @@
 import { Response, Router } from "express";
 import { z } from "zod";
 import { MusicBrainzError } from "../musicbrainz/client";
-import { albumsByArtist, searchAlbums, searchArtists } from "../musicbrainz/search";
+import { albumsByArtist, searchAlbums, searchArtists, searchSongs } from "../musicbrainz/search";
 import { requireUser } from "./user";
 
 export const search = Router();
@@ -66,5 +66,13 @@ artists.get("/:mbid/albums", async (req, res) => {
 
     await answer(res, async () => ({ 
         albums: await albumsByArtist(params.data.mbid) 
+    }));
+});
+
+// GET /search/songs?q=vampire olivia: by the song's name, its artist, or both
+search.get("/songs", async (req, res) => {
+    const q = readQuery(req, res);
+    if (q) await answer(res, async () => ({
+        songs: await searchSongs(q)
     }));
 });
