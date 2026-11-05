@@ -69,7 +69,3 @@ export async function mbGet(path: string, params: Record<string, string>): Promi
 
     throw new MusicBrainzError("Unreachable");
 }
-
-export function escapeQuery(text: string) {
-    return text.replace(/[+\-&|!(){}[\]^"~*?:\\/]/g, "\\$&"); // "warning signs (interlude)" -> "warning signs \(interlude)\"
-}

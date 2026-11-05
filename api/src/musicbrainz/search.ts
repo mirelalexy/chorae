@@ -1,6 +1,7 @@
-import { escapeQuery, mbGet } from "./client";
-import { AlbumResult, newestAlbumsFirst, toAlbumResults } from "./results";
-import { artistSearchSchema, releaseGroupListSchema } from "./types";
+import { mbGet } from "./client";
+import { escapeQuery, OFFICIAL, requestedVersions, songQuery } from "./query";
+import { type AlbumResult, newestAlbumsFirst, SongResult, toAlbumResults, toSongResults } from "./results";
+import { artistSearchSchema, recordingSearchSchema, releaseGroupListSchema } from "./types";
 
 export type ArtistResult = {
     mbid: string;
@@ -25,10 +26,6 @@ export async function searchArtists(query: string, limit = 10): Promise<ArtistRe
         country: a.country ?? null,
     }));
 }
-
-// Anyone can add releases to MusicBrainz, including bootlegs (fan-made albums of leaked
-// songs, with homemade covers). Chorae only shows music that was officially released.
-const OFFICIAL = "status:official";
 
 // Search albums and EPs by title.
 export async function searchAlbums(query: string, limit = 15): Promise<AlbumResult[]> {
@@ -56,4 +53,18 @@ export async function albumsByArtist(artistMbid: string): Promise<AlbumResult[]>
     );
     
     return newestAlbumsFirst(toAlbumResults(data["release-groups"]));
+}
+
+export async function searchSongs(query: string, limit = 10): Promise<SongResult[]> {
+    const hasVersion = requestedVersions(query).length > 0;
+
+    const data = recordingSearchSchema.parse(
+        await mbGet("recording", {
+            query: songQuery(query),
+            // Fetch extra for version searches since filtering and deduplication may remove recordings.
+            limit: hasVersion ? "100" : "40",
+        }),
+    );
+
+    return toSongResults(data.recordings, query).slice(0, limit);
 }

@@ -1,15 +1,23 @@
 import { coverArtUrl } from "./coverart";
-import { type ReleaseGroup } from "./types";
+import { normalize } from "./normalize";
+import { requestedVersions } from "./query";
+import { selectRelease } from "./release";
+import { Recording, type ReleaseGroup } from "./types";
 
 // Turns MusicBrainz's search answers into what the app shows.
-export type AlbumResult = {
+export type MusicResult = {
     mbid: string;
     title: string;
     artist: string;
     year: string | null;
-    type: string;
     coverUrl: string | null;
 };
+
+export type AlbumResult = MusicResult & {
+    type: string; // album or EP
+};
+
+export type SongResult = MusicResult;
 
 function credit(credits: { name: string; joinphrase?: string }[]): string {
     return credits.map((c) => c.name + (c.joinphrase ?? "")).join("");      // "Knocked Loose" + " feat. " + "Poppy"
@@ -37,4 +45,36 @@ export function toAlbumResults(groups: ReleaseGroup[]): AlbumResult[] {
 // Newest first, for albums by artists user picked.
 export function newestAlbumsFirst(albums: AlbumResult[]): AlbumResult[] {
     return [...albums].sort((a, b) => (b.year ?? "0").localeCompare(a.year ?? "0"));
+}
+
+// One result per song.
+export function toSongResults(recordings: Recording[], query: string): SongResult[] {
+    const requested = requestedVersions(query);
+    const seen = new Set<string>();
+    const songs: SongResult[] = [];
+
+    for (const r of recordings) {
+        const label = `${r.title} ${r.disambiguation ?? ""}`;
+        const versions = requestedVersions(label);
+
+        // Keep originals by default, or recordings containing every requested version.
+        if (requested.length === 0 && versions.length > 0) continue;
+        if (!requested.every((v) => versions.includes(v))) continue;
+
+        const artist = credit(r["artist-credit"]);
+        const key = `${normalize(r.title)}|${normalize(artist)}|${normalize(r.disambiguation ?? "")}`;
+
+        if (seen.has(key)) continue;
+        seen.add(key);
+
+        songs.push({
+            mbid: r.id,
+            title: r.title,
+            artist,
+            year: year(r["first-release-date"]),
+            coverUrl: coverArtUrl(selectRelease(r)?.["release-group"]?.id ?? null),
+        });
+    }
+    
+    return songs;
 }
