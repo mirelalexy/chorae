@@ -31,6 +31,7 @@ export function TextField({
 	onFocus, 
 	onBlur,
 	style,
+    multiline = false,
 	...inputProps 
 }: Props) {
 	const [focused, setFocused] = useState(false);
@@ -49,6 +50,7 @@ export function TextField({
 			<View
 				style={[
                     styles.container,
+                    multiline && styles.multilineContainer,
                     Icon ? styles.withIcon : styles.withoutIcon,
                     { borderColor },
                 ]}
@@ -59,6 +61,7 @@ export function TextField({
 
 				<TextInput
 					{...inputProps}
+                    multiline={multiline}
 					value={value}
 					onChangeText={onChangeText}
 					secureTextEntry={secureTextEntry && !revealed}
@@ -74,7 +77,7 @@ export function TextField({
 						setFocused(false);
 						onBlur?.(e);
 					}}
-					style={[styles.input, style]}
+					style={[styles.input, multiline && styles.multilineInput, style]}
 				/>
 
 				{showClear && (
@@ -143,6 +146,14 @@ const styles = StyleSheet.create({
         backgroundColor: colors.field,
     },
 
+    // Longer writing: the box grows with the text.
+    multilineContainer: {
+        height: undefined,
+        minHeight: 152,
+        alignItems: "flex-start",
+        paddingVertical: space.md + 2,
+    },
+
     withIcon: {
         paddingLeft: space.md + 2,
     },
@@ -159,6 +170,14 @@ const styles = StyleSheet.create({
         paddingRight: space.sm,
         color: colors.text,
         outlineWidth: 0,
+    },
+
+    multilineInput: {
+        height: undefined,
+        minHeight: 124,
+        fontSize: 17,
+        lineHeight: 25,
+        textAlignVertical: "top", // Android starts multiline text in the middle otherwise
     },
 
     action: {
