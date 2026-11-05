@@ -1,8 +1,9 @@
-import { escapeQuery, mbGet } from "./client";
+import { mbGet } from "./client";
 import { splitArtistsRaw, stripTitleNoise } from "./normalize";
 import { creditText, pickBest, type TrackRequest } from "./score";
 import { recordingSearchSchema, type MatchedTrack, type Recording } from "./types";
 import { selectRelease } from "./release";
+import { escapeQuery } from "./query";
 
 // Find the MusicBrainz recording for a title and artist, or return null.
 export async function matchTrack(request: TrackRequest): Promise<MatchedTrack | null> {
