@@ -16,3 +16,6 @@ export { VinylRecordIcon } from "phosphor-react-native/src/icons/VinylRecord";
 export { ArrowsClockwiseIcon } from "phosphor-react-native/src/icons/ArrowsClockwise";
 export { CaretRightIcon } from "phosphor-react-native/src/icons/CaretRight";
 export { CaretLeftIcon } from "phosphor-react-native/src/icons/CaretLeft";
+export { CaretUpIcon } from "phosphor-react-native/src/icons/CaretUp";
+export { CaretDownIcon } from "phosphor-react-native/src/icons/CaretDown";
+export { HeadphonesIcon } from "phosphor-react-native/src/icons/Headphones";

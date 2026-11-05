@@ -13,6 +13,7 @@ import { MixBar } from "@/components/tape/MixBar";
 import { SideTracks } from "@/components/tape/SideTracks";
 import { COVER_ROW_ITEM_SIZE, CoverRow } from "@/components/CoverRow";
 import { AlbumCover } from "@/components/AlbumCover";
+import { RaeNote } from "@/components/tape/RaeNote";
 
 export default function MixtapePage() {
     const { id } = useLocalSearchParams<{ id: string }>();
@@ -92,9 +93,9 @@ export default function MixtapePage() {
                     </Text>
                 )}
 
-                <Section title="Rae's notes">
-                    <Text style={styles.intro}>{tape.intro}</Text>
-                </Section>
+                <View style={styles.note}>
+                    <RaeNote text={tape.intro} />
+                </View>
 
                 <Section title="The mix">
                     <MixBar yours={mix.yours} rae={mix.rae} />
@@ -182,5 +183,9 @@ const styles = StyleSheet.create({
         ...type.body,
         color: colors.textMuted,
         marginTop: space.md,
+    },
+
+    note: {
+        marginTop: space.xxl + space.xs,
     },
 });
