@@ -16,14 +16,14 @@ export function seedsOf(tape: Mixtape): SeedPlacement[] {
             const letter = sideLetter(sideIndex);
             const place = trackIndex === 0
                 ? `Opens side ${letter}`
-                : `Side ${letter}, song ${trackIndex + 1}`;
+                : `Side ${letter} · #${trackIndex + 1}`;
 
-            return [{ track, place}];
+            return [{ track, place }];
         }),
     );
 }
 
-// Count the songs chose nby the user and by Rae to display in mix.
+// Count the songs chosen by the user and by Rae to display in mix.
 export function mixOf(tape: Mixtape): { yours: number; rae: number } {
     const tracks = tape.sides.flatMap((side) => side.tracks);
     const yours = tracks.filter((track) => track.isSeed).length;

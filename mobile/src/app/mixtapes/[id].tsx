@@ -9,9 +9,10 @@ import { TapeCover } from "@/components/tape/TapeCover";
 import { KIND } from "@/components/tapes/TapeItem";
 import { duration } from "@/utils/format";
 import { Section } from "@/components/Section";
-import { InspoCard } from "@/components/tape/InspoCard";
 import { MixBar } from "@/components/tape/MixBar";
 import { SideTracks } from "@/components/tape/SideTracks";
+import { COVER_ROW_ITEM_SIZE, CoverRow } from "@/components/CoverRow";
+import { AlbumCover } from "@/components/AlbumCover";
 
 export default function MixtapePage() {
     const { id } = useLocalSearchParams<{ id: string }>();
@@ -61,16 +62,23 @@ export default function MixtapePage() {
 
                 {seeds.length > 0 && (
                     <Section
-                        title="Inspo"
-                        subtitle={
-                            seeds.length === 1
-                                ? "You named this song as the blueprint for this mixtape."
-                                : "You named these songs as the blueprint for this mixtape."
-                        }
+                        title="Your inspiration"
+                        aside={`${seeds.length} songs`}
                     >
-                        {seeds.map((seed) => (
-                            <InspoCard key={`${seed.track.mbid}`} seed={seed} />
-                        ))}
+                        <CoverRow 
+                            items={seeds.map(({ track, place }) => ({
+                                key: track.mbid,
+                                art: (
+                                    <AlbumCover 
+                                        url={track.coverUrl}
+                                        title={track.title}
+                                        size={COVER_ROW_ITEM_SIZE}
+                                    />
+                                ),
+                                title: track.title,
+                                details: [track.artist, place]
+                            }))}
+                        />
                     </Section>
                 )}
 
