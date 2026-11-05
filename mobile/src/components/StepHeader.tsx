@@ -7,24 +7,25 @@ type Props = {
     steps: number;
     onSkip: () => void;
     back?: boolean;
+    onBack?: () => void;
+    backLabel?: string;
 };
 
-export function StepHeader({ step, steps, onSkip, back = false }: Props) {
+export function StepHeader({ step, steps, onSkip, back = false, onBack, backLabel = "Back" }: Props) {
     return (
         <View style={styles.container}>
             <View style={styles.side}>
-                {back ? (
+                {back && (
                     <Pressable
-                        onPress={() => router.back()}
+                        onPress={onBack ?? (() => router.back())}
                         accessibilityRole="button"
                         hitSlop={12}
                     >
                         <Text style={[type.bodyMedium, styles.actionText]}>
-                            Back
+                            {backLabel}
                         </Text>
                     </Pressable>
-                ) : null
-                }
+                )}
             </View>
 
             <View
@@ -42,16 +43,20 @@ export function StepHeader({ step, steps, onSkip, back = false }: Props) {
                 ))}
             </View>
 
-            <Pressable
-                onPress={onSkip}
-                accessibilityRole="button"
-                hitSlop={12}
-                style={[styles.side, styles.skip]}
-            >
-                <Text style={[type.bodyMedium, styles.actionText]}>
-                    Skip
-                </Text>
-            </Pressable>
+            {onSkip ? (
+                <Pressable
+                    onPress={onSkip}
+                    accessibilityRole="button"
+                    hitSlop={12}
+                    style={[styles.side, styles.skip]}
+                >
+                    <Text style={[type.bodyMedium, styles.actionText]}>
+                        Skip
+                    </Text>
+                </Pressable>
+            ) : (
+                <View style={styles.side} />
+            )}
         </View>
     )
 }
