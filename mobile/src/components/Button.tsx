@@ -6,9 +6,11 @@ type Props = {
     onPress: () => void;
     loading?: boolean;
     disabled?: boolean;
+    variant?: "primary" | "secondary";
 }
 
-export function Button({ title, onPress, loading = false, disabled = false }: Props) {
+export function Button({ title, onPress, loading = false, disabled = false, variant = "primary" }: Props) {
+    const secondary = variant === "secondary";
     const inactive = disabled || loading;
 
     return (
@@ -19,14 +21,15 @@ export function Button({ title, onPress, loading = false, disabled = false }: Pr
             accessibilityState={{ disabled: inactive, busy: loading }}
             style={({ pressed }) => [
                 styles.button,
+                secondary && styles.secondary,
                 disabled && styles.disabled,
                 pressed && !inactive && styles.pressed,
             ]}
         >
             {loading ? (
-                <ActivityIndicator color={colors.textOnAccent} />
+                <ActivityIndicator color={secondary ? colors.text : colors.textOnAccent} />
             ) : (
-                <Text style={styles.text}>{title}</Text>
+                <Text style={[styles.text, secondary && styles.secondaryText]}>{title}</Text>
             )}
 
         </Pressable>
@@ -40,6 +43,16 @@ const styles = StyleSheet.create({
         backgroundColor: colors.accent,
         alignItems: "center",
         justifyContent: "center",
+    },
+
+    secondary: {
+        backgroundColor: "transparent",
+        borderWidth: 1,
+        borderColor: colors.line,
+    },
+
+    secondaryText: {
+        color: colors.text,
     },
 
     pressed: {
