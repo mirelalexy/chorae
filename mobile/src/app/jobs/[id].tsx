@@ -16,7 +16,6 @@ function firstSentence(text: string): string {
 
 export default function Mixing() {
     const { id } = useLocalSearchParams<{ id: string }>();
-    const { width } = useWindowDimensions();
 
     const [job, setJob] = useState<Job | null>(null);
     const [tape, setTape] = useState<Mixtape | null>(null);
@@ -93,8 +92,9 @@ export default function Mixing() {
                 <>
                     <View style={styles.body}>
                         <Text style={styles.title}>Your tape is ready.</Text>
+                        <Text style={styles.tapeTitle}>{tape.title}</Text>
                         <Text style={styles.quote}>{`“${firstSentence(tape.intro)}”`}</Text>
-                        <Text style={styles.signature}>Rae</Text>
+                        <Text style={styles.signature}>Curious to see what Rae made for you?</Text>
                     </View>
 
                     <View style={styles.footer}>
@@ -238,6 +238,11 @@ const styles = StyleSheet.create({
     title: {
         ...type.title,
         color: colors.text,
+    },
+
+    tapeTitle: {
+        ...type.title,
+        color: colors.accent,
     },
 
     quote: {
