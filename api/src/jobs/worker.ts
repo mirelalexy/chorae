@@ -2,6 +2,7 @@ import { pool } from "../db/pool";
 import { MusicBrainzError } from "../musicbrainz/client";
 import { RaeError, writeDraft } from "../rae/client";
 import { draftRequestSchema, draftSchema } from "../rae/schemas";
+import { finalTitle } from "../rae/title";
 import { assemble } from "./assemble";
 import { findSong } from "./find-song";
 import { matchDraft } from "./match-draft";
@@ -90,7 +91,8 @@ async function runJob(job: Job) {
         console.warn(`Job ${job.id}: dropped ${assembled.dropped.length} track(s) with no backup left.`);
     }
 
-    const { versionId } = await saveMixtape({ userId: job.user_id, request, draft, assembled });
+    const title = finalTitle(draft.title, request);
+    const { versionId } = await saveMixtape({ userId: job.user_id, request, draft: {...draft, title }, assembled });
     await update(job.id, { status: "done", result_version_id: versionId });
 }
 

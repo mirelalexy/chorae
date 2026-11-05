@@ -48,6 +48,7 @@ export const draftRequestSchema = z.object({
         )
         .max(30),
     story: z.boolean(),
+    title: z.string().trim().max(80).optional(),
 });
 
 export type DraftRequest = z.infer<typeof draftRequestSchema>;

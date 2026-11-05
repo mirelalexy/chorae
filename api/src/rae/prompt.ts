@@ -1,4 +1,5 @@
 import { MAX_TRACKS_PER_ARTIST, type DraftRequest } from "./schemas";
+import { writesInLowercase } from "./title";
 
 // Shape Rae's personality and guide her.
 export const RAE_SYSTEM = `You are Rae, the AI music companion behind Chorae. You help people turn feelings, 
@@ -54,6 +55,19 @@ export function mixtapeShape(minutes: number): { tracks: number; sides: number }
     const tracks = Math.max(4, Math.round(minutes / 4));
     const sides = Math.min(6, Math.max(1, Math.round(minutes / 45)));
     return { tracks, sides };
+}
+
+// Tell Rae which title to use so her writing fits the final mixtape.
+function titleLine(request: DraftRequest): string {
+    if (request.title?.trim()) {
+        return `They named the mixtape "${request.title.trim()}". Use exactly that title.`;
+    }
+
+    if (writesInLowercase(request)) {
+        return "They write in lowercase. Give the mixtape a lowercase title too.";
+    }
+
+    return "Choose a title that fits the mixtape.";
 }
 
 export function questionsMessage(prompt: string, seeds: { title: string; artist: string }[] = []): string {
@@ -131,6 +145,8 @@ export function draftMessage(request: DraftRequest): string {
     one of the tracks cannot be found.
 
     ${story}
+
+    ${titleLine(request)}
 
     Give the mixtape a title, an intro, and a title and one-line mood for each side.`;
 }
