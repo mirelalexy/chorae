@@ -85,6 +85,7 @@ export type NewMixtape = {
 export type Mixtape = {
     id: string;
     title: string;
+    origin: "generated" | "curated";
     shareSlug: string;
     version: number;
     intro: string;
