@@ -2,7 +2,7 @@ import { StyleSheet, useWindowDimensions, View } from "react-native";
 import type { MixtapeSummary, Today } from "@/api/mixtapes";
 import { NewTapeItem, TapeItem, type Layout } from "@/components/tapes/TapeItem";
 import { space } from "@/theme";
-import { leftToday } from "@/utils/format";
+import { tapesAvailability } from "@/utils/format";
 
 const GRID_GAP = space.lg;
 
@@ -31,7 +31,7 @@ export function TapesLibrary({ tapes, today, layout, searching, onNewTape, onOpe
                 <NewTapeItem
                     layout={layout}
                     size={size}
-                    detail={today ? leftToday(today) : "Tell Rae a moment"}
+                    detail={today ? tapesAvailability(today).label : "Tell Rae a moment"}
                     disabled={noneLeft}
                     onPress={onNewTape}
                 />

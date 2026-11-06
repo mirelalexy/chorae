@@ -1,7 +1,8 @@
 import { getToday, Today } from "@/api/mixtapes";
+import { ExpandedRow } from "@/components/ExpandedRow";
 import { ArrowsClockwiseIcon, CaretRightIcon, VinylRecordIcon } from "@/components/icons";
 import { colors, radius, space, type } from "@/theme";
-import { leftToday } from "@/utils/format";
+import { tapesAvailability } from "@/utils/format";
 import { router } from "expo-router";
 import { Icon } from "phosphor-react-native";
 import { useEffect, useState } from "react";
@@ -25,7 +26,13 @@ export default function NewTape() {
             <View style={styles.sheet}>
                 <View style={styles.header}>
                     <Text style={styles.title}>Create a new tape</Text>
-                    {today && <Text style={styles.left}>{leftToday(today)}</Text>}
+
+                    {today && (
+                        <ExpandedRow 
+                            mainText={tapesAvailability(today).label}
+                            additionalText={tapesAvailability(today).detail}
+                        />
+                    )}
                 </View>
 
                 <Option
@@ -102,7 +109,6 @@ const styles = StyleSheet.create({
     },
 
     header: {
-        flexDirection: "row",
         alignItems: "baseline",
         justifyContent: "space-between",
         paddingHorizontal: space.xs,

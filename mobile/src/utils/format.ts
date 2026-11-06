@@ -16,26 +16,48 @@ export function duration(ms: number): string {
 }
 
 // Show how many mixtapes are left, or when another can be created.
-export function leftToday({
+export function tapesAvailability({
     used,
     limit,
     resetsAt,
+    now = Date.now(),
 }: {
     used: number;
     limit: number;
+    // When the oldest counted tape leaves the 24h window.
     resetsAt: string | null;
-}): string {
+    now?: number;
+}): {
+    label: string;
+    detail: string | null;
+} {
     const left = Math.max(0, limit - used);
+    const nextAt = resetsAt ? new Date(resetsAt).getTime() : NaN;
 
-    if (left > 0) return `${left} of ${limit} left today`;
-    if (!resetsAt) return "None left today";
+    const label = left > 0
+        ? `${left} ${left === 1 ? "tape" : "tapes" } available`
+        : "No tapes available";
 
-    const time = new Date(resetsAt).toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-    });
+    if (nextAt && nextAt <= now) {
+        return { label, detail: null };
+    }
 
-    return `Next one at ${time}`;
+    const minutes = Math.ceil((nextAt - now) / 60000);
+    const hours = Math.floor(minutes / 60)
+    const rest = minutes % 60;
+
+    const duration = [
+        hours > 0 ? `${hours}h` : "",
+        rest > 0 ? `${rest}m` : "",
+    ].join(" ");
+
+    return {
+        label,
+        detail:
+            left > 0
+                ? `Next spot opens in ${duration}`
+                : `Create again in ${duration}`
+    }
 }
 
 export function trackLength(ms: number | null): string {
