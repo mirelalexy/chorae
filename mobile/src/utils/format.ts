@@ -9,10 +9,10 @@ export function greeting(date = new Date()): string {
 
 export function duration(ms: number): string {
 	const minutes = Math.round(ms / 60000);
-	if (minutes < 60) return `${minutes} min`;
+	if (minutes < 60) return `${minutes}m`;
 	const hours = Math.floor(minutes / 60);
 	const rest = minutes % 60;
-	return rest === 0 ? `${hours} h` : `${hours} h ${rest} min`;
+	return rest === 0 ? `${hours}h` : `${hours}h ${rest}m`;
 }
 
 // Show how many mixtapes are left, or when another can be created.
