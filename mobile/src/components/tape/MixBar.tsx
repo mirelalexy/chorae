@@ -18,7 +18,7 @@ export function MixBar({ yours, rae }: Props) {
             accessibilityLabel={`${yours} picked by you, ${rae} picked by Rae`}
         >
             <View style={styles.bar}>
-                <View style={[styles.filled, { width: `${percentage}` }]} />
+                <View style={[styles.filled, { width: `${percentage}%` }]} />
             </View>
 
             <View style={styles.legend}>
