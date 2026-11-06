@@ -66,7 +66,7 @@ export default function MixtapePage() {
                 {seeds.length > 0 && (
                     <Section
                         title="Your inspiration"
-                        aside={`${seeds.length} songs`}
+                        aside={`${seeds.length} ${seeds.length > 1 ? "songs" : "song"}`}
                     >
                         <CoverRow 
                             items={seeds.map(({ track, place }) => ({
