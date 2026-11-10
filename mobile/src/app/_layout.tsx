@@ -79,6 +79,7 @@ function RootNavigator() {
 				<Stack.Screen name="jobs/[id]" />
 				<Stack.Screen name="mixtapes/[id]" />
 				<Stack.Screen name="settings" />
+				<Stack.Screen name="edit-profile" />
 			</Stack.Protected>
 		</Stack>
 	);

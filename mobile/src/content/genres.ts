@@ -1,0 +1,33 @@
+// Genres to choose from on Edit profile. Anyone can also type their own.
+export const GENRES = [
+    "Pop",
+    "Rock",
+    "Indie",
+    "Alternative",
+    "Metal",
+    "Metalcore",
+    "Punk",
+    "Emo",
+    "Dream pop",
+    "Hip-hop",
+    "Rap",
+    "Trap",
+    "R&B",
+    "Soul",
+    "Funk",
+    "Jazz",
+    "Blues",
+    "Electronic",
+    "House",
+    "Techno",
+    "Synthwave",
+    "Ambient",
+    "Lo-fi",
+    "Folk",
+    "Country",
+    "K-pop",
+    "Latin",
+    "Afrobeats",
+] as const;
+
+export const MAX_GENRES = 3;

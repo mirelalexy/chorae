@@ -17,7 +17,7 @@ import { Favorite, FavoriteKind } from "@/api/profile";
 import { FavoriteArt } from "@/components/profile/FavoriteArt";
 
 // Kinds allowed and labels for the What's In Your Heart? section.
-const HEART: { 
+export const HEART: { 
     kind: FavoriteKind; 
     label: string 
 }[] = [
@@ -44,7 +44,7 @@ export default function Profile() {
                     <>
                         <View style={styles.intro}>
                             <GenreTags genres={page.profile.genres} />
-                            <Button title="Edit profile" variant="secondary" onPress={() => router.push("/")} />
+                            <Button title="Edit profile" variant="secondary" onPress={() => router.push("/edit-profile")} />
                         </View>
 
                         <Section title="About you">
@@ -62,7 +62,7 @@ export default function Profile() {
 
                         <Section title="What's in your heart?" subtitle="Remember what you love most.">
                             <CoverRow
-                                items={HEART.map(({ kind, label }) => heartItem(kind, label, page.favorites[kind], () => router.push("/")))}
+                                items={HEART.map(({ kind, label }) => heartItem(kind, label, page.favorites[kind], () => router.push("/edit-profile")))}
                             />
                         </Section>
                     </>
