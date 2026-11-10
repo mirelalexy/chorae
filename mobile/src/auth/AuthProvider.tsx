@@ -20,6 +20,8 @@ type Auth = {
     signUp: (input: { email: string; password: string; displayName: string; ageConfirmed: boolean }) => Promise<void>;
     logIn: (input: { email: string, password: string }) => Promise<void>;
     logOut: () => Promise<void>;
+    // Load the user again after something about them changed (like their name).
+    refreshUser: () => Promise<void>;
 };
 
 type Props = {
@@ -85,6 +87,10 @@ export function AuthProvider({ children }: Props) {
             // Tell the API first, so the token stops working everywhere, then log out on this phone.
             await api("/auth/logout", { method: "POST" }).catch(() => {});
             await forget();
+        },
+        refreshUser: async () => {
+            const res = await api<{ user: User }>("/auth/me");
+            setUser(res.user);
         },
     };
 
