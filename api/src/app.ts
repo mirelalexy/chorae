@@ -5,6 +5,7 @@ import { artists, search } from "./routes/search";
 import { rae } from "./routes/rae";
 import { jobs, mixtapes } from "./routes/mixtapes";
 import { taste } from "./routes/taste";
+import { profile } from "./routes/profile";
 
 export const app = express();
 
@@ -17,6 +18,7 @@ app.use("/taste", taste);
 app.use("/rae", rae);
 app.use("/mixtapes", mixtapes);
 app.use("/jobs", jobs);
+app.use("/profile", profile);
 
 const onError: ErrorRequestHandler = (err, _req, res, _next) => {
     console.error(err);
