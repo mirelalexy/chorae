@@ -66,7 +66,7 @@ profile.get("/", async (_req, res) => {
         // and songs only from each mixtape's current version.
          pool.query<StatsRow>(
             `SELECT count(DISTINCT m.id)::int AS tapes,
-                    count(vt.id)::int AS songs,
+                    count(vt.*)::int AS songs,
                     count(DISTINCT m.id) 
                         FILTER (WHERE v.is_story)::int AS stories
              FROM mixtapes m
