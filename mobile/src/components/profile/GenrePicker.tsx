@@ -11,7 +11,7 @@ type Props = {
     onChange: (genres: string[]) => void;
 };
 
-// Up to five favourite genres: from the list, or typed in. Picked ones come first and can be removed.
+// Up to three favorite genres: from the list or typed in.
 export function GenrePicker({ genres, onChange }: Props) {
     const [custom, setCustom] = useState("");
     const full = genres.length >= MAX_GENRES;

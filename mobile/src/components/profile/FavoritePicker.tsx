@@ -12,7 +12,7 @@ import { FavoriteArt } from "@/components/profile/FavoriteArt";
 import { useSearch } from "@/hooks/useSearch";
 import { colors, space, type } from "@/theme";
 
-// A search result in the shape a favourite is saved in, plus a line to tell lookalikes apart.
+// A search result in the shape a favorite is saved in, and a line to tell lookalikes apart.
 type Candidate = Favorite & { detail: string };
 
 // Outside the component so each search function stays the same between renders.
@@ -23,7 +23,7 @@ const FIND: Record<FavoriteKind, (q: string) => Promise<Candidate[]>> = {
             name: a.name,
             artist: null,
             year: null,
-            coverUrl: null, // the API finds one from their albums
+            coverUrl: null,
             detail: [a.disambiguation, a.country].filter(Boolean).join(", "),
         })),
     album: async (q) =>
@@ -54,22 +54,24 @@ const PLACEHOLDER: Record<FavoriteKind, string> = {
 
 type Props = {
     kind: FavoriteKind;
-    label: string; // "Favourite artist"
+    label: string;
     favorite: Favorite | null;
     onChange: (favorite: Favorite | null) => void;
 };
 
-// Pick one favourite of a kind. It's saved the moment you pick or remove it.
+// Pick one favorite of a kind. It's saved the moment user picks or removes it.
 export function FavoritePicker({ kind, label, favorite, onChange }: Props) {
     const search = useSearch(FIND[kind]);
+
     const [changing, setChanging] = useState(false);
-    const [saving, setSaving] = useState<string | null>(null); // the mbid being saved
+    const [saving, setSaving] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
 
     async function pick(candidate: Candidate) {
         if (saving) return;
         setSaving(candidate.mbid);
         setError(null);
+
         try {
             const { detail: _, ...pick } = candidate;
             onChange(await setFavorite(kind, pick));
@@ -84,6 +86,7 @@ export function FavoritePicker({ kind, label, favorite, onChange }: Props) {
 
     async function remove() {
         setError(null);
+
         try {
             await clearFavorite(kind);
             onChange(null);
@@ -98,7 +101,7 @@ export function FavoritePicker({ kind, label, favorite, onChange }: Props) {
         <View style={styles.picker}>
             <Text style={styles.label}>{label}</Text>
 
-            {favorite ? (
+            {favorite && (
                 <View style={styles.current}>
                     <FavoriteArt kind={kind} favorite={favorite} size={56} />
                     <View style={styles.info}>
@@ -121,7 +124,7 @@ export function FavoritePicker({ kind, label, favorite, onChange }: Props) {
                     />
                     <TextButton title="Remove" label={`Remove ${label.toLowerCase()}`} onPress={remove} />
                 </View>
-            ) : null}
+            )}
 
             {searching ? (
                 <>
