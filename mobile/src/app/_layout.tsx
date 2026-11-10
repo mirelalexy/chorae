@@ -78,6 +78,7 @@ function RootNavigator() {
 				<Stack.Screen name="remake" />
 				<Stack.Screen name="jobs/[id]" />
 				<Stack.Screen name="mixtapes/[id]" />
+				<Stack.Screen name="settings" />
 			</Stack.Protected>
 		</Stack>
 	);
