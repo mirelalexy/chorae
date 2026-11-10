@@ -38,6 +38,6 @@ export const favoriteBody = z.object({
     mbid: z.guid(),
     name: z.string().trim().min(1).max(300),
     artist: z.string().trim().max(300).nullish(),
-    year: z.string().regex(/^d{4}$/).nullish(),
+    year: z.string().regex(/^\d{4}$/).nullish(),
     coverUrl: z.string().startsWith("https://coverartarchive.org/").max(300).nullish(), // only CAA images
 });
