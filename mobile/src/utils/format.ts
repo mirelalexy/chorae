@@ -68,3 +68,10 @@ export function trackLength(ms: number | null): string {
 
     return `${minutes}:${String(rest).padStart(2, "0")}`;
 }
+
+export function monthYear(iso: string) {
+    return new Date(iso).toLocaleDateString("en-GB", { 
+        month: "long", 
+        year: "numeric" 
+    });
+}
