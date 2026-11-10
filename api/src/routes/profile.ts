@@ -160,7 +160,7 @@ profile.put("/favorites/:kind", async (req, res) => {
             `INSERT INTO taste_items (user_id, kind, mbid, name, artist, year, cover_url, is_favorite)
              VALUES ($1, $2, $3, $4, $5, $6, $7, true)
              ON CONFLICT (user_id, kind, mbid) DO UPDATE
-                SET is_favorite = true
+                SET is_favorite = true,
                     name = EXCLUDED.name,
                     cover_url = coalesce(EXCLUDED.cover_url, taste_items.cover_url)
              RETURNING kind, mbid, name, artist, year, cover_url`,
