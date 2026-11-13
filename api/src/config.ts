@@ -7,6 +7,18 @@ const schema = z.object({
     MUSICBRAINZ_CONTACT: z.string().min(1),
     ANTHROPIC_API_KEY: z.string().optional(),
     DAILY_MIXTAPE_LIMIT: z.coerce.number().int().min(1).default(5),
+    CLOUDINARY_URL: z.preprocess(
+        (value) => (value === "" ? undefined : value),
+        z.string()
+            .regex(
+                /^cloudinary:\/\/[^:]+:[^@]+@[\w-]+$/,
+                "should look like cloudinary://<key>:<secret>@<cloud name>",
+            )
+            .optional(),
+    ),
+    CLOUDINARY_FOLDER: z.string()
+        .regex(/^[\w-]+$/)
+        .default("chorae"),
 });
 
 const parsed = schema.safeParse(process.env);
