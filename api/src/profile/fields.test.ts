@@ -20,3 +20,21 @@ test("a name can't be empty, and only sent fields are changed", () => {
 test("an about over 200 characters is turned away", () => {
     assert.equal(profileUpdate.safeParse({ about: "a".repeat(201) }).success, false);
 });
+
+
+test("validates profile image updates", () => {
+    const avatar = {
+        publicId: "chorae/users/u/avatar/x",
+        version: 1,
+        signature: "a".repeat(64),
+    };
+
+    assert.deepEqual(profileUpdate.parse({ avatar }).avatar, avatar);
+    assert.equal(profileUpdate.parse({ banner: null }).banner, null);
+    assert.deepEqual(profileUpdate.parse({}), {});
+
+    assert.equal(
+        profileUpdate.safeParse({ avatar: "https://example.com/me.jpg" }).success,
+        false,
+    );
+});

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { uploadedImage } from "../images/sign";
 
 // What can be changed for a profile, and limits.
 export const MAX_FAVORITE_GENRES = 3;
@@ -31,6 +32,8 @@ export const profileUpdate = z.object({
         .transform((text) => text || null)
         .optional(),
     genres: genres.optional(),
+    avatar: uploadedImage.nullable().optional(),
+    banner: uploadedImage.nullable().optional(),
 });
 
 // Validate the metadata used for profile favorites.

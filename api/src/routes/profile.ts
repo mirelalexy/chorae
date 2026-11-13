@@ -3,6 +3,7 @@ import { requireUser } from "./user";
 import { FAVORITE_KINDS, favoriteBody, FavoriteKind, profileUpdate } from "../profile/fields";
 import { z } from "zod";
 import { pool } from "../db/pool";
+import { acceptUpload, deleteImage, imageUrl } from "../images/cloudinary";
 
 // The profile page: display name, email, about, genres, and favorites (artist, song, and album).
 export const profile = Router();
@@ -39,6 +40,8 @@ type ProfileRow = {
     about: string | null;
     genres: string[];
     created_at: Date;
+    avatar_image: string | null;
+    banner_image: string | null;
 };
 
 const kindParam = z.object({
@@ -51,7 +54,7 @@ profile.get("/", async (_req, res) => {
 
     const [user, favorites, stats] = await Promise.all([
         pool.query<ProfileRow>(
-            `SELECT display_name, email, about, genres, created_at
+            `SELECT display_name, email, about, genres, created_at, avatar_image, banner_image
              FROM users
              WHERE id = $1`,
              [userId]
@@ -88,6 +91,8 @@ profile.get("/", async (_req, res) => {
             about: u.about,
             genres: u.genres,
             createdAt: u.created_at,
+            avatarUrl: imageUrl(u.avatar_image, "avatar"),
+            bannerUrl: imageUrl(u.banner_image, "banner"),
         },
         favorites: {
             artist: byKind.artist ?? null,
@@ -102,7 +107,8 @@ profile.get("/", async (_req, res) => {
     });
 });
 
-// PATCH /profile { displayName?, about?, genres? } -> 204
+// PATCH /profile { displayName?, about?, genres?, avatar?, banner? } -> 204
+// Null removes an existing image.
 profile.patch("/", async (req, res) => {
     const userId = res.locals.userId;
     const parsed = profileUpdate.safeParse(req.body);
@@ -112,18 +118,64 @@ profile.patch("/", async (req, res) => {
         return;
     }
 
-    const { displayName, about, genres } = parsed.data;
+    const { displayName, about, genres, avatar, banner } = parsed.data;
 
-    await pool.query(
-        `UPDATE users
-         SET display_name = coalesce($2, display_name),
-             about = CASE WHEN $3 THEN $4 ELSE about END,
-             genres = coalesce($5, genres)
-         WHERE id = $1`,
-         [userId, displayName ?? null, about !== undefined, about ?? null, genres ?? null],
+    // Verify that new images belong to this user.
+    const avatarPath = avatar ? acceptUpload(avatar, userId, "avatar") : null;
+    const bannerPath = banner ? acceptUpload(banner, userId, "banner") : null;
+
+    if ((avatar && !avatarPath) || (banner && !bannerPath)) {
+        res.status(400).json({ error: "That picture didn't upload properly. Try again." });
+        return;
+    }
+
+    // Keep omitted fields unchanged and return the previous image paths so they can be deleted.
+    const result = await pool.query<{
+        old_avatar: string | null;
+        old_banner: string | null;
+    }>(
+        `WITH old AS MATERIALIZED (
+            SELECT id, avatar_image, banner_image
+            FROM users
+            WHERE id = $1
+            FOR UPDATE
+        )
+        UPDATE users AS u
+        SET display_name = coalesce($2, u.display_name),
+            about = CASE WHEN $3 THEN $4 ELSE u.about END,
+            genres = coalesce($5, u.genres)
+            avatar_image = CASE WHEN $6 THEN $7 ELSE u.avatar_image END,
+            banner_image = CASE WHEN $8 THEN $9 ELSE u.banner_image END
+        FROM old
+        WHERE u.id = old.id
+        RETURNING old.avatar_image AS old_avatar,
+                old.banner_image AS old_banner`,
+        [
+            userId,
+            displayName ?? null,
+            about !== undefined,
+            about ?? null,
+            genres ?? null,
+            avatar !== undefined,
+            avatarPath,
+            banner !== undefined,
+            bannerPath,
+        ],
     );
 
     res.status(204).end();
+
+    // Remove images that were replaced or cleared.
+    const old = result.rows[0];
+    if (!old) return;
+
+    if (avatar !== undefined && old.old_avatar !== avatarPath) {
+        await deleteImage(old.old_avatar);
+    }
+
+    if (banner !== undefined && old.old_banner !== bannerPath) {
+        await deleteImage(old.old_banner);
+    }
 });
 
 // PUT /profile/favorites/:kind { mbid, name, artist?, year?, coverUrl? } -> { favorite }
