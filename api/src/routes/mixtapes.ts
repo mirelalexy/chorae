@@ -5,6 +5,8 @@ import { requireUser } from "./user";
 import { draftRequestSchema } from "../rae/schemas";
 import { config } from "../config";
 import { cleanSideTitle, finalTitle } from "../rae/title";
+import { acceptUpload, deleteImage, imageUrl } from "../images/cloudinary";
+import { uploadedImage } from "../images/sign";
 
 export const mixtapes = Router();
 export const jobs = Router();
@@ -57,8 +59,8 @@ mixtapes.get("/", async (req, res) => {
         : null;
 
     const { rows } = await pool.query(
-        `SELECT m.id, m.title, m.origin, m.created_at, m.updated_at, v.is_story,
-                stats.track_count, stats.total_ms, stats.covers
+        `SELECT m.id, m.title, m.origin, m.created_at, m.updated_at, m.cover_image, 
+                v.is_story, stats.track_count, stats.total_ms, stats.covers
          FROM mixtapes m
          JOIN mixtape_versions v ON v.id = m.current_version_id
          CROSS JOIN LATERAL (
@@ -94,6 +96,7 @@ mixtapes.get("/", async (req, res) => {
             trackCount: m.track_count,
             totalMs: Number(m.total_ms), // bigint comes back from pg as a string
             covers: [...new Set<string>(m.covers ?? [])].slice(0, 4),
+            coverUrl: imageUrl(m.cover_image, "coverSmall"), // mixtape cover shown instead of album covers
         })),
     });
 });
@@ -113,6 +116,7 @@ mixtapes.post("/", async(req, res) => {
             error: `That's ${today.used} mixtapes today. Come back tomorrow.`,
             resetsAt: today.resetsAt,
         })
+        return;
     }
 
     const result = await pool.query<{ id: string }>(
@@ -222,7 +226,9 @@ mixtapes.get("/:id", async (req, res) => {
     }
 
     const header = await pool.query(
-        `SELECT m.id, m.title, m.origin, m.share_slug, v.id AS version_id, v.version_number, v.intro, v.is_story, v.missing_seeds, v.summary
+        `SELECT m.id, m.title, m.origin, m.share_slug, m.cover_image, 
+                v.id AS version_id, v.version_number, v.intro, v.is_story, 
+                v.missing_seeds, v.summary
          FROM mixtapes m
          JOIN mixtape_versions v ON v.id = m.current_version_id
          WHERE m.id = $1 AND m.user_id = $2`,
@@ -257,6 +263,7 @@ mixtapes.get("/:id", async (req, res) => {
         title: mixtape.title,
         origin: mixtape.origin === "rae_curated" ? "curated" : "generated",
         shareSlug: mixtape.share_slug,
+        coverUrl: imageUrl(mixtape.cover_image, "cover"),
         version: mixtape.version_number,
         intro: mixtape.intro,
         summary: mixtape.summary,
@@ -278,4 +285,115 @@ mixtapes.get("/:id", async (req, res) => {
                 }))
         }))
     });
+});
+
+const mixtapeUpdate = z.object({
+    title: z.string().trim().min(1).max(80).optional(),
+    cover: uploadedImage.nullable().optional(),
+});
+
+// PATCH /mixtapes/:id { title?, cover? } -> 204
+// Rename a mixtape or change its cover. Null restores the album grid.
+mixtapes.patch("/:id", async (req, res) => {
+    const params = idParam.safeParse(req.params);
+    if (!params.success) {
+        res.status(404).json({ error: "No such mixtape." });
+        return;
+    }
+
+    const parsed = mixtapeUpdate.safeParse(req.body);
+    if (!parsed.success) {
+        res.status(400).json({
+            error: "Check the highlighted fields.",
+            issues: parsed.error.issues,
+        });
+        return;
+    }
+
+    const { title, cover } = parsed.data;
+    const userId = res.locals.userId;
+
+    // Verify that a new cover belongs to this user.
+    const coverPath = cover ? acceptUpload(cover, userId, "cover") : null;
+    if (cover && !coverPath) {
+        res.status(400).json({ error: "That picture didn't upload properly. Try again." });
+        return;
+    }
+
+    // Update only provided fields and return the previous cover.
+    const result = await pool.query<{ old_cover: string | null }>(
+        `WITH old AS MATERIALIZED (
+            SELECT id, cover_image
+            FROM mixtapes
+            WHERE id = $1 AND user_id = $2
+            FOR UPDATE
+        )
+        UPDATE mixtapes AS m
+        SET title = COALESCE($3, m.title),
+            cover_image = CASE WHEN $4 THEN $5 ELSE m.cover_image END,
+            updated_at = NOW()
+        FROM old
+        WHERE m.id = old.id
+        RETURNING old.cover_image AS old_cover`,
+        [params.data.id, userId, title ?? null, cover !== undefined, coverPath],
+    );
+
+    const old = result.rows[0];
+    if (!old) {
+        res.status(404).json({ error: "No such mixtape." });
+        return;
+    }
+
+    res.status(204).end();
+
+    // Clean up the cover if it was replaced or removed.
+    if (cover !== undefined && old.old_cover !== coverPath) {
+        await deleteImage(old.old_cover);
+    }
+});
+
+// Delete a mixtape and its versions, but keep its daily usage counted.
+mixtapes.delete("/:id", async (req, res) => {
+    const params = idParam.safeParse(req.params);
+    if (!params.success) {
+        res.status(404).json({ error: "No such mixtape." });
+        return;
+    }
+
+    const userId = res.locals.userId;
+
+    // Don't delete a mixtape while Rae is generating a new version.
+    const busy = await pool.query(
+        `SELECT 1
+        FROM generation_jobs
+        WHERE mixtape_id = $1
+            AND status IN ('queued', 'drafting', 'matching', 'saving')
+        LIMIT 1`,
+        [params.data.id],
+    );
+
+    if (busy.rows.length > 0) {
+        res.status(409).json({
+            error: "Rae is still working on this tape. Try again when she's done.",
+        });
+        return;
+    }
+
+    const result = await pool.query<{ cover_image: string | null }>(
+        `DELETE FROM mixtapes
+        WHERE id = $1 AND user_id = $2
+        RETURNING cover_image`,
+        [params.data.id, userId],
+    );
+
+    const deleted = result.rows[0];
+    if (!deleted) {
+        res.status(404).json({ error: "No such mixtape." });
+        return;
+    }
+
+    res.status(204).end();
+
+    // Remove the custom cover from Cloudinary.
+    await deleteImage(deleted.cover_image);
 });
