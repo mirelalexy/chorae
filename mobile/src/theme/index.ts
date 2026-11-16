@@ -9,6 +9,7 @@ export const colors = {
     textOnAccent: "#1b1a1e",
     error: "#ff9d9d",
     glow: "rgba(196, 155, 255, 0.22)", // glow for the tab bar
+    accountCard: "#47355c",
 } as const;
 
 export const space = {
