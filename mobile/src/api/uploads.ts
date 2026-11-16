@@ -1,6 +1,6 @@
-
-import { Platform } from "react-native";
 import { api, ApiError } from "./client";
+import { File } from "expo-file-system";
+import { fetch as expoFetch } from "expo/fetch";
 
 export type UploadKind = "avatar" | "banner" | "cover";
 
@@ -36,25 +36,14 @@ export async function uploadImage(
         form.append(name, String(value));
     }
 
-    const mimeType = image.mimeType ?? "image/jpeg";
-    const extension = mimeType.split("/")[1] ?? "jpg";
-
-    // React Native accepts file URIs, while web uploads need a Blob.
-    const file = Platform.OS === "web"
-        ? await (await fetch(image.uri)).blob()
-        : ({
-            uri: image.uri,
-            name: `${kind}.${extension}`,
-            type: mimeType,
-        } as unknown as Blob);
-
+    const file = new File(image.uri);
     form.append("file", file);
 
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 60000);
 
     try {
-        const res = await fetch(url, {
+        const res = await expoFetch(url, {
             method: "POST",
             body: form,
             signal: controller.signal,

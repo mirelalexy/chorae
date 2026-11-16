@@ -1,7 +1,7 @@
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
-import { updateProfile, type FavoriteKind } from "@/api/profile";
+import { updateProfile } from "@/api/profile";
 import { useAuth } from "@/auth/AuthProvider";
 import { Button } from "@/components/Button";
 import { PageHeader } from "@/components/PageHeader";
@@ -13,6 +13,8 @@ import { TextField } from "@/components/TextField";
 import { useProfile } from "@/hooks/useProfile";
 import { colors, space, type } from "@/theme";
 import { HEART } from "./(tabs)/profile";
+import { pickPicture, PictureChange, settlePicture, shownPicture } from "@/utils/pictures";
+import { ProfilePictures } from "@/components/profile/ProfilePictures";
 
 const MAX_ABOUT = 200;
 
@@ -23,6 +25,9 @@ export default function EditProfile() {
     const [name, setName] = useState("");
     const [about, setAbout] = useState("");
     const [genres, setGenres] = useState<string[]>([]);
+    // Picked pictures are only uploaded on Save, so backing out leaves nothing behind.
+    const [avatar, setAvatar] = useState<PictureChange>(null);
+    const [banner, setBanner] = useState<PictureChange>(null);
     const [filled, setFilled] = useState(false);
 
     const [saving, setSaving] = useState(false);
@@ -45,8 +50,10 @@ export default function EditProfile() {
         }
         setSaving(true);
         setError(null);
+
         try {
-            await updateProfile({ displayName: name.trim(), about: about.trim(), genres });
+            const [newAvatar, newBanner] = await Promise.all([settlePicture("avatar", avatar), settlePicture("banner", banner)]);
+            await updateProfile({ displayName: name.trim(), about: about.trim(), genres, avatar: newAvatar, banner: newBanner });
             await refreshUser();
             router.back();
         } catch (err) {
@@ -67,6 +74,23 @@ export default function EditProfile() {
                 )
             ) : (
                 <>
+                    <ProfilePictures
+                        name={name || page.profile.displayName}
+                        avatarUrl={shownPicture(page.profile.avatarUrl, avatar)}
+                        bannerUrl={shownPicture(page.profile.bannerUrl, banner)}
+                        onPickAvatar={async () => {
+                            const picked = await pickPicture("square");
+                            if (picked) setAvatar(picked);
+                        }}
+                        onPickBanner={async () => {
+                            const picked = await pickPicture("wide");
+                            if (picked) setBanner(picked);
+                        }}
+                        onRemoveAvatar={() => setAvatar("remove")}
+                        onRemoveBanner={() => setBanner("remove")}
+                        disabled={saving}
+                    />
+
                     <View style={styles.fields}>
                         <TextField
                             label="Name"
