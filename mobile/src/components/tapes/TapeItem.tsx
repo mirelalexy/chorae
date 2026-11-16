@@ -92,7 +92,7 @@ export function TapeItem({ tape, layout, size, onPress }: TapeItemProps) {
         <Item
             layout={layout}
             size={size}
-            art={<TapeArt covers={tape.covers} size={size} />}
+            art={<TapeArt covers={tape.covers} coverUrl={tape.coverUrl} size={size} />}
             title={tape.title}
             detail={tapeDetail(tape, layout)}
             onPress={onPress}

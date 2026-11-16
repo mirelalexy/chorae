@@ -7,6 +7,7 @@ const TILE_BG_COLORS = ["#5b4a72", "#3f3a47", "#2f2c34", "#7a6494"];
 
 type TapeArtProps = {
     covers: string[];
+    coverUrl?: string | null;
     size?: number;
 };
 
@@ -16,21 +17,32 @@ type TileProps = {
     size: number;
 };
 
-// Four album covers arranged in a 2x2 grid, with fallback colors for missing artwork.
-export function TapeArt({ covers, size = 140 }: TapeArtProps) {
+// The tape's own cover if it has one, else four album covers arranged in a 2x2 grid, with fallback colors for missing artwork.
+export function TapeArt({ covers, coverUrl, size = 140 }: TapeArtProps) {
     const tileSize = size / 2;
+    const artSize = {
+        width: size,
+        height: size,
+        borderRadius: size / 10,
+    };
+
+    const [failed, setFailed] = useState<string | null>(null);
+    
+    if (coverUrl && failed !== coverUrl) {
+        return (
+            <Image
+                aria-hidden
+                source={{ uri: coverUrl }}
+                style={[styles.art, artSize]}
+                onError={() => setFailed(coverUrl)}
+            />
+        );
+    }
 
     return (
         <View
             aria-hidden
-            style={[
-                styles.art,
-                {
-                    width: size,
-                    height: size,
-                    borderRadius: size / 10,
-                },
-            ]}
+            style={[styles.art, artSize]}
         >
             {TILE_BG_COLORS.map((bgColor, index) => (
                 <Tile

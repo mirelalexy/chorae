@@ -37,10 +37,15 @@ export default function Profile() {
 
     return (
         <ScrollView style={styles.page} contentContainerStyle={styles.content}>
-            <ProfileHeader name={name} email={email} />
+            <ProfileHeader 
+                name={name} 
+                email={email}
+                avatarUrl={page?.profile.avatarUrl}
+                bannerUrl={page?.profile.bannerUrl}    
+            />
 
             <View style={styles.body}>
-                { page ? (
+                {page ? (
                     <>
                         <View style={styles.intro}>
                             <GenreTags genres={page.profile.genres} />
@@ -80,7 +85,7 @@ export default function Profile() {
                         <CoverRow items={library.tapes.map((tape) => ({
                             key: tape.id,
                             art: (
-                                <TapeArt covers={tape.covers} />
+                                <TapeArt covers={tape.covers} coverUrl={tape.coverUrl} />
                             ),
                             title: tape.title,
                             details: [`${tape.trackCount} songs`],

@@ -4,18 +4,35 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Avatar } from "@/components/Avatar";
 import { GearSixIcon } from "@/components/icons";
 import { colors, space, type } from "@/theme";
+import { Image } from "expo-image";
 
 const BANNER = 168;
 const AVATAR = 104;
 
-// TO DO: add banner and avatar upload.
+type Props = {
+    name: string;
+    email: string;
+    avatarUrl?: string | null;
+    bannerUrl?: string | null;
+};
+
 // The top of the profile: banner, link to settings, and the profile picture.
-export function ProfileHeader({ name, email }: { name: string; email: string }) {
+export function ProfileHeader({ name, email, avatarUrl, bannerUrl }: Props) {
     const insets = useSafeAreaInsets();
 
     return (
         <View>
             <View style={[styles.banner, { height: BANNER + insets.top }]}>
+                {bannerUrl && (
+                    <Image 
+                        aria-hidden 
+                        source={{ uri: bannerUrl }} 
+                        style={StyleSheet.absoluteFill} 
+                        contentFit="cover" 
+                        transition={150} 
+                    />
+                )}
+
                 <Pressable
                     onPress={() => router.push("/settings")}
                     accessibilityRole="button"
@@ -29,7 +46,7 @@ export function ProfileHeader({ name, email }: { name: string; email: string }) 
 
             <View style={styles.identity}>
                 <View style={styles.ring}>
-                    <Avatar name={name} size={AVATAR} />
+                    <Avatar name={name} url={avatarUrl} size={AVATAR} />
                 </View>
                 <Text style={styles.name} accessibilityRole="header">
                     {name}

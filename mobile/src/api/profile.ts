@@ -1,4 +1,5 @@
 import { api } from "./client";
+import { UploadedImage } from "./uploads";
 
 // The profile page's data and the calls that change it.
 export type Profile = {
@@ -7,6 +8,8 @@ export type Profile = {
     about: string | null;
     genres: string[];
     createdAt: string;
+    avatarUrl: string | null; // null shows initials
+    bannerUrl: string | null; // null shows a plain block
 };
 
 export type FavoriteKind = "artist" | "album" | "song";
@@ -37,7 +40,12 @@ export async function getProfile(): Promise<ProfilePage> {
     return api<ProfilePage>("/profile");
 }
 
-export async function updateProfile(changes: Partial<Pick<Profile, "displayName" | "about" | "genres">>): Promise<void> {
+export type ProfileChanges = Partial<Pick<Profile, "displayName" | "about" | "genres">> & {
+    avatar?: UploadedImage | null; // null removes it
+    banner?: UploadedImage | null;
+};
+
+export async function updateProfile(changes: ProfileChanges): Promise<void> {
     await api("/profile", { method: "PATCH", body: changes });
 }
 

@@ -1,4 +1,5 @@
 import { api } from "./client";
+import { UploadedImage } from "./uploads";
 
 export type JobStatus = "queued" | "drafting" | "matching" | "saving" | "done" | "failed";
 
@@ -27,6 +28,7 @@ export type MixtapeSummary = {
     trackCount: number;
     totalMs: number;
     covers: string[];
+    coverUrl: string | null;
 };
 
 export type Today = { 
@@ -87,6 +89,7 @@ export type Mixtape = {
     title: string;
     origin: "generated" | "curated";
     shareSlug: string;
+    coverUrl: string | null;
     version: number;
     intro: string;
     summary: string;
@@ -138,4 +141,13 @@ export async function retryJob(id: string): Promise<void> {
 
 export async function getMixtape(id: string): Promise<Mixtape> {
     return api<Mixtape>(`/mixtapes/${id}`);
+}
+
+// Rename a tape, or give it a cover of its own (null goes back to the album covers grid).
+export async function updateMixtape(id: string, changes: { title?: string; cover?: UploadedImage | null }): Promise<void> {
+    await api(`/mixtapes/${id}`, { method: "PATCH", body: changes });
+}
+
+export async function deleteMixtape(id: string): Promise<void> {
+    await api(`/mixtapes/${id}`, { method: "DELETE" });
 }
