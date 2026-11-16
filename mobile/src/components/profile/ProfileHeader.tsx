@@ -29,7 +29,7 @@ export function ProfileHeader({ name, email, avatarUrl, bannerUrl }: Props) {
                         source={{ uri: bannerUrl }} 
                         style={StyleSheet.absoluteFill} 
                         contentFit="cover" 
-                        transition={150} 
+                        contentPosition="center" 
                     />
                 )}
 

@@ -46,6 +46,7 @@ export function ProfilePictures({
                         source={{ uri: bannerUrl }}
                         style={StyleSheet.absoluteFill}
                         contentFit="cover"
+                        contentPosition="center"
                     />
                 )}
                 <CameraBadge />

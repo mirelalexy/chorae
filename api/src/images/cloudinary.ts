@@ -77,7 +77,7 @@ export function acceptUpload(
 // Display sizes for profile avatars and banners, and mixtape covers.
 const SHOWN = {
     avatar: "c_fill,g_auto,w_400,h_400",
-    banner: "c_fill,g_auto,w_1200,h_600",
+    banner: "c_fill,g_center,w_1200,h_600",
     cover: "c_fill,g_auto,w_1080,h_1080",
     coverSmall: "c_fill,g_auto,w_480,h_480",
 } as const;
