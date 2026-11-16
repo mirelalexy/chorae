@@ -152,7 +152,7 @@ export default function Mixing() {
                     </View>
 
                     <Text style={[styles.text, styles.footer]}>
-                        This takes a minute or two. You can close this; the tape will be on Tapes when it's ready.
+                        This can take a minute or two, maybe a bit more depending on length chosen. You can close this and find the tape when it's ready.
                     </Text>
                 </>
             )}
