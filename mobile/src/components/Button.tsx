@@ -6,11 +6,12 @@ type Props = {
     onPress: () => void;
     loading?: boolean;
     disabled?: boolean;
-    variant?: "primary" | "secondary";
+    variant?: "primary" | "secondary" | "danger";
 }
 
 export function Button({ title, onPress, loading = false, disabled = false, variant = "primary" }: Props) {
-    const secondary = variant === "secondary";
+    const secondary = variant !== "primary"; // danger is a secondary button in red
+    const danger = variant === "danger";
     const inactive = disabled || loading;
 
     return (
@@ -22,6 +23,7 @@ export function Button({ title, onPress, loading = false, disabled = false, vari
             style={({ pressed }) => [
                 styles.button,
                 secondary && styles.secondary,
+                danger && styles.danger,
                 disabled && styles.disabled,
                 pressed && !inactive && styles.pressed,
             ]}
@@ -29,7 +31,7 @@ export function Button({ title, onPress, loading = false, disabled = false, vari
             {loading ? (
                 <ActivityIndicator color={secondary ? colors.text : colors.textOnAccent} />
             ) : (
-                <Text style={[styles.text, secondary && styles.secondaryText]}>{title}</Text>
+                <Text style={[styles.text, secondary && styles.secondaryText, danger && styles.dangerText]}>{title}</Text>
             )}
 
         </Pressable>
@@ -53,6 +55,14 @@ const styles = StyleSheet.create({
 
     secondaryText: {
         color: colors.text,
+    },
+
+    danger: {
+        borderColor: colors.error,
+    },
+
+    dangerText: {
+        color: colors.error,
     },
 
     pressed: {
