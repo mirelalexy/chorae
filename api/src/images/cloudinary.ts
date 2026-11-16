@@ -24,8 +24,11 @@ const FORMATS = "jpg,png,webp,heic,heif";
 export function signUpload(userId: string, kind: ImageKind) {
     if (!account) throw new Error("Uploads aren't set up.");
 
+    const folder = `${config.CLOUDINARY_FOLDER}/users/${userId}/${kind}`;
+
     const params = {
-        public_id: `${config.CLOUDINARY_FOLDER}/users/${userId}/${kind}/${randomUUID()}`,
+        public_id: `${folder}/${randomUUID()}`,
+        asset_folder: folder,
         timestamp: Math.floor(Date.now() / 1000),
         allowed_formats: FORMATS,
         transformation: STORED_SIZE,
@@ -54,7 +57,7 @@ export function acceptUpload(
 
     const uploadId = image.publicId.slice(ownFolder.length);
 
-    const uuidStructure = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    const uuidStructure = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
     if (!uuidStructure.test(uploadId)) {
         return null;
     }
