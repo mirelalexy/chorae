@@ -119,13 +119,10 @@ profile.patch("/", async (req, res) => {
     }
 
     const { displayName, about, genres, avatar, banner } = parsed.data;
-    console.log(avatar);
 
     // Verify that new images belong to this user.
     const avatarPath = avatar ? acceptUpload(avatar, userId, "avatar") : null;
     const bannerPath = banner ? acceptUpload(banner, userId, "banner") : null;
-
-    console.log(avatarPath);
 
     if ((avatar && !avatarPath) || (banner && !bannerPath)) {
         res.status(400).json({ error: "That picture didn't upload properly. Try again." });
