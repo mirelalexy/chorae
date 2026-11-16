@@ -1,5 +1,4 @@
-
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from "react-native";
 import { colors, space, type } from "@/theme";
 import { useMixtape } from "@/hooks/useMixtape";
@@ -49,7 +48,14 @@ export default function MixtapePage() {
             style={styles.page}
             contentContainerStyle={{ paddingBottom: insets.bottom + space.xxl }}
         >
-            <TapeCover covers={coversOf(tape)} />
+            <TapeCover 
+                covers={coversOf(tape)} 
+                coverUrl={tape.coverUrl}
+                onEdit={() => router.push({
+                    pathname: "/mixtapes/edit/[id]",
+                    params: { id: tape.id },
+                })}
+            />
 
             <View style={styles.body}>
                 <Text style={styles.kind}>{KIND[tape.origin]}</Text>

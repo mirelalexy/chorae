@@ -22,3 +22,4 @@ export { HeadphonesIcon } from "phosphor-react-native/src/icons/Headphones";
 export { InfoIcon } from "phosphor-react-native/src/icons/Info";
 export { GearSixIcon } from "phosphor-react-native/src/icons/GearSix";
 export { CameraIcon } from "phosphor-react-native/src/icons/Camera";
+export { PencilSimpleIcon } from "phosphor-react-native/src/icons/PencilSimple";

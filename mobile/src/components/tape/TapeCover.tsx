@@ -3,12 +3,18 @@ import { router } from "expo-router";
 import { Pressable, StyleSheet, useWindowDimensions, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { TapeArt } from "../tapes/TapeArt";
-import { CaretLeftIcon } from "../icons";
+import { CaretLeftIcon, PencilSimpleIcon } from "../icons";
 import Svg, { Defs, LinearGradient, Rect, Stop } from "react-native-svg";
 
 export const FADE_HEIGHT = 250;
 
-export function TapeCover({ covers }: { covers: string[] }) {
+type Props = {
+    covers: string[];
+    coverUrl?: string | null;
+    onEdit?: () => void;
+};
+
+export function TapeCover({ covers, coverUrl, onEdit }: Props) {
     const { width } = useWindowDimensions();
     const insets = useSafeAreaInsets();
 
@@ -19,7 +25,7 @@ export function TapeCover({ covers }: { covers: string[] }) {
 
     return (
         <View style={[styles.cover, { height: width }]}>
-            <TapeArt covers={covers} size={width} />
+            <TapeArt covers={covers} coverUrl={coverUrl} size={width} />
 
             <Svg
                 width={width}
@@ -43,12 +49,25 @@ export function TapeCover({ covers }: { covers: string[] }) {
                 accessibilityLabel="back"
                 hitSlop={8}
                 style={[
+                    styles.round,
                     styles.back,
                     { top: insets.top + space.sm }
                 ]}
             >
                 <CaretLeftIcon color={colors.text} size={22} />
             </Pressable>
+
+            {onEdit && (
+                <Pressable
+                    onPress={onEdit}
+                    accessibilityRole="button"
+                    accessibilityLabel="Edit tape"
+                    hitSlop={8}
+                    style={[styles.round, styles.edit, { top: insets.top + space.sm }]}
+                >
+                    <PencilSimpleIcon color={colors.text} size={22} />
+                </Pressable>
+            )}
         </View>
     );
 }
@@ -64,9 +83,17 @@ const styles = StyleSheet.create({
         left: 0,
     },
 
+    // The round buttons over the artwork: back on the left, edit on the right.
     back: {
-        position: "absolute",
         left: space.lg,
+    },
+
+    edit: {
+        right: space.lg,
+    },
+
+    round: {
+        position: "absolute",
         width: 44,
         height: 44,
         borderRadius: 22,
