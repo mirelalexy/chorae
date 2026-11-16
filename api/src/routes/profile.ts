@@ -119,10 +119,13 @@ profile.patch("/", async (req, res) => {
     }
 
     const { displayName, about, genres, avatar, banner } = parsed.data;
+    console.log(avatar);
 
     // Verify that new images belong to this user.
     const avatarPath = avatar ? acceptUpload(avatar, userId, "avatar") : null;
     const bannerPath = banner ? acceptUpload(banner, userId, "banner") : null;
+
+    console.log(avatarPath);
 
     if ((avatar && !avatarPath) || (banner && !bannerPath)) {
         res.status(400).json({ error: "That picture didn't upload properly. Try again." });
@@ -143,7 +146,7 @@ profile.patch("/", async (req, res) => {
         UPDATE users AS u
         SET display_name = coalesce($2, u.display_name),
             about = CASE WHEN $3 THEN $4 ELSE u.about END,
-            genres = coalesce($5, u.genres)
+            genres = coalesce($5, u.genres),
             avatar_image = CASE WHEN $6 THEN $7 ELSE u.avatar_image END,
             banner_image = CASE WHEN $8 THEN $9 ELSE u.banner_image END
         FROM old
