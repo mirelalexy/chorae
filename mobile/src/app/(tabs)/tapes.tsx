@@ -14,9 +14,11 @@ import { ActivityIndicator, Text, StyleSheet } from "react-native";
 import { colors, type } from "@/theme";
 import { TapesLibrary } from "@/components/tapes/TapesLibrary";
 import { router } from "expo-router";
+import { useProfile } from "@/hooks/useProfile";
 
 export default function Tapes() {
     const { user } = useAuth();
+    const { page } = useProfile();
 
     const library = useTapes();
     const search = useSearch(listMixtapes);
@@ -56,6 +58,7 @@ export default function Tapes() {
                 onToggleLayout={toggleLayout}
                 sort={sort}
                 onSortChange={setSort}
+                avatarUrl={page?.profile.avatarUrl}
             />
         
             <TextField

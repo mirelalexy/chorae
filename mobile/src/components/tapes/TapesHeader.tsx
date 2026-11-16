@@ -14,9 +14,10 @@ type Props = {
     onToggleLayout: () => void;
     sort: Sort;
     onSortChange: (sort: Sort) => void;
+    avatarUrl?: string | null;
 };
 
-export function TapesHeader({ name, layout, onToggleLayout, sort, onSortChange }: Props) {
+export function TapesHeader({ name, layout, onToggleLayout, sort, onSortChange, avatarUrl }: Props) {
     const grid = layout === "grid";
 
     return (
@@ -27,7 +28,7 @@ export function TapesHeader({ name, layout, onToggleLayout, sort, onSortChange }
                 accessibilityLabel="Your profile"
                 hitSlop={8}
             >
-                <Avatar name={name} size={36} />
+                <Avatar name={name} size={36} url={avatarUrl} />
             </Pressable>
 
             <Text style={styles.title}>Your tapes</Text>
