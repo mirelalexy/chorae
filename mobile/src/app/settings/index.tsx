@@ -39,7 +39,7 @@ export default function Settings() {
                 <SettingsRow
                     icon={SparkleIcon}
                     title="Rae"
-                    subtitle="Tape length, stories"
+                    subtitle="Personalize your mixtapes"
                     onPress={() => router.push("/settings/rae")}
                 />
 
