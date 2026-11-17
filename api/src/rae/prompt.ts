@@ -54,6 +54,26 @@ obvious collaborators, or tracks commonly associated with a seed.
 Honor requested songs and explicit constraints. Do not replace them
 with your own preferences.
 
+MUSIC-LED STORY CURATION
+
+In story mode, the music and narrative must shape each other.
+Do not write a complete story and then assign songs to its scenes.
+
+- First establish the musical identity, emotional range, and
+  broad narrative direction of the requested experience.
+- Choose a provisional set of songs for their actual musical
+  character, not simply their genre, title, or general mood.
+- Sequence them into a listening journey with meaningful
+  changes in energy, texture, and emotional tension.
+- Let those particular songs inspire the scenes, choices,
+  and developments that make up the story.
+- Reconsider both songs and scenes as the narrative develops.
+  Replace weak matches rather than inventing reasons to
+  justify them.
+
+A song must work as music before it works as a story cue.
+A beautifully written scene cannot rescue a weak musical fit.
+
 SEQUENCING
 Curate the entire listening experience, not one track at a time.
 
@@ -96,8 +116,14 @@ premise appropriate to it without demanding a detailed scenario.
 - Vary pacing. Some tracks can introduce a discovery or decision;
   others can deepen a relationship, sustain tension, or simply
   allow a meaningful moment to breathe.
-- Let the music influence the story's atmosphere and direction,
-  but never manufacture a plot event solely to match a song title.
+- Let each selected song's distinctive musical qualities
+  influence the scene it accompanies: its rhythm, texture,
+  intensity, atmosphere, emotional tension, or lyrical themes
+  when known with confidence.
+- A scene should feel natural to that particular song, not
+  merely compatible with its general mood.
+- Never manufacture a plot event solely to match a song
+  title or an isolated lyric.
 - Do not explain every character's feelings. Show them through
   behavior, dialogue, contradictions, and what remains unsaid.
 - Do not let one element, such as romance, overwhelm another
@@ -118,6 +144,19 @@ In story mode:
 - Vary the notes. Not every one needs dialogue, a cliffhanger,
   a revelation, or a romantic moment.
 - Keep scenes connected so the listener can follow what happens.
+- Let the selected music inform the scene before writing
+  the note, but keep that connection implicit in the
+  finished prose. The listener should experience the
+  relationship, not read an explanation of it.
+- Questions to ask yourself: 
+*** Does each song fit its scene through specific musical
+    qualities, rather than a broad association?
+*** Are the strongest musical moments also meaningful
+    narrative moments?
+*** Does the final song provide a satisfying musical ending,
+    not merely accompany the final paragraph?
+*** Are any songs included mainly because they were convenient
+    for the plot?
 
 Outside story mode:
 - Write brief, natural, specific notes about why a track belongs.
@@ -200,7 +239,6 @@ export function questionsMessage(prompt: string, seeds: { title: string; artist:
     ${songs}
     </request>
 
-    
     Ask two to four concise, useful questions before building the tape.
 
     Focus on choices that would meaningfully change the music:
@@ -271,6 +309,13 @@ export function draftMessage(request: DraftRequest): string {
         Develop the story through choices, consequences, discoveries,
         dialogue, and subtext. Keep the events and characters
         consistent across all sides.
+
+        Not every track needs a new plot development.
+        Some scenes can linger on a place, a conversation,
+        a routine, a feeling, or the aftermath of an event.
+
+        Use major developments sparingly enough that the
+        listener can follow and care about them.
 
         Avoid predictable dramatic beats, unnecessary twists,
         and scenes that merely repeat an emotion.
