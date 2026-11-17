@@ -18,7 +18,8 @@ function fakeFind(missing: string[]) {
             lengthMs: null, 
             isrc: null, 
             releaseMbid: null,
-            releaseGroupMbid: null 
+            releaseGroupMbid: null,
+            artistMbids: [],
         };
     };
 
@@ -31,6 +32,7 @@ const b = (title: string) => ({ title, artist: "A", note: "N" });
 const draft: Draft = {
     title: "T",
     intro: "I",
+    summary: "S",
     sides: [
         { title: "A", mood_line: "M", tracks: [t("One"), t("Two")], backups: [b("A1"), b("A2")] },
         { title: "B", mood_line: "M", tracks: [t("Three"), t("Mine", true)], backups: [b("B1")] },

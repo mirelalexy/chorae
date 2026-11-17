@@ -13,7 +13,8 @@ function recording(song: Song, mbid = `mb-${song.title}`): MatchedTrack {
         lengthMs: 200000,
         isrc: null, 
         releaseMbid: null, 
-        releaseGroupMbid: null 
+        releaseGroupMbid: null,
+        artistMbids: [],
     };
 }
 
@@ -38,7 +39,7 @@ function backup(title: string, artist = "Artist " + title) {
 }
 
 function draftWith(tracks: ReturnType<typeof track>[], backups: ReturnType<typeof backup>[]): Draft {
-    return { title: "T", intro: "I", sides: [{ title: "Side A", mood_line: "M", tracks, backups }] };
+    return { title: "T", summary: "S", intro: "I", sides: [{ title: "Side A", mood_line: "M", tracks, backups }] };
 }
 
 const titles = (r: ReturnType<typeof assemble>) => r.sides.flatMap((s) => s.tracks.map((t) => t.track.title));
@@ -100,6 +101,7 @@ test("replaces a fourth track by one artist, but not a seed", () => {
 test("leaves out a side where nothing was found", () => {
     const draft: Draft = {
         title: "T",
+        summary: "S",
         intro: "I",
         sides: [
             { title: "A", mood_line: "M", tracks: [track("One")], backups: [backup("Spare A")] },
@@ -109,4 +111,54 @@ test("leaves out a side where nothing was found", () => {
     const result = assemble(draft, matchesFor(draft, ["Two", "Spare B"]));
 
     assert.deepEqual(result.sides.map((s) => s.title), ["A"]);
+});
+
+// The artist to avoid in these tests.
+const COLDPLAY = { mbid: "cp", name: "Coldplay" };
+
+// Recordings that know who made them, by artist ID.
+function matchesWithIds(draft: Draft, ids: Record<string, string[]>): Matches {
+    const map = matchesFor(draft);
+    for (const [key, match] of map) {
+        if (match) map.set(key, { ...match, artistMbids: ids[match.title] ?? ["someone-else"] });
+    }
+    return map;
+}
+
+test("a never-play artist is recognised by ID, whatever name they're credited under", () => {
+    const draft = draftWith([track("One", "C.P."), track("Two")], [backup("Spare")]);
+    const matches = matchesWithIds(draft, { One: ["cp"] });
+    assert.deepEqual(titles(assemble(draft, matches, [COLDPLAY])), ["Spare", "Two"]);
+});
+
+test("a featured never-play artist counts too", () => {
+    const draft = draftWith([track("One", "Wallows feat. Coldplay")], [backup("Spare")]);
+    const matches = matchesWithIds(draft, { One: ["wallows", "cp"] });
+    assert.deepEqual(titles(assemble(draft, matches, [COLDPLAY])), ["Spare"]);
+});
+
+test("a different artist who only shares the name still plays", () => {
+    const draft = draftWith([track("One", "Coldplay")], [backup("Spare")]);
+    const matches = matchesWithIds(draft, { One: ["another-coldplay"] });
+    assert.deepEqual(titles(assemble(draft, matches, [COLDPLAY])), ["One"]);
+});
+
+test("songs cached without artist IDs are checked by name, featured ones too", () => {
+    const draft = draftWith(
+        [track("One", "COLDPLAY"), track("Two", "Wallows feat. Coldplay"), track("Three")],
+        [backup("Spare"), backup("Spare 2")],
+    );
+    assert.deepEqual(titles(assemble(draft, matchesFor(draft), [COLDPLAY])), ["Spare", "Spare 2", "Three"]);
+});
+
+test("a never-play artist's backup is skipped too", () => {
+    const draft = draftWith([track("One", "Gone")], [backup("Bad spare"), backup("Good spare")]);
+    const matches = matchesWithIds(draft, { "Bad spare": ["cp"] });
+    matches.set(songKey({ title: "One", artist: "Gone" }), null);
+    assert.deepEqual(titles(assemble(draft, matches, [COLDPLAY])), ["Good spare"]);
+});
+
+test("a song they asked for stays, even by a never-play artist", () => {
+    const draft = draftWith([track("Mine", "Coldplay", true)], [backup("Spare")]);
+    assert.deepEqual(titles(assemble(draft, matchesWithIds(draft, { Mine: ["cp"] }), [COLDPLAY])), ["Mine"]);
 });

@@ -4,8 +4,9 @@ import { BetaJSONOutputFormat } from "@anthropic-ai/sdk/resources/beta/messages/
 import { readAnswer } from "./answer";
 import { config } from "../config";
 import { draftMessage, questionsMessage, RAE_SYSTEM } from "./prompt";
-import { DraftRequest, draftSchema, questionsSchema } from "./schemas";
+import { type DraftRequest, draftSchema, type JobInput, questionsSchema } from "./schemas";
 import { z } from "zod";
+import type { Personal } from "./personal";
 
 // Every request to Rae goes through this.
 const MODEL = "claude-opus-5-5";
@@ -88,10 +89,10 @@ async function send(message: string, options: Options, format: BetaJSONOutputFor
     }
 }
 
-export function askQuestions(prompt: string, seeds: { title: string; artist: string }[] = []) {
-    return ask(questionsSchema, questionsMessage(prompt, seeds), { effort: "low", maxTokens: 16000 });
+export function askQuestions(prompt: string, seeds: { title: string; artist: string }[] = [], personal?: Personal) {
+    return ask(questionsSchema, questionsMessage(prompt, seeds, personal), { effort: "low", maxTokens: 16000 });
 }
 
-export function writeDraft(request: DraftRequest) {
+export function writeDraft(request: DraftRequest | JobInput) {
     return ask(draftSchema, draftMessage(request), { effort: "medium", maxTokens: 64000 });
 }

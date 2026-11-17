@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { normalize } from "../musicbrainz/normalize";
+import { personalSchema } from "./personal";
 
 // Defines the shapes Rae answers in.
 // The SDK turns these schemas into a JSON schema the model must follow,
@@ -52,6 +53,13 @@ export const draftRequestSchema = z.object({
 });
 
 export type DraftRequest = z.infer<typeof draftRequestSchema>;
+
+// Remember the request and Rae's context at creation, so retries use the same preferences. 
+// Older jobs may not have it.
+export const jobInputSchema = draftRequestSchema.extend({ 
+    personal: personalSchema.optional(),
+});
+export type JobInput = z.infer<typeof jobInputSchema>;
 
 // What a single track in Rae's mixtape must have.
 const track = z.object({

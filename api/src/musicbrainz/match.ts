@@ -41,5 +41,6 @@ function toMatchedTrack(recording: Recording): MatchedTrack {
         isrc: recording.isrcs?.[0] ?? null,
         releaseMbid: release?.id ?? null,
         releaseGroupMbid: release?.["release-group"]?.id ?? null,
+        artistMbids: recording["artist-credit"].map((credit) => credit.artist.id),
     };
 }

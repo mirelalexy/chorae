@@ -18,6 +18,7 @@ type CachedRow = {
     length_ms: number | null;
     isrc: string | null;
     release_mbid: string | null;
+    artist_mbids: string[] | null;
 };
 
 export async function findSong(song: Song): Promise<MatchedTrack | null> {
@@ -26,7 +27,7 @@ export async function findSong(song: Song): Promise<MatchedTrack | null> {
     const result = await pool.query<CachedRow>(
         `SELECT l.recording_mbid,
                 l.recording_mbid IS NULL AND l.looked_up_at < now() - make_interval(days => $1) AS stale,
-                t.title, t.artist, t.length_ms, t.isrc, t.release_mbid
+                t.title, t.artist, t.length_ms, t.isrc, t.release_mbid, t.artist_mbids
          FROM track_lookups l
          LEFT JOIN tracks t ON t.mbid = l.recording_mbid
          WHERE l.song_key = $2`,
@@ -43,7 +44,8 @@ export async function findSong(song: Song): Promise<MatchedTrack | null> {
             lengthMs: cached.length_ms,
             isrc: cached.isrc,
             releaseMbid: cached.release_mbid,
-            releaseGroupMbid: null  // used to build cover URL, which is already saved
+            releaseGroupMbid: null,  // used to build cover URL, which is already saved
+            artistMbids: cached.artist_mbids ?? [],  // none for songs cached before IDs were kept
         };
     }
 

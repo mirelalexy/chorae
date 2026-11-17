@@ -7,6 +7,7 @@ import { config } from "../config";
 import { cleanSideTitle, finalTitle } from "../rae/title";
 import { acceptUpload, deleteImage, imageUrl } from "../images/cloudinary";
 import { uploadedImage } from "../images/sign";
+import { loadPersonal } from "../rae/load-personal";
 
 export const mixtapes = Router();
 export const jobs = Router();
@@ -119,11 +120,14 @@ mixtapes.post("/", async(req, res) => {
         return;
     }
 
+    // Save Rae preferences with the job so retries use the same ones.
+    const input = { ...parsed.data, personal: await loadPersonal(res.locals.userId) };
+
     const result = await pool.query<{ id: string }>(
         `INSERT INTO generation_jobs (user_id, input)
          VALUES ($1, $2)
          RETURNING id`,
-         [res.locals.userId, JSON.stringify(parsed.data)]
+         [res.locals.userId, JSON.stringify(input)]
     );
 
     res.status(202).json({ jobId: result.rows[0]!.id });

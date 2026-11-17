@@ -1,4 +1,5 @@
-import { MAX_TRACKS_PER_ARTIST, type DraftRequest } from "./schemas";
+import { type Discovery, type Personal } from "./personal";
+import { type JobInput, MAX_TRACKS_PER_ARTIST, type DraftRequest } from "./schemas";
 import { writesInLowercase } from "./title";
 
 // Shape Rae's personality and guide her.
@@ -223,7 +224,80 @@ function titleLine(request: DraftRequest): string {
     return "Choose a title that fits the mixtape.";
 }
 
-export function questionsMessage(prompt: string, seeds: { title: string; artist: string }[] = []): string {
+// How familiar the tape should be. User can change this in settings.
+const DISCOVERY_TEXT: Record<Discovery, string> = {
+    familiar: `How familiar: they like tapes close to home. Artists they love are welcome on
+    the tape, next to songs that sit near them. The limit per artist still applies.`,
+    mix: `How familiar: a mix. A few songs by artists they love are welcome, but most of
+    the tape should be music that's new to them.`,
+    fresh: `How familiar: they want discoveries. Use their taste to understand what they
+    like, but don't put artists they love on the tape, apart from songs they asked for.
+    Favor artists they're unlikely to know.`,
+};
+
+
+// What Rae knows about the user beyond this request. Empty when there's nothing set.
+export function personalSection(
+    personal: Personal | undefined,
+    purpose: "questions" | "draft",
+): string {
+    if (!personal) return "";
+
+    const about: string[] = [];
+
+    if (personal.artists.length) {
+        about.push(`Artists they love: ${personal.artists.map(a => a.name).join(", ")}`);
+    }
+
+    if (personal.albums.length) {
+        about.push(`Albums they love: ${personal.albums.map(a => `${a.name} by ${a.artist}`).join("; ")}`);
+    }
+
+    if (personal.note) {
+        about.push(`In their own words: ${personal.note}`);
+    }
+
+    const parts: string[] = [];
+
+    if (about.length) {
+      parts.push(`About them. Use it as background for every tape. When it and this request differ, 
+        the request comes first:
+        <request>
+        ${about.join("\n")}
+        </request>`
+      );
+    }
+
+    if (personal.discovery) {
+        parts.push(
+            purpose === "questions"
+                ? `${DISCOVERY_TEXT[personal.discovery]}
+                They chose this themselves, so don't ask how familiar or new the music should be.`
+                : DISCOVERY_TEXT[personal.discovery],
+        );
+    }
+
+    if (personal.avoid.length) {
+        const names = personal.avoid.map(a => `- ${a.name}`).join("\n");
+
+        parts.push(
+            purpose === "questions"
+                ? `They never want these artists on a tape, so don't suggest them:
+                  <request>
+                  ${names}
+                  </request>`
+                : `Never put these artists on the tape, not even as backups, unless they asked
+                  for one of their songs:
+                  <request>
+                  ${names}
+                  </request>`,
+        );
+    }
+
+    return parts.join("\n\n");
+}
+
+export function questionsMessage(prompt: string, seeds: { title: string; artist: string }[] = [], personal?: Personal): string {
     const songs = seeds.length
         ? seeds.map((s) => `- ${s.title} by ${s.artist}`).join("\n")
         : "(none)";
@@ -238,6 +312,8 @@ export function questionsMessage(prompt: string, seeds: { title: string; artist:
     <request>
     ${songs}
     </request>
+
+    ${personalSection(personal, "questions")}
 
     Ask two to four concise, useful questions before building the tape.
 
@@ -275,7 +351,7 @@ export function questionsMessage(prompt: string, seeds: { title: string; artist:
     Keep Rae's personality natural, curious, and perceptive.`;
 }
 
-export function draftMessage(request: DraftRequest): string {
+export function draftMessage(request: DraftRequest | JobInput): string {
     const { tracks, sides } = mixtapeShape(request.minutes);
 
     const answers = request.answers.length 
@@ -349,6 +425,8 @@ export function draftMessage(request: DraftRequest): string {
     <request>
     ${seeds}
     </request>
+
+    ${"personal" in request ? personalSection(request.personal, "draft") : ""}
 
     Shape:
     - About ${request.minutes} minutes: roughly ${tracks} tracks over ${sides}

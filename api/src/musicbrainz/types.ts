@@ -88,4 +88,5 @@ export type MatchedTrack = {
     isrc: string | null;
     releaseMbid: string | null;
     releaseGroupMbid: string | null;
+    artistMbids: string[];
 };

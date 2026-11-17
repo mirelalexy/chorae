@@ -7,8 +7,8 @@ import type { MatchedTrack } from "./types";
 
 export async function saveTrack(track: MatchedTrack): Promise<void> {
     await pool.query(
-        `INSERT INTO tracks (mbid, title, artist, length_ms, isrc, release_mbid, cover_url)
-         VALUES ($1, $2, $3, $4, $5, $6, $7)
+        `INSERT INTO tracks (mbid, title, artist, length_ms, isrc, release_mbid, cover_url, artist_mbids)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
          ON CONFLICT (mbid) DO UPDATE SET
             title = EXCLUDED.title,
             artist = EXCLUDED.artist,
@@ -16,6 +16,7 @@ export async function saveTrack(track: MatchedTrack): Promise<void> {
             isrc = COALESCE(EXCLUDED.isrc, tracks.isrc),
             release_mbid = EXCLUDED.release_mbid,
             cover_url = EXCLUDED.cover_url,
+            artist_mbids = EXCLUDED.artist_mbids,
             fetched_at = now()`,
         [
             track.mbid,
@@ -25,6 +26,7 @@ export async function saveTrack(track: MatchedTrack): Promise<void> {
             track.isrc,
             track.releaseMbid,
             coverArtUrl(track.releaseGroupMbid),
+            track.artistMbids,
         ],
     );
 }

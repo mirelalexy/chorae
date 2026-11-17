@@ -1,7 +1,7 @@
 import { pool } from "../db/pool";
 import { MusicBrainzError } from "../musicbrainz/client";
 import { RaeError, writeDraft } from "../rae/client";
-import { draftRequestSchema, draftSchema } from "../rae/schemas";
+import { draftSchema, jobInputSchema } from "../rae/schemas";
 import { finalTitle } from "../rae/title";
 import { assemble } from "./assemble";
 import { findSong } from "./find-song";
@@ -15,7 +15,7 @@ type Job = {
     id: string;
     user_id: string;
     input: unknown;
-    draft: unknown
+    draft: unknown;
 };
 
 class JobError extends Error {}
@@ -59,7 +59,7 @@ async function update(jobId: string, fields: JobFields) {
 }
 
 async function runJob(job: Job) {
-    const request = draftRequestSchema.parse(job.input);
+    const request = jobInputSchema.parse(job.input);
 
     // A job that failed or was interrupted after drafting already has a draft to work with.
     let draft;
@@ -76,13 +76,13 @@ async function runJob(job: Job) {
     await update(job.id, {
         status: "matching", 
         tracks_total: total, 
-        tracks_matched: 0
+        tracks_matched: 0,
     });
 
     const matches = await matchDraft(draft, (checked) => update(job.id, { tracks_matched: checked }), findSong);
     await update(job.id, { status: "saving" });
 
-    const assembled = assemble(draft, matches);
+    const assembled = assemble(draft, matches, request.personal?.avoid);
     if (assembled.sides.length === 0) {
         throw new JobError("None of the songs could be found on MusicBrainz.");
     }

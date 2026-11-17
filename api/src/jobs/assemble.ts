@@ -1,5 +1,6 @@
-import { normalize } from "../musicbrainz/normalize";
+import { normalize, splitArtists } from "../musicbrainz/normalize";
 import type { MatchedTrack } from "../musicbrainz/types";
+import { Artist } from "../rae/personal";
 import { type Draft, MAX_TRACKS_PER_ARTIST } from "../rae/schemas";
 
 // Turn Rae's draft and the results from MusicBrainz into a mixtape to save.
@@ -30,7 +31,32 @@ export type Assembled = {
     dropped: Song[]; // keep for logs
 }
 
-export function assemble(draft: Draft, matches: Matches): Assembled {
+export function assemble(
+    draft: Draft, 
+    matches: Matches,
+    avoid: Artist[] = [],
+): Assembled {
+    const avoidedIds = new Set(avoid.map((artist) => artist.mbid));
+    const avoidedNames = new Set(avoid.map((artist) => normalize(artist.name)));
+
+    
+    // Check every credited artist by MusicBrainz ID, including featured artists.
+    // Older cached tracks may have no IDs, so fall back to their names.
+    function byAvoided(song: Song, match: MatchedTrack): boolean {
+        if (avoid.length === 0) return false;
+
+        if (match.artistMbids?.length) {
+            return match.artistMbids.some((id) => avoidedIds.has(id));
+        }
+
+        const names = [
+            ...splitArtists(song.artist),
+            ...splitArtists(match.artist),
+        ];
+
+        return names.some((name) => avoidedNames.has(name));
+    }
+
     const usedRecordings = new Set<string>();
     const perArtist = new Map<string, number>();
     const missingSeeds: Song[] = [];
@@ -40,6 +66,7 @@ export function assemble(draft: Draft, matches: Matches): Assembled {
     function take(song: Song, isSeed: boolean): MatchedTrack | null {
         const match = matches.get(songKey(song));
         if (!match || usedRecordings.has(match.mbid)) return null;
+        if (!isSeed && byAvoided(song, match)) return null;
         
         const artist = normalize(song.artist);
         const count = perArtist.get(artist) ?? 0;
