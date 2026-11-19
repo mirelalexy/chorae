@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
 
     intro: {
         gap: space.xl,
-        marginTop: space.xl,
+        marginTop: space.md,
     },
 
     about: {

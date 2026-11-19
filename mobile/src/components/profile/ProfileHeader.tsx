@@ -85,7 +85,6 @@ const styles = StyleSheet.create({
         padding: 4,
         borderRadius: AVATAR,
         backgroundColor: colors.background,
-        marginBottom: space.sm,
     },
 
     name: {
