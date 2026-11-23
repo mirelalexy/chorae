@@ -55,3 +55,8 @@ export async function albumsByArtist(mbid: string): Promise<AlbumResult[]> {
     const res = await api<{ albums: AlbumResult[] }>(`/artists/${mbid}/albums`);
     return res.albums;
 }
+
+// Clear artists and albums to pick again, but favorites stay and can be edited on user profile.
+export async function startTasteOver(): Promise<void> {
+    await api("/taste/start-over", { method: "POST" });
+}
