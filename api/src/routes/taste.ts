@@ -74,6 +74,13 @@ taste.post("/", async (req, res) => {
     res.status(201).json({ item: toItem(result.rows[0]!) });
 });
 
+// POST /taste/start-over -> 204
+// Favorites stay, everything else is deleted.
+taste.post("/start-over", async (_req, res) => {
+    await pool.query(`DELETE FROM taste_items WHERE user_id = $1 AND NOT is_favorite`, [res.locals.userId]);
+    res.status(204).end();
+});
+
 // DELETE /taste/:id  ->  204
 taste.delete("/:id", async (req, res) => {
     const params = z.object({ id: z.uuid() }).safeParse(req.params);
